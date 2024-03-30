@@ -1,0 +1,13 @@
+{
+  "global": {
+    "actions": {
+      "add": "Add",
+      "edit": "Edit",
+      "show": "Show",
+      "delete": "Delete",
+      "close": "Close",
+      "save": "Save",
+      "cancel": "Cancel"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+.main-btn {
+  background-color: $primary;
+  color: $white;
+}
+
+.button {
+  &.button--outline {
+    background-color: $white;
+    color: $primary;
+    border: 1px solid $primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: max-content;
+    padding: 0 8px;
+    border-radius: 8px;
+    min-height: 40px;
+    min-width: 120px;
+  }
+}
