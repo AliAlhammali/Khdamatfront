@@ -1,0 +1,12 @@
+{
+  "admin_navbar_links": {
+    "dashboard": "Dashboard",
+    "merchant": "Merchants",
+    "users": "Users",
+    "merchant_users": "Merchant Users",
+    "services_providers": "Service Providers",
+    "services_providers_users": "Service Providers Users",
+    "categories": "Categories",
+    "services": "Services"
+  }
+}

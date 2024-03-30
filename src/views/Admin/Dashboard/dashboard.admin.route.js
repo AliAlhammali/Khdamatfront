@@ -1,24 +1,12 @@
+import merchantAdminRoute from "./merchant/merchant.admin.route";
+
 export default {
   routes: [
     {
-      path: "merchant",
-      name: "merchant-dashboard",
-      component: () => import("./merchant/MerchantAdmin.vue")
+      path: "dashboard",
+      name: "admin-dashboard",
+      component: () => import("./home/AdminHome.vue")
     },
-    {
-      path: "merchant/create",
-      name: "merchant-create",
-      component: () => import("./merchant/MerchantCreate.vue")
-    },
-    {
-      path: "merchant/:id",
-      name: "merchant-show",
-      component: () => import("./merchant/MerchantShow.vue")
-    },
-    {
-      path: "merchant/:id/edit",
-      name: "merchant-edit",
-      component: () => import("./merchant/MerchantEdit.vue")
-    }
+    ...merchantAdminRoute.routes
   ]
 };

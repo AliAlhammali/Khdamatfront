@@ -16,8 +16,8 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
         this.record = data.user;
 
         // Save token to cookies
-        $cookies.set("khadamat_token", data.token);
-        $cookies.set("khadamat_user", data.user);
+        $cookies.set("admin_khadamat_token", data.token);
+        $cookies.set("admin_khadamat_user", data.user);
 
         router.push({ name: "admin-dashboard" });
       } catch (error) {
@@ -25,6 +25,16 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
       } finally {
         this.isLoading = false;
       }
-    }
+    },
+    checkCookie: function () {
+      const token = $cookies.get("admin_khadamat_token");
+      const user = $cookies.get("admin_khadamat_user");
+
+      if (token && user) {
+        this.record = user;
+      } else {
+        router.push({ name: "admin-login" });
+      }
+    },
   }
 });

@@ -1,21 +1,6 @@
 <template>
   <div class="table">
-    <div class="d-flex align-center justify-space-between table__head">
-      <h2>
-        {{ title }}
-      </h2>
-      <form @submit.prevent.stop="searchByEnter($event)">
-        <label class="table__head__search d-flex align-center ps-4">
-          <button
-            @click="searchItems"
-            class="d-flex align-center justify-center"
-          >
-            <span class="mdi mdi-24px mdi-magnify"></span>
-          </button>
-          <input type="text" :placeholder="placeholder" v-model="search" />
-        </label>
-      </form>
-    </div>
+  
     <v-data-table
       :items-per-page="meta.perPage"
       v-model="selected"
@@ -39,7 +24,11 @@
       </template>
 
       <template #no-data>
-        <p>NO_DATA_FOUND</p>
+        <div>
+          <p>
+            {{ $t("global.table.noData") }}
+          </p>
+        </div>
       </template>
       <template v-slot:loading>
         <v-progress-circular color="primary" indeterminate />
@@ -47,10 +36,7 @@
       <template v-slot:bottom>
         <div class="d-flex mt-4 justify-space-between">
           <div class="d-flex ga-4 align-center">
-            <span>
-              <!-- {{ $t("CONTRACTS.TABLE.VIEW") }} -->
-              عرض
-            </span>
+            <span>{{ $t("global.table.show") }}</span>
             <v-select
               variant="outline"
               v-model="meta.perPage"
@@ -80,7 +66,7 @@
                   class="d-flex align-center ga-2"
                   :disabled="meta.currentPage === meta.lastPage"
                 >
-                  <span> التالي </span>
+                  <span>{{ $t("global.table.next") }}</span>
                   <span>
                     <span class="mdi mdi-36px mdi-chevron-right"></span>
                   </span>
@@ -95,7 +81,7 @@
                   <span>
                     <span class="mdi mdi-36px mdi-chevron-left"></span>
                   </span>
-                  <span>السابق</span>
+                  <span>{{ $t("global.table.previous") }}</span>
                 </button>
               </template>
             </v-pagination>
@@ -111,32 +97,32 @@ export default {
   props: {
     title: {
       type: String,
-      default: ""
+      default: "",
     },
     placeholder: {
       type: String,
-      default: ""
+      default: "",
     },
     headers: {
       type: Array,
-      default: []
+      default: [],
     },
     items: {
       type: Array,
-      default: []
+      default: [],
     },
     slotsItems: {
       type: Array,
-      default: []
+      default: [],
     },
     meta: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     isLoading: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
@@ -146,14 +132,14 @@ export default {
       pagination: {},
       selected: [],
       sortDesc: false,
-      itemsPages: [10, 20, 50, 100]
+      itemsPages: [10, 20, 50, 100],
     };
   },
   mounted() {},
   computed: {
     totalVisible() {
       return this.meta.lastPage > 5 ? 5 : this.meta.lastPage;
-    }
+    },
   },
   methods: {
     onSelect() {
@@ -181,8 +167,8 @@ export default {
       if (event.key === "Enter") {
         this.searchItems();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">

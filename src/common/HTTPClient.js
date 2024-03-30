@@ -13,8 +13,10 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
-  const token = window.$cookies.get("khadamat_token");
-  config.headers.Authorization = `Bearer ${token}`;
+  const token = window.$cookies.get("admin_khadamat_token");
+  if (router.currentRoute.value.path.includes("admin")) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
 

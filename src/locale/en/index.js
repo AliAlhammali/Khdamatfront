@@ -1,11 +1,11 @@
 import errors from "./errors.json";
-import adminAuth from "./admin/auth.json";
-import merchant from "./admin/merchant.json";
 import global from "./global.json";
+
+import admin from "./admin";
+
 export default {
   "$vuetify.open": "English translation for $vuetify.open",
   ...errors,
   ...global,
-  ...adminAuth,
-  ...merchant
+  ...admin
 };

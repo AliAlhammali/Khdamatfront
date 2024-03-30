@@ -7,7 +7,17 @@
       "delete": "Delete",
       "close": "Close",
       "save": "Save",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "back": "Back"
+    },
+    "table": {
+      "noData": "No data available",
+      "noResults": "No results found",
+      "loading": "Loading...",
+      "show": "Show",
+      "entries": "entries",
+      "next": "Next",
+      "previous": "Previous"
     }
   }
 }

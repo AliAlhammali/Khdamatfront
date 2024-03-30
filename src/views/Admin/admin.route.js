@@ -1,3 +1,4 @@
+import { adminGuestGuard, adminAuthGuard } from "@/helper/admin.router.helper";
 import dashboardAdminRoute from "./Dashboard/dashboard.admin.route";
 
 export default {
@@ -10,13 +11,14 @@ export default {
         {
           path: "login",
           name: "admin-login",
-          component: () => import("./Auth/AdminLogin.vue")
+          component: () => import("./Auth/AdminLogin.vue"),
+          beforeEnter: adminAuthGuard
         },
         {
           path: "",
-          name: "admin-dashboard",
           component: () => import("./Dashboard/AdminDashboard.vue"),
-          redirect: { name: "merchant-dashboard" },
+          redirect: { name: "admin-dashboard" },
+          beforeEnter: adminGuestGuard,
           children: [...dashboardAdminRoute.routes]
         }
       ]

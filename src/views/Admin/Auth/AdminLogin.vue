@@ -3,14 +3,17 @@
     <v-container>
       <v-row class="justify-center">
         <v-col md="6" cols="12">
-          <div class="content">
+          <div class="content pa-8">
+            <div class="border-b pb-4 mb-4 text-center">
+              <h1>الشعار</h1>
+            </div>
             <div class="mb-4 border-b pb-4 mb-4">
-              <h1>{{ $t("admin.auth.title") }}</h1>
-              <p class="text-gray mt-2">{{ $t("admin.auth.text") }}</p>
+              <h1>{{ $t("admin_auth.title") }}</h1>
+              <p class="text-gray mt-2">{{ $t("admin_auth.text") }}</p>
             </div>
             <div class="mb-4">
               <filed-input
-                :label="$t('admin.auth.email')"
+                :label="$t('admin_auth.email')"
                 v-model="admin.email"
                 :value="admin.email"
                 :error="v$.admin.email.$error"
@@ -25,7 +28,7 @@
             </div>
             <div class="mb-4">
               <filed-input
-                :label="$t('admin.auth.password')"
+                :label="$t('admin_auth.password')"
                 v-model="admin.password"
                 :value="admin.password"
                 :error="v$.admin.password.$error"
@@ -47,7 +50,7 @@
               :disabled="v$.admin.$error"
               :loading="isLoading"
             >
-              {{ $t("admin.auth.login") }}
+              {{ $t("admin_auth.login") }}
             </v-btn>
           </div>
         </v-col>
@@ -70,21 +73,21 @@ export default {
     return {
       admin: {
         email: { required, email },
-        password: { required }
-      }
+        password: { required },
+      },
     };
   },
   data() {
     return {
       admin: {
         email: "",
-        password: ""
+        password: "",
       },
-      showPassword: false
+      showPassword: false,
     };
   },
   computed: {
-    ...mapState(useAuthAdminStore, ["isLoading"])
+    ...mapState(useAuthAdminStore, ["isLoading"]),
   },
   methods: {
     ...mapActions(useAuthAdminStore, ["loginAdmin"]),
@@ -92,8 +95,16 @@ export default {
       this.v$.admin.$touch();
       if (this.v$.admin.$error) return;
       this.loginAdmin(this.admin);
-    }
-  }
+    },
+  },
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: rgba($primary, 0.1);
+}
+</style>

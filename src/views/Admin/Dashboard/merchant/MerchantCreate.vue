@@ -1,9 +1,36 @@
 <template>
   <div class="content">
-    <div class="">
-      <h2 class="border-b mb-2 pb-2">Create New Merchant</h2>
+    <div class="d-flex border-b mb-4 pb-4 justify-space-between">
+      <h2 class="">
+        {{ $t("admin_merchant.add_new") }}
+      </h2>
+      <button class="d-flex ga-2 align-center" @click="$router.go(-1)">
+        <span>
+          {{ $t("global.actions.back") }}
+        </span>
+        <span class="fa fa-arrow-left"></span>
+      </button>
     </div>
     <v-row>
+      <!--  Owner-->
+      <v-col cols="12" md="6">
+        <filed-input
+          :label="$t('admin_merchant.fields.owner.name')"
+          v-model="merchant.owner.name"
+          :value="merchant.owner.name"
+          type="text"
+        />
+      </v-col>
+      <v-col cols="12" md="6">
+        <filed-input
+          :label="$t('admin_merchant.fields.owner.email')"
+          v-model="merchant.owner.email"
+          :value="merchant.owner.email"
+          type="text"
+        />
+      </v-col>
+
+      <!-- data -->
       <v-col
         cols="12"
         md="6"
@@ -17,6 +44,7 @@
           type="text"
         />
       </v-col>
+
       <v-col cols="12">
         <v-btn
           class="w-100"
@@ -54,10 +82,10 @@ export default {
         cr_number: null,
         vat_number: null,
         owner: {
-          name: "test",
-          email: "test@test.com"
-        }
-      }
+          name: null,
+          email: null,
+        },
+      },
     };
   },
   computed: {
@@ -68,7 +96,7 @@ export default {
         {
           name: "title",
           type: "text",
-          label: "title"
+          label: this.$t("admin_merchant.fields.title"),
           // error: "v$.merchant.title.$error",
           // errorText:
           //   this.v$.merchant.title.required.$invalid && this.$t("ERRORS.INPUT"),
@@ -77,78 +105,68 @@ export default {
         {
           name: "description",
           type: "text",
-          label: "description"
+          label: this.$t("admin_merchant.fields.description"),
         },
         {
           name: "address",
           type: "text",
-          label: "address"
+          label: this.$t("admin_merchant.fields.address"),
         },
         {
           name: "status",
           type: "text",
-          label: "status"
+          label: this.$t("admin_merchant.fields.status"),
         },
         {
           name: "email",
-          type: "text",
-          label: "email"
+          type: "email",
+          label: this.$t("admin_merchant.fields.email"),
         },
         {
           name: "phone",
           type: "text",
-          label: "phone"
+          label: this.$t("admin_merchant.fields.phone"),
         },
         {
           name: "logo",
           type: "text",
-          label: "logo"
+          label: this.$t("admin_merchant.fields.logo"),
         },
         {
           name: "vat_file",
           type: "text",
-          label: "vat_file"
+          label: this.$t("admin_merchant.fields.vat_file"),
         },
         {
           name: "cr_file",
           type: "text",
-          label: "cr_file"
+          label: this.$t("admin_merchant.fields.cr_file"),
         },
         {
           name: "sales_agreement_file",
           type: "text",
-          label: "sales_agreement_file"
+          label: this.$t("admin_merchant.fields.sales_agreement_file"),
         },
         {
           name: "cr_number",
           type: "text",
-          label: "cr_number"
+          label: this.$t("admin_merchant.fields.cr_number"),
         },
         {
           name: "vat_number",
           type: "text",
-          label: "vat_number"
+          label: this.$t("admin_merchant.fields.vat_number"),
         },
-        {
-          name: "owner.name",
-          type: "text",
-          label: "owner.name"
-        },
-        {
-          name: "owner.email",
-          type: "text",
-          label: "owner.email"
-        }
       ];
-    }
+    },
   },
   methods: {
     ...mapActions(useMerchantAdminStore, ["createMerchantAdmin"]),
 
     create() {
       this.createMerchantAdmin({ ...this.merchant });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped></style>

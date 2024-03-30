@@ -25,7 +25,7 @@ class ApiClient {
   }
 
   update(id, data) {
-    return axios.put(`${this.url}/${id}`, data);
+    return axios.patch(`${this.url}/${id}`, data);
   }
 
   delete(id) {

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import router from "@/router";
 import MerchantAdminService from "@/services/admin/merchant/merchant.admin.service";
-
+import Swal from "sweetalert2";
 export const useMerchantAdminStore = defineStore("MerchantAdmin", {
   state: () => ({
     records: null,
@@ -66,6 +66,11 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         await MerchantAdminService.delete(id);
         this.uiFlags.isDeleted = true;
         this.getMerchantAdmin();
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Merchant has been deleted successfully."
+        });
       } catch (error) {
         console.error(error);
       } finally {
