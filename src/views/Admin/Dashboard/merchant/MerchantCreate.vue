@@ -147,6 +147,16 @@ export default {
           label: this.$t("admin_merchant.fields.phone"),
         },
         {
+          name: "cr_number",
+          type: "text",
+          label: this.$t("admin_merchant.fields.cr_number"),
+        },
+        {
+          name: "vat_number",
+          type: "text",
+          label: this.$t("admin_merchant.fields.vat_number"),
+        },
+                {
           name: "logo",
           type: "text",
           label: this.$t("admin_merchant.fields.logo"),
@@ -165,16 +175,6 @@ export default {
           name: "sales_agreement_file",
           type: "text",
           label: this.$t("admin_merchant.fields.sales_agreement_file"),
-        },
-        {
-          name: "cr_number",
-          type: "text",
-          label: this.$t("admin_merchant.fields.cr_number"),
-        },
-        {
-          name: "vat_number",
-          type: "text",
-          label: this.$t("admin_merchant.fields.vat_number"),
         },
       ];
     },

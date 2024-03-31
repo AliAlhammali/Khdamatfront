@@ -1,6 +1,32 @@
 <template>
   <div class="table">
-  
+    <div class="d-flex align-center justify-space-between mb-4 pa-4 border-b">
+      <div class="">
+        <h2>
+          {{ title }}
+        </h2>
+      </div>
+
+      <div class="d-flex align-center ga-2">
+        <label class="border d-flex align-center ga-2 pa-2 rounded">
+          <input
+            type="text"
+            :placeholder="$t('admin_merchant.search_placeholder')"
+            v-model="search"
+            @input="searchItems"
+          />
+          <span>
+            <span class="fa fa-search"></span>
+          </span>
+        </label>
+        <router-link :to="createPage" class="button button--outline pa-2">
+          <span class="fa fa-plus"></span>
+          <span>
+            {{ $t("global.actions.add") }}
+          </span>
+        </router-link>
+      </div>
+    </div>
     <v-data-table
       :items-per-page="meta.perPage"
       v-model="selected"
@@ -47,6 +73,13 @@
               menu-icon="mdi mdi-chevron-down"
               class="select_page_table max-h"
             />
+            <span>
+              <span>
+                {{ $t("global.table.from") }}
+              </span>
+              {{ meta.total }}
+              {{ $t("global.table.entries") }}
+            </span>
           </div>
           <div>
             <v-pagination
@@ -123,6 +156,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    createPage: {
+      type: String,
+      default: "",
+    },
   },
 
   data() {
@@ -157,7 +194,19 @@ export default {
       this.$emit("rowClick", row.item);
     },
     searchItems() {
-      this.$emit("search", this.search);
+      if (this.search.length > 2) {
+        if (this.timer) {
+          clearTimeout(this.timer);
+          this.timer = null;
+        }
+        this.timer = setTimeout(() => {
+          this.$emit("search", this.search);
+        }, 800);
+      } else {
+        if (this.search.length === 0) {
+          this.$emit("search", this.search);
+        }
+      }
     },
     changePageNumber(page) {
       this.$emit("changePage", page);
@@ -243,6 +292,11 @@ export default {
       color: $white;
     }
   }
+}
+
+.v-pagination__first,
+.v-pagination__last {
+  display: none;
 }
 
 // .v-table .v-table__wrapper > table > tbody > tr > td:first-child {

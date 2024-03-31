@@ -1,39 +1,9 @@
 <template>
   <div class="bg-white rounded-lg">
-    <div class="d-flex align-center justify-space-between mb-4 pa-4 border-b">
-      <div class="">
-        <h2>
-          {{ $t("admin_merchant.title") }}
-        </h2>
-      </div>
-
-      <div class="d-flex align-center ga-2">
-        <label class="border d-flex align-center ga-2 pa-2 rounded">
-          <button
-            @click="searchItems"
-            class="d-flex align-center justify-center"
-          >
-            <span class="fa fa-search"></span>
-          </button>
-          <input
-            type="text"
-            :placeholder="$t('admin_merchant.search_placeholder')"
-          />
-        </label>
-        <router-link
-          to="/admin/merchant/create"
-          class="button button--outline pa-2"
-        >
-          <span class="fa fa-plus"></span>
-          <span>
-            {{ $t("global.actions.add") }}
-          </span>
-        </router-link>
-      </div>
-    </div>
-    <!-- <confirm-dialog /> -->
     <div>
       <data-table
+        :title="$t('admin_merchant.title')"
+        :create-page="'/admin/merchant/create'"
         :headers="headers"
         :slots-items="['actions']"
         :isLoading="uiFlags?.isLoading"
@@ -79,8 +49,17 @@ import ConfirmDialog from "@/components/common/ConfirmDialog.vue";
 import { showAlert, showConfirmationDialog } from "@/helper/showAlert.helper";
 export default {
   components: { DataTable, ConfirmDialog },
+  data() {
+    return {
+      params: {
+        "filter[keyword]": null,
+        perPage: 10,
+        page: 1,
+      },
+    };
+  },
   async mounted() {
-    await this.getMerchantAdmin();
+    await this.getMerchantAdmin(this.params);
   },
   computed: {
     ...mapState(useMerchantAdminStore, ["records", "uiFlags"]),
@@ -195,16 +174,20 @@ export default {
     },
 
     changePage(page) {
-      console.log(page);
-      // this.getMerchantAdmin({ page });
+      this.params.page = page;
+      this.getMerchantAdmin(this.params);
     },
     changePerPage(perPage) {
-      console.log(perPage);
-      // this.getMerchantAdmin({ perPage });
+      this.params.perPage = perPage;
+      this.params.page = 1;
+      this.getMerchantAdmin(this.params);
     },
-    search(search) {
-      console.log(search);
-      // this.getMerchantAdmin({ search });
+    search(text) {
+      this.params["filter[keyword]"] = text;
+      const key = {
+        "filter[keyword]": text,
+      };
+      this.getMerchantAdmin(key);
     },
   },
 };

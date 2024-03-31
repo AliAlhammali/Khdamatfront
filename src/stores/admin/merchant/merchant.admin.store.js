@@ -14,10 +14,10 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
   }),
   getters: {},
   actions: {
-    getMerchantAdmin: async function () {
+    getMerchantAdmin: async function (params) {
       this.uiFlags.isLoading = true;
       try {
-        const { data } = await MerchantAdminService.get();
+        const { data } = await MerchantAdminService.get(params);
         this.records = data;
       } catch (error) {
         console.error(error);
