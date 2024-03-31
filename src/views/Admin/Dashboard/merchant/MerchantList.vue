@@ -20,7 +20,10 @@
             :placeholder="$t('admin_merchant.search_placeholder')"
           />
         </label>
-        <router-link to="/admin/merchant/create" class="button button--outline pa-2">
+        <router-link
+          to="/admin/merchant/create"
+          class="button button--outline pa-2"
+        >
           <span class="fa fa-plus"></span>
           <span>
             {{ $t("global.actions.add") }}
@@ -54,7 +57,7 @@
             </router-link>
             <button
               class="button button--delete px-2 rounded"
-              @click="deleteRecord(item.item.id)"
+              @click="deleteRecord(item.item)"
             >
               <v-tooltip :text="$t('global.actions.delete')">
                 <template v-slot:activator="{ props }">
@@ -73,6 +76,7 @@ import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.st
 import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
 import ConfirmDialog from "@/components/common/ConfirmDialog.vue";
+import { showAlert, showConfirmationDialog } from "@/helper/showAlert.helper";
 export default {
   components: { DataTable, ConfirmDialog },
   async mounted() {
@@ -171,8 +175,23 @@ export default {
       "deleteMerchantAdmin",
     ]),
 
-    async deleteRecord(id) {
-      await this.deleteMerchantAdmin(id);
+    async deleteRecord(item) {
+      const result = await showConfirmationDialog({
+        title: this.$t("global.actions.delete"),
+        text: this.$t("global.actions.delete_confirmation") + item.title,
+        confirmButtonText: this.$t("global.actions.delete"),
+        cancelButtonText: this.$t("global.actions.cancel"),
+      });
+      if (result.isConfirmed) {
+        await this.deleteMerchantAdmin(item.id);
+        showAlert({
+          title: this.$t("global.actions.delete"),
+          text: this.$t("global.actions.delete_success"),
+          icon: "success",
+          confirmButtonText: this.$t("global.actions.close"),
+        });
+      }
+      // await this.deleteMerchantAdmin(id);
     },
 
     changePage(page) {

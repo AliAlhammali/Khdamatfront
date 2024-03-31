@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 import router from "@/router";
 import MerchantAdminService from "@/services/admin/merchant/merchant.admin.service";
-import Swal from "sweetalert2";
 export const useMerchantAdminStore = defineStore("MerchantAdmin", {
   state: () => ({
     records: null,
+    record: {},
     uiFlags: {
       isLoading: false,
       isCreated: false,
@@ -29,7 +29,7 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await MerchantAdminService.show(id);
-        this.records = data;
+        this.record = data.data;
       } catch (error) {
         console.error(error);
       } finally {
@@ -41,7 +41,7 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
       try {
         await MerchantAdminService.create(payload);
         this.uiFlags.isCreated = true;
-        router.push({ name: "merchant-dashboard" });
+        router.push({ name: "admin-merchant-dashboard" });
       } catch (error) {
         console.error(error);
       } finally {
@@ -51,9 +51,9 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
     updateMerchantAdmin: async function (payload) {
       this.uiFlags.isLoading = true;
       try {
-        await MerchantAdminService.update(payload);
+        await MerchantAdminService.update(payload.id, payload);
         this.uiFlags.isUpdated = true;
-        router.push({ name: "merchant-dashboard" });
+        router.push({ name: "admin-merchant-dashboard" });
       } catch (error) {
         console.error(error);
       } finally {
@@ -66,11 +66,6 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         await MerchantAdminService.delete(id);
         this.uiFlags.isDeleted = true;
         this.getMerchantAdmin();
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Merchant has been deleted successfully."
-        });
       } catch (error) {
         console.error(error);
       } finally {

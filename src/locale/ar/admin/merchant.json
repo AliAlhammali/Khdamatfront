@@ -3,6 +3,7 @@
     "title": "التجار",
     "search_placeholder": "بحث عن تاجر",
     "add_new": "إضافة تاجر جديد",
+    "edit_title": "تعديل تاجر",
     "fields": {
       "title": "العنوان",
       "description": "الوصف",

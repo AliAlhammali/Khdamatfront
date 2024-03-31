@@ -8,7 +8,9 @@
       "close": "إغلاق",
       "save": "حفظ",
       "cancel": "إلغاء",
-      "back": "رجوع"
+      "back": "رجوع",
+      "delete_confirmation": "هل أنت متأكد من حذف هذا العنصر؟",
+      "delete_success": "تم حذف العنصر بنجاح"
     },
     "table": {
       "noData": "لا توجد بيانات",

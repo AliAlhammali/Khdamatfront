@@ -2,23 +2,23 @@ export default {
   routes: [
     {
       path: "merchant",
-      name: "merchant-dashboard",
+      name: "admin-merchant-dashboard",
       component: () => import("./MerchantList.vue")
     },
     {
       path: "merchant/create",
-      name: "merchant-create",
+      name: "admin-merchant-create",
       component: () => import("./MerchantCreate.vue")
     },
     {
       path: "merchant/:id",
-      name: "merchant-show",
+      name: "admin-merchant-show",
       component: () => import("./MerchantShow.vue")
     },
     {
       path: "merchant/:id/edit",
-      name: "merchant-edit",
-      component: () => import("./MerchantEdit.vue")
+      name: "admin-merchant-edit",
+      component: () => import("./MerchantCreate.vue")
     }
   ]
 };

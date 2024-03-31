@@ -8,7 +8,9 @@
       "close": "Close",
       "save": "Save",
       "cancel": "Cancel",
-      "back": "Back"
+      "back": "Back",
+      "delete_confirmation": "Are you sure you want to delete this item?",
+      "delete_success": "Item deleted successfully"
     },
     "table": {
       "noData": "No data available",

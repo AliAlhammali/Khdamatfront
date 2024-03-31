@@ -2,7 +2,11 @@
   <div class="content">
     <div class="d-flex border-b mb-4 pb-4 justify-space-between">
       <h2 class="">
-        {{ $t("admin_merchant.add_new") }}
+        {{
+          isEditMerchant
+            ? $t("admin_merchant.edit_title")
+            : $t("admin_merchant.add_new")
+        }}
       </h2>
       <button class="d-flex ga-2 align-center" @click="$router.go(-1)">
         <span>
@@ -13,22 +17,24 @@
     </div>
     <v-row>
       <!--  Owner-->
-      <v-col cols="12" md="6">
-        <filed-input
-          :label="$t('admin_merchant.fields.owner.name')"
-          v-model="merchant.owner.name"
-          :value="merchant.owner.name"
-          type="text"
-        />
-      </v-col>
-      <v-col cols="12" md="6">
-        <filed-input
-          :label="$t('admin_merchant.fields.owner.email')"
-          v-model="merchant.owner.email"
-          :value="merchant.owner.email"
-          type="text"
-        />
-      </v-col>
+      <template v-if="!isEditMerchant">
+        <v-col cols="12" md="6">
+          <filed-input
+            :label="$t('admin_merchant.fields.owner.name')"
+            v-model="merchant.owner.name"
+            :value="merchant.owner.name"
+            type="text"
+          />
+        </v-col>
+        <v-col cols="12" md="6">
+          <filed-input
+            :label="$t('admin_merchant.fields.owner.email')"
+            v-model="merchant.owner.email"
+            :value="merchant.owner.email"
+            type="text"
+          />
+        </v-col>
+      </template>
 
       <!-- data -->
       <v-col
@@ -50,11 +56,15 @@
           class="w-100"
           color="primary"
           size="large"
-          @click="create"
+          @click="actionBtn"
           :loading="uiFlags.isCreating"
           :disabled="uiFlags.isCreating"
         >
-          اضافة
+          {{
+            isEditMerchant
+              ? $t("global.actions.edit")
+              : $t("global.actions.add")
+          }}
         </v-btn>
       </v-col>
     </v-row>
@@ -88,9 +98,18 @@ export default {
       },
     };
   },
+  async mounted() {
+    if (this.isEditMerchant) {
+      const id = this.$route.params.id;
+      await this.showMerchantAdmin(id);
+      this.merchant = { ...this.record };
+    }
+  },
   computed: {
-    ...mapState(useMerchantAdminStore, ["uiFlags"]),
-
+    ...mapState(useMerchantAdminStore, ["uiFlags", "record"]),
+    isEditMerchant() {
+      return this.$route.name === "admin-merchant-edit";
+    },
     merchantData() {
       return [
         {
@@ -161,10 +180,19 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useMerchantAdminStore, ["createMerchantAdmin"]),
+    ...mapActions(useMerchantAdminStore, [
+      "createMerchantAdmin",
+      "showMerchantAdmin",
+      "updateMerchantAdmin",
+    ]),
 
-    create() {
-      this.createMerchantAdmin({ ...this.merchant });
+    actionBtn() {
+      if (this.isEditMerchant) {
+        this.updateMerchantAdmin({ ...this.merchant });
+        return;
+      } else {
+        this.createMerchantAdmin({ ...this.merchant });
+      }
     },
   },
 };

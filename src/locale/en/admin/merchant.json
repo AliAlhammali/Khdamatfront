@@ -1,6 +1,9 @@
 {
   "admin_merchant": {
-    "title": "Merchant",
+    "title": "Merchants",
+    "search_placeholder": "Search for a merchant",
+    "add_new": "Add New Merchant",
+    "edit_title": "Edit Merchant",
     "fields": {
       "title": "Title",
       "description": "Description",
