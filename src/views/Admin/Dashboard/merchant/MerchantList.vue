@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg">
+  <div class="">
     <div>
       <data-table
         :title="$t('admin_merchant.title')"
@@ -7,7 +7,7 @@
         :headers="headers"
         :slots-items="['actions']"
         :isLoading="uiFlags?.isLoading"
-        :items="records?.data"
+        :items="items"
         :meta="records?.meta"
         @changePage="changePage"
         @changePerPage="changePerPage"
@@ -84,6 +84,12 @@ export default {
           key: "phone",
         },
         {
+          title: this.$t("admin_merchant.fields.email"),
+          align: "start",
+          sortable: true,
+          key: "email",
+        },
+        {
           title: this.$t("admin_merchant.fields.status"),
           align: "start",
           sortable: true,
@@ -146,6 +152,17 @@ export default {
         //   key: "vat_number"
         // }
       ];
+    },
+    items() {
+      return this.records?.data.map((item) => {
+        return {
+          ...item,
+          address: item.address ? item.address : "---",
+          phone: item.phone? item.phone : "---",
+          email: item.email ? item.email : "---",
+          status: item.status ? item.status : "---",
+        };
+      });
     },
   },
   methods: {

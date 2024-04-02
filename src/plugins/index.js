@@ -8,6 +8,10 @@ import VueCookies from "vue-cookies";
 import VueSweetalert2 from "vue-sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 
+import Toast, { POSITION } from "vue-toastification";
+// Import the CSS or use your own!
+import "vue-toastification/dist/index.css";
+
 export function registerPlugins(app) {
   app
     .use(i18n)
@@ -15,5 +19,11 @@ export function registerPlugins(app) {
     .use(router)
     .use(pinia)
     .use(VueCookies)
-    .use(VueSweetalert2);
+    .use(VueSweetalert2)
+    .use(Toast, {
+      position: POSITION.TOP_RIGHT,
+      timeout: 5000
+    });
+
+
 }

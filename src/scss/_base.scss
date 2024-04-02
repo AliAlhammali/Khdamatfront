@@ -3,6 +3,10 @@ body {
   background-color: #fbfbfb;
 }
 
+.Vue-Toastification__toast-body {
+  font-family: "Cairo", sans-serif;
+}
+
 .v-locale--is-rtl {
   span:has(span[class*="left"]),
   span:has(span[class$="left"]),

@@ -1,6 +1,11 @@
 import { defineStore } from "pinia";
 import router from "@/router";
 import MerchantAdminService from "@/services/admin/merchant/merchant.admin.service";
+import { useToast } from "vue-toastification";
+import { i18n } from "@/plugins/I18n";
+
+const toast = useToast();
+
 export const useMerchantAdminStore = defineStore("MerchantAdmin", {
   state: () => ({
     records: null,
@@ -42,8 +47,9 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         await MerchantAdminService.create(payload);
         this.uiFlags.isCreated = true;
         router.push({ name: "admin-merchant-dashboard" });
+        toast.success(i18n.global.t("global.actions.add_success"));
       } catch (error) {
-        console.error(error);
+        toast.error(i18n.global.t("global.actions.add_error"));
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -54,8 +60,9 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         await MerchantAdminService.update(payload.id, payload);
         this.uiFlags.isUpdated = true;
         router.push({ name: "admin-merchant-dashboard" });
+        toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
-        console.error(error);
+        toast.error(i18n.global.t("global.actions.edit_error"));
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -66,8 +73,9 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         await MerchantAdminService.delete(id);
         this.uiFlags.isDeleted = true;
         this.getMerchantAdmin();
+        toast.success(i18n.global.t("global.actions.delete_success"));
       } catch (error) {
-        console.error(error);
+        toast.error(i18n.global.t("global.actions.delete_error"));
       } finally {
         this.uiFlags.isLoading = false;
       }

@@ -49,3 +49,7 @@ select {
 *::-webkit-scrollbar-thumb:hover {
   background-color: color-mix(in srgb, $primary 50%, transparent);
 }
+
+.v-input--density-compact {
+  height: 50px !important;
+}

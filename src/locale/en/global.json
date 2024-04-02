@@ -10,7 +10,16 @@
       "cancel": "Cancel",
       "back": "Back",
       "delete_confirmation": "Are you sure you want to delete this item?",
-      "delete_success": "Item deleted successfully"
+      "delete_success": "Item deleted successfully",
+      "delete_error": "Error deleting item",
+      "save_success": "Item saved successfully",
+      "save_error": "Error saving item",
+      "edit_success": "Item edited successfully",
+      "edit_error": "Error editing item",
+      "add_success": "Item added successfully",
+      "add_error": "Error adding item",
+      "upload_success": "File uploaded successfully",
+      "upload_error": "Error uploading file"
     },
     "table": {
       "noData": "No data available",
