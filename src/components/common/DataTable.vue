@@ -1,31 +1,41 @@
 <template>
   <div class="table">
-    <div class="d-flex align-center justify-space-between mb-4 pa-4 border-b">
-      <div class="">
-        <h2>
-          {{ title }}
-        </h2>
-      </div>
-
-      <div class="d-flex align-center ga-2">
-        <label class="border d-flex align-center ga-2 pa-2 rounded">
-          <input
-            type="text"
-            :placeholder="$t('admin_merchant.search_placeholder')"
-            v-model="search"
-            @input="searchItems"
-          />
-          <span>
-            <span class="fa fa-search"></span>
-          </span>
-        </label>
-        <router-link :to="createPage" class="button button--outline pa-2">
-          <span class="fa fa-plus"></span>
-          <span>
-            {{ $t("global.actions.add") }}
-          </span>
-        </router-link>
-      </div>
+    <div class="mb-4 pa-4 border-b">
+      <v-row class="w-100 justify-end align-center">
+        <v-col md="3" cols="6">
+          <h2>
+            {{ title }}
+          </h2>
+        </v-col>
+        <v-col md="4" cols="6">
+          <slot name="filter"></slot>
+        </v-col>
+        <v-col md="3" cols="6">
+          <label class="border d-flex align-center ga-2 pa-3 rounded w-100">
+            <input
+              type="text"
+              :placeholder="placeholder"
+              v-model="search"
+              @input="searchItems"
+              class="w-100"
+            />
+            <span>
+              <span class="fa fa-search"></span>
+            </span>
+          </label>
+        </v-col>
+        <v-col md="2" cols="6">
+          <router-link
+            :to="createPage"
+            class="button button--outline pa-3 w-100"
+          >
+            <span class="fa fa-plus"></span>
+            <span>
+              {{ $t("global.actions.add") }}
+            </span>
+          </router-link>
+        </v-col>
+      </v-row>
     </div>
     <v-data-table
       :items-per-page="meta.perPage"

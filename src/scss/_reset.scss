@@ -53,3 +53,9 @@ select {
 .v-input--density-compact {
   height: 50px !important;
 }
+
+.v-select__content {
+  .v-list-item-title {
+    text-transform: capitalize;
+  }
+}

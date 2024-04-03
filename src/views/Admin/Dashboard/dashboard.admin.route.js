@@ -1,4 +1,5 @@
 import merchantAdminRoute from "./merchant/merchant.admin.route";
+import merchantUsersAdminRoute from "./merchantUsers/merchantUsers.admin.route";
 
 export default {
   routes: [
@@ -7,6 +8,7 @@ export default {
       name: "admin-dashboard",
       component: () => import("./home/AdminHome.vue")
     },
-    ...merchantAdminRoute.routes
+    ...merchantAdminRoute.routes,
+    ...merchantUsersAdminRoute.routes
   ]
 };

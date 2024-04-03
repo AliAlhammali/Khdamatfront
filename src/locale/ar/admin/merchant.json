@@ -2,8 +2,11 @@
   "admin_merchant": {
     "title": "التجار",
     "search_placeholder": "بحث عن تاجر",
+    "search_placeholder_users": "بحث عن مستخدم",
     "add_new": "إضافة تاجر جديد",
+    "add_new_user": "إضافة مستخدم جديد",
     "edit_title": "تعديل تاجر",
+    "edit_user_title": "تعديل مستخدم",
     "fields": {
       "title": "العنوان",
       "description": "الوصف",
@@ -17,6 +20,9 @@
       "sales_agreement_file": "ملف اتفاقية البيع",
       "cr_number": "رقم السجل التجاري",
       "vat_number": "رقم الضريبة المضافة",
+      "merchant_id": "رقم التاجر",
+      "name": "الاسم",
+      "role": "الدور",
       "owner": {
         "name": "اسم المالك",
         "email": "بريد المالك"

@@ -2,8 +2,11 @@
   "admin_merchant": {
     "title": "Merchants",
     "search_placeholder": "Search for a merchant",
+    "search_placeholder_users": "Search for a user",
     "add_new": "Add New Merchant",
+    "add_new_user": "Add New User",
     "edit_title": "Edit Merchant",
+    "edit_user_title": "Edit User",
     "fields": {
       "title": "Title",
       "description": "Description",
@@ -17,6 +20,9 @@
       "sales_agreement_file": "Sales Agreement File",
       "cr_number": "CR Number",
       "vat_number": "VAT Number",
+      "merchant_id": "Merchant ID",
+      "name": "Name",
+      "role": "Role",
       "owner": {
         "name": "Owner Name",
         "email": "Owner Email"

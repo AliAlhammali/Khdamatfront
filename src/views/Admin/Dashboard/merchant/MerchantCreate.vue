@@ -47,15 +47,24 @@
           />
         </v-col>
       </template>
-      <!-- <v-select
-        :items="['Foo', 'Bar', 'Fizz', 'Buzz']"
-        density="compact"
-        variant="outlined"
-        hide-details
-        hide-spin-buttons
-        hide-no-data
-        menu-icon="mdi mdi-chevron-down"
-      ></v-select> -->
+      <v-col cols="12" md="6">
+        <p class="d-flex align-center ga-2 mb-3 filed__label">
+          <span> {{ $t("admin_merchant.fields.status") }}</span>
+          <span class="text-red">*</span>
+        </p>
+
+        <v-select
+          v-model="merchant.status"
+          :items="['active', 'inactive']"
+          outlined
+          menu-icon="mdi mdi-chevron-down"
+          class="text-capitalize rounded-xl"
+          @blur="v$.merchant.status.$touch()"
+        />
+        <p class="text-error" v-if="v$.merchant.status.required.$error">
+          {{ $t("errors.required") }}
+        </p>
+      </v-col>
 
       <!-- data -->
       <v-col
@@ -76,76 +85,83 @@
       </v-col>
 
       <!--  Files -->
-      <!-- <upload-file
-        :title="$t('admin_merchant.fields.logo')"
-        :error="v$.merchant.logo.$error"
-        :error-text="
-          v$.merchant.logo.required.$invalid && $t('errors.required')
-        "
-        :key="merchant.logo"
-        @upload="upload($event, 'logo')"
-      >
-        <template #icon>
-          <span class="mdi mdi-24px mdi-upload"></span>
-        </template>
-      </upload-file> -->
       <v-col cols="12" md="6">
-        <filed-input
-          :label="$t('admin_merchant.fields.logo')"
-          v-model="merchant.logo"
-          :value="merchant.logo"
-          type="file"
-          :error="v$.merchant.logo.$error"
-          :error-text="
-            v$.merchant.logo.required.$invalid && $t('errors.required')
-          "
-          @input="upload($event, 'logo')"
-          @blur="v$.merchant.logo.$touch()"
-        />
+        <p class="d-flex align-center ga-2 mb-3 filed__label">
+          {{ $t("admin_merchant.fields.logo") }}
+        </p>
+        <label
+          class="filed__input d-flex align-center ga-2 pa-2 rounded-lg"
+          :class="{
+            'border-red-500': v$.files.logo.required.$error,
+          }"
+        >
+          <input
+            type="file"
+            @input="upload($event, 'logo')"
+            @blur="v$.files.logo.$touch()"
+          />
+        </label>
+        <p class="text-error" v-if="v$.files.logo.required.$error">
+          {{ $t("errors.required") }}
+        </p>
       </v-col>
       <v-col cols="12" md="6">
-        <filed-input
-          :label="$t('admin_merchant.fields.vat_file')"
-          v-model="merchant.vat_file"
-          :value="merchant.vat_file"
-          type="file"
-          :error="v$.merchant.vat_file.$error"
-          :error-text="
-            v$.merchant.vat_file.required.$invalid && $t('errors.required')
-          "
-          @blur="v$.merchant.vat_file.$touch()"
-          @input="upload($event, 'vat_file')"
-        />
+        <p class="d-flex align-center ga-2 mb-3 filed__label">
+          {{ $t("admin_merchant.fields.vat_file") }}
+        </p>
+        <label class="filed__input d-flex align-center ga-2 pa-2 rounded-lg">
+          <input
+            type="file"
+            @input="upload($event, 'vat_file')"
+            :class="{
+              'border-red-500': v$.files.vat_file.required.$error,
+            }"
+            @blur="v$.files.vat_file.$touch()"
+          />
+        </label>
+        <p class="text-error" v-if="v$.files.vat_file.required.$error">
+          {{ $t("errors.required") }}
+        </p>
       </v-col>
       <v-col cols="12" md="6">
-        <filed-input
-          :label="$t('admin_merchant.fields.cr_file')"
-          v-model="merchant.cr_file"
-          :value="merchant.cr_file"
-          type="file"
-          :error="v$.merchant.cr_file.$error"
-          :error-text="
-            v$.merchant.cr_file.required.$invalid && $t('errors.required')
-          "
-          @blur="v$.merchant.cr_file.$touch()"
-          @input="upload($event, 'cr_file')"
-        />
+        <p class="d-flex align-center ga-2 mb-3 filed__label">
+          {{ $t("admin_merchant.fields.cr_file") }}
+        </p>
+        <label class="filed__input d-flex align-center ga-2 pa-2 rounded-lg">
+          <input
+            type="file"
+            @input="upload($event, 'cr_file')"
+            :class="{
+              'border-red-500': v$.files.cr_file.required.$error,
+            }"
+            @blur="v$.files.cr_file.$touch()"
+          />
+        </label>
+        <p class="text-error" v-if="v$.files.cr_file.required.$error">
+          {{ $t("errors.required") }}
+        </p>
       </v-col>
 
       <v-col cols="12" md="6">
-        <filed-input
-          :label="$t('admin_merchant.fields.sales_agreement_file')"
-          v-model="merchant.sales_agreement_file"
-          :value="merchant.sales_agreement_file"
-          type="file"
-          :error="v$.merchant.sales_agreement_file.$error"
-          :error-text="
-            v$.merchant.sales_agreement_file.required.$invalid &&
-            $t('errors.required')
-          "
-          @blur="v$.merchant.sales_agreement_file.$touch()"
-          @input="upload($event, 'sales_agreement_file')"
-        />
+        <p class="d-flex align-center ga-2 mb-3 filed__label">
+          {{ $t("admin_merchant.fields.sales_agreement_file") }}
+        </p>
+        <label class="filed__input d-flex align-center ga-2 pa-2 rounded-lg">
+          <input
+            type="file"
+            @input="upload($event, 'sales_agreement_file')"
+            :class="{
+              'border-red-500': v$.files.sales_agreement_file.required.$error,
+            }"
+            @blur="v$.files.sales_agreement_file.$touch()"
+          />
+        </label>
+        <p
+          class="text-error"
+          v-if="v$.files.sales_agreement_file.required.$error"
+        >
+          {{ $t("errors.required") }}
+        </p>
       </v-col>
 
       <v-col cols="12">
@@ -154,8 +170,10 @@
           color="primary"
           size="large"
           @click="actionBtn"
-          :loading="uiFlags.isCreating"
-          :disabled="uiFlags.isCreating || v$.$error"
+          :loading="uiFlags.isCreating || uiFlags.isUpdated"
+          :disabled="
+            uiFlags.isCreating || uiFlags.isUpdated || v$.merchant.$error
+          "
         >
           {{
             isEditMerchant
@@ -173,10 +191,9 @@ import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.st
 import { useGlobalActionsStore } from "@/stores/actions/upload.store";
 import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
-import UploadFile from "@/components/common/UploadFile.vue";
+import { required, email, requiredIf } from "@vuelidate/validators";
 export default {
-  components: { FiledInput, UploadFile },
+  components: { FiledInput },
   setup() {
     return { v$: useVuelidate() };
   },
@@ -189,16 +206,23 @@ export default {
         status: { required },
         email: { required, email },
         phone: { required },
+        cr_number: { required },
+        vat_number: { required },
+        owner: {
+          name: {
+            required: requiredIf(() => !this.isEditMerchant),
+          },
+          email: {
+            required: requiredIf(() => !this.isEditMerchant),
+            email,
+          },
+        },
+      },
+      files: {
         logo: { required },
         vat_file: { required },
         cr_file: { required },
         sales_agreement_file: { required },
-        cr_number: { required },
-        vat_number: { required },
-        owner: {
-          name: { required },
-          email: { required, email },
-        },
       },
     };
   },
@@ -222,6 +246,12 @@ export default {
           email: null,
         },
       },
+      files: {
+        logo: null,
+        vat_file: null,
+        cr_file: null,
+        sales_agreement_file: null,
+      },
     };
   },
   async mounted() {
@@ -229,10 +259,6 @@ export default {
       const id = this.$route.params.id;
       await this.showMerchantAdmin(id);
       this.merchant = { ...this.record };
-      this.merchant.logo = null;
-      this.merchant.vat_file = null;
-      this.merchant.cr_file = null;
-      this.merchant.sales_agreement_file = null;
     }
   },
   computed: {
@@ -271,16 +297,6 @@ export default {
             this.v$.merchant.address.required.$invalid &&
             this.$t("errors.required"),
           blur: "v$.merchant.address.$touch()",
-        },
-        {
-          name: "status",
-          type: "text",
-          label: this.$t("admin_merchant.fields.status"),
-          error: "v$.merchant.status.$error",
-          errorText:
-            this.v$.merchant.status.required.$invalid &&
-            this.$t("errors.required"),
-          blur: "v$.merchant.status.$touch()",
         },
         {
           name: "email",
@@ -348,6 +364,7 @@ export default {
     async upload(event, key) {
       const file = event.target.files[0];
       const { data } = await this.uploadFile(file);
+      this.files[key] = file; // Update the file property in Vue.js
       this.merchant[key] = data.data.path;
     },
   },

@@ -3,9 +3,9 @@
     "dashboard": "لوحة التحكم",
     "merchant": "التجار",
     "users": "المستخدمين",
-    "merchant_users": "مستخدمو التجار",
-    "services_providers": "مقدمو الخدمات",
-    "services_providers_users": "مستخدمو مقدمي الخدمات",
+    "merchant_users": "مستخدمين التجار",
+    "services_providers": "مقدمين الخدمات",
+    "services_providers_users": "مستخدمين مقدمي الخدمات",
     "categories": "الفئات",
     "services": "الخدمات"
   }

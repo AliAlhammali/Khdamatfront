@@ -3,6 +3,7 @@
     <div>
       <data-table
         :title="$t('admin_merchant.title')"
+        :placeholder="$t('admin_merchant.search_placeholder')"
         :create-page="'/admin/merchant/create'"
         :headers="headers"
         :slots-items="['actions']"
@@ -15,6 +16,19 @@
       >
         <template #actions="{ item }">
           <div class="d-flex ga-2 align-center">
+            <router-link
+              :to="`/admin/merchant-users?merchant_id=${item.item.id}`"
+              class="button button--edit px-2 rounded"
+            >
+              <v-tooltip :text="$t('admin_navbar_links.merchant_users')">
+                <template v-slot:activator="{ props }">
+                  <span
+                    v-bind="props"
+                    class="mdi mdi-24px mdi-account-group"
+                  ></span>
+                </template>
+              </v-tooltip>
+            </router-link>
             <router-link
               :to="`/admin/merchant/${item.item.id}/edit`"
               class="button button--edit px-2 rounded"
@@ -46,7 +60,7 @@ import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.st
 import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
 import ConfirmDialog from "@/components/common/ConfirmDialog.vue";
-import { showAlert, showConfirmationDialog } from "@/helper/showAlert.helper";
+import { showConfirmationDialog } from "@/helper/showAlert.helper";
 export default {
   components: { DataTable, ConfirmDialog },
   data() {
@@ -101,56 +115,6 @@ export default {
           sortable: false,
           key: "actions",
         },
-        // {
-        //   title: "address",
-        //   align: "start",
-        //   sortable: true,
-        //   key: "address"
-        // },
-        // {
-        //   title: "cr_file",
-        //   align: "start",
-        //   sortable: true,
-        //   key: "cr_file"
-        // },
-        // {
-        //   title: "cr_number",
-        //   align: "start",
-        //   sortable: true,
-        //   key: "cr_number"
-        // },
-        // {
-        //   title: "description",
-        //   align: "start",
-        //   sortable: true,
-        //   key: "description"
-        // },
-        // {
-        //   title: "logo",
-        //   align: "start",
-        //   sortable: true,
-        //   key: "logo"
-        // },
-
-        // {
-        //   title: "sales_agreement_file",
-        //   align: "start",
-        //   sortable: true,
-        //   key: "sales_agreement_file"
-        // },
-
-        // {
-        //   title: "vat_file",
-        //   align: "start",
-        //   sortable: true,
-        //   key: "vat_file"
-        // },
-        // {
-        //   title: "vat_number",
-        //   align: "start",
-        //   sortable: true,
-        //   key: "vat_number"
-        // }
       ];
     },
     items() {
@@ -158,7 +122,7 @@ export default {
         return {
           ...item,
           address: item.address ? item.address : "---",
-          phone: item.phone? item.phone : "---",
+          phone: item.phone ? item.phone : "---",
           email: item.email ? item.email : "---",
           status: item.status ? item.status : "---",
         };
@@ -180,14 +144,7 @@ export default {
       });
       if (result.isConfirmed) {
         await this.deleteMerchantAdmin(item.id);
-        showAlert({
-          title: this.$t("global.actions.delete"),
-          text: this.$t("global.actions.delete_success"),
-          icon: "success",
-          confirmButtonText: this.$t("global.actions.close"),
-        });
       }
-      // await this.deleteMerchantAdmin(id);
     },
 
     changePage(page) {

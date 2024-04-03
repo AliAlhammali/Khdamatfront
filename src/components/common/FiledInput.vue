@@ -6,7 +6,7 @@
     </p>
     <div class="filed">
       <label
-        class="position-relative filed__input d-flex align-center ga-2 pa-2 rounded-lg"
+        class="position-relative filed__input d-flex align-center ga-2 pa-2 rounded"
         :class="{ error: error, disabled: disabled }"
       >
         <slot name="icon"></slot>
@@ -97,7 +97,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
 .filed {
   &__label {
     color: #1c1c1c;
