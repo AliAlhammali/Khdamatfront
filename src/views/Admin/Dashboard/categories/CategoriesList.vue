@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <data-table
-      :title="$t('admin_navbar_links.merchant_users')"
+      :title="$t('admin_navbar_links.categories')"
       :placeholder="$t('admin_merchant.search_placeholder_users')"
       :create-page="'/admin/merchant-users/create'"
       :headers="headers"
@@ -13,20 +13,6 @@
       @changePerPage="changePerPage"
       @search="search"
     >
-      <template #filter>
-        <v-select
-          :placeholder="$t('admin_merchant.title')"
-          v-model="params['filter[merchant_id]']"
-          :items="merchants?.data"
-          item-text="name"
-          item-value="id"
-          menu-icon="mdi mdi-chevron-down"
-          class="w-100"
-          outlined
-          :loader="merchantsUiFlags?.isLoading"
-          @update:modelValue="getMerchantUsersAdmin(params)"
-        />
-      </template>
       <template #actions="{ item }">
         <div class="d-flex ga-2 align-center">
           <router-link
@@ -55,8 +41,7 @@
   </div>
 </template>
 <script>
-import { useMerchantUsersAdminStore } from "@/stores/admin/merchant/merchantUsers.admin.store";
-import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
+import { useCategoriesAdminStore } from "@/stores/admin/categories/categories.admin.store";
 import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
 import ConfirmDialog from "@/components/common/ConfirmDialog.vue";
@@ -74,20 +59,10 @@ export default {
     };
   },
   async mounted() {
-    await this.getMerchantAdmin();
-    if (this.$route.query.merchant_id) {
-      this.params["filter[merchant_id]"] = this.merchants.data.find(
-        (item) => item.id == this.$route.query.merchant_id
-      ).id;
-    }
-    await this.getMerchantUsersAdmin(this.params);
+    await this.getCategoriesAdmin(this.params);
   },
   computed: {
-    ...mapState(useMerchantUsersAdminStore, ["records", "uiFlags"]),
-    ...mapState(useMerchantAdminStore, {
-      merchants: "records",
-      merchantsUiFlags: "uiFlags",
-    }),
+    ...mapState(useCategoriesAdminStore, ["records", "uiFlags"]),
 
     headers() {
       return [
@@ -136,7 +111,7 @@ export default {
       ];
     },
     items() {
-      return this.records?.data.map((item) => {
+      return this.records?.data?.map((item) => {
         return {
           ...item,
           address: item.address ? item.address : "---",
@@ -149,12 +124,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useMerchantUsersAdminStore, [
-      "getMerchantUsersAdmin",
-      "deleteMerchantUsersAdmin",
+    ...mapActions(useCategoriesAdminStore, [
+      "getCategoriesAdmin",
+      "deleteCategoriesAdmin",
     ]),
 
-    ...mapActions(useMerchantAdminStore, ["getMerchantAdmin"]),
 
     async deleteRecord(item) {
       const result = await showConfirmationDialog({
@@ -164,26 +138,25 @@ export default {
         cancelButtonText: this.$t("global.actions.cancel"),
       });
       if (result.isConfirmed) {
-        await this.deleteMerchantUsersAdmin(item.id);
-        await this.getMerchantUsersAdmin(this.params);
+        await this.deleteCategoriesAdmin(item.id);
       }
     },
 
     changePage(page) {
       this.params.page = page;
-      this.getMerchantUsersAdmin(this.params);
+      this.getCategoriesAdmin(this.params);
     },
     changePerPage(perPage) {
       this.params.perPage = perPage;
       this.params.page = 1;
-      this.getMerchantUsersAdmin(this.params);
+      this.getCategoriesAdmin(this.params);
     },
     search(text) {
       this.params["filter[keyword]"] = text;
       const key = {
         "filter[keyword]": text,
       };
-      this.getMerchantUsersAdmin(key);
+      this.getCategoriesAdmin(key);
     },
   },
 };

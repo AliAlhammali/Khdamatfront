@@ -2,7 +2,7 @@ import ApiClient from "@/helper/api.helper";
 
 class MerchantAdmin extends ApiClient {
   constructor() {
-    super("admin/users");
+    super("admin/categories");
   }
 
   get(params) {
