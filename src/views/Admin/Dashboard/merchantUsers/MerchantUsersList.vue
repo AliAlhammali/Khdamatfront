@@ -16,6 +16,7 @@
       <template #filter>
         <v-select
           :placeholder="$t('admin_merchant.title')"
+          :label="$t('admin_merchant.title')"
           v-model="params['filter[merchant_id]']"
           :items="merchants?.data"
           item-text="name"

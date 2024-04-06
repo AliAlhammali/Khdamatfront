@@ -22,11 +22,11 @@
       <v-row>
         <v-col cols="12" md="6">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
-            <span> {{ $t("admin_merchant.title") }}</span>
+            <span> {{ $t("admin_navbar_links.services_providers") }}</span>
             <span class="text-red">*</span>
           </p>
           <v-select
-            v-model="merchant.merchant_id"
+            v-model="merchant.service_provider_id"
             :items="merchants?.data"
             item-text="name"
             item-value="id"
@@ -34,15 +34,15 @@
             class="w-100"
             outlined
             :error="
-              v$.merchant.merchant_id.$dirty &&
-              v$.merchant.merchant_id.required.$invalid
+              v$.merchant.service_provider_id.$dirty &&
+              v$.merchant.service_provider_id.required.$invalid
             "
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
             v-if="
-              v$.merchant.merchant_id.$dirty &&
-              v$.merchant.merchant_id.required.$invalid
+              v$.merchant.service_provider_id.$dirty &&
+              v$.merchant.service_provider_id.required.$invalid
             "
           >
             <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
@@ -124,7 +124,7 @@ export default {
       merchant: {
         name: { required },
         email: { required, email },
-        merchant_id: { required },
+        service_provider_id: { required },
         password: { required },
       },
     };
@@ -134,22 +134,24 @@ export default {
       merchant: {
         name: null,
         email: null,
-        merchant_id: null,
+        service_provider_id: null,
         password: null,
       },
       showPassword: false,
     };
+  },
+  async created() {
+    await this.getServiceProvidersAdmin();
   },
   async mounted() {
     if (this.isEditMerchant) {
       const id = this.$route.params.id;
       await this.showServiceProvidersUsersAdmin(id);
       this.merchant = { ...this.record };
-      this.merchant.merchant_id = this.merchants.data.find(
-        (item) => item.id ===  this.record.service_provider_id
+      this.merchant.service_provider_id = this.merchants.data.find(
+        (item) => item.id === this.record.service_provider_id
       );
     }
-    await this.getServiceProvidersAdmin();
   },
   computed: {
     ...mapState(useServiceProvidersAdminStore, {

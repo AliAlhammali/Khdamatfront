@@ -20,35 +20,7 @@
         </button>
       </div>
       <v-row>
-        <v-col cols="12" md="6">
-          <p class="d-flex align-center ga-2 mb-3 filed__label">
-            <span> {{ $t("admin_merchant.title") }}</span>
-            <span class="text-red">*</span>
-          </p>
-          <v-select
-            v-model="merchant.merchant_id"
-            :items="merchants?.data"
-            item-text="name"
-            item-value="id"
-            menu-icon="mdi mdi-chevron-down"
-            class="w-100"
-            outlined
-            :error="
-              v$.merchant.merchant_id.$dirty &&
-              v$.merchant.merchant_id.required.$invalid
-            "
-          />
-          <p
-            class="text-error mt-2 d-flex ga-2 align-center"
-            v-if="
-              v$.merchant.merchant_id.$dirty &&
-              v$.merchant.merchant_id.required.$invalid
-            "
-          >
-            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
-            <span>{{ $t("errors.required") }}</span>
-          </p>
-        </v-col>
+        <!-- data -->
         <v-col
           cols="12"
           md="6"
@@ -106,13 +78,11 @@
 </template>
 <script>
 import FiledInput from "@/components/common/FiledInput.vue";
-import { useMerchantUsersAdminStore } from "@/stores/admin/merchant/merchantUsers.admin.store";
+import { useUsersAdminStore } from "@/stores/admin/users/users.admin.store";
 import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
 import Loader from "@/components/common/Loader.vue";
-
 export default {
   components: { FiledInput, Loader },
   setup() {
@@ -123,7 +93,6 @@ export default {
       merchant: {
         name: { required },
         email: { required, email },
-        merchant_id: { required },
         password: { required },
       },
     };
@@ -133,35 +102,28 @@ export default {
       merchant: {
         name: null,
         email: null,
-        merchant_id: null,
         password: null,
       },
-      showPassword: false,
     };
   },
   async mounted() {
     if (this.isEditMerchant) {
       const id = this.$route.params.id;
-      await this.showMerchantUsersAdmin(id);
+      await this.showUsersAdmin(id);
       this.merchant = { ...this.record };
     }
-    await this.getMerchantAdmin();
   },
   computed: {
-    ...mapState(useMerchantAdminStore, {
-      merchants: "records",
-      merchantsUiFlags: "uiFlags",
-    }),
-    ...mapState(useMerchantUsersAdminStore, ["uiFlags", "record"]),
+    ...mapState(useUsersAdminStore, ["uiFlags", "record"]),
     isEditMerchant() {
-      return this.$route.name === "admin-merchant-users-edit";
+      return this.$route.name === "users-admin-edit";
     },
     merchantData() {
       return [
         {
           name: "name",
           type: "text",
-          label: this.$t("admin_merchant.fields.name"),
+          label: this.$t("admin_merchant.fields.title"),
           error: "v$.merchant.name.$error",
           errorText:
             this.v$.merchant.name.required.$invalid &&
@@ -177,28 +139,26 @@ export default {
             (this.v$.merchant.email.required.$invalid &&
               this.$t("errors.required")) ||
             (this.v$.merchant.email.email.$invalid && this.$t("errors.email")),
-
           blur: "v$.merchant.email.$touch()",
         },
       ];
     },
   },
   methods: {
-    ...mapActions(useMerchantUsersAdminStore, [
-      "createMerchantUsersAdmin",
-      "showMerchantUsersAdmin",
-      "updateMerchantUsersAdmin",
+    ...mapActions(useUsersAdminStore, [
+      "createUsersAdmin",
+      "showUsersAdmin",
+      "updateUsersAdmin",
     ]),
-    ...mapActions(useMerchantAdminStore, ["getMerchantAdmin"]),
 
     actionBtn() {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditMerchant) {
-        this.updateMerchantUsersAdmin({ ...this.merchant });
+        this.updateUsersAdmin({ ...this.merchant });
         return;
       } else {
-        this.createMerchantUsersAdmin({ ...this.merchant });
+        this.createUsersAdmin({ ...this.merchant });
       }
     },
   },

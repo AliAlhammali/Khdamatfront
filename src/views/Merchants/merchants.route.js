@@ -1,7 +1,7 @@
 export default {
   routes: [
     {
-      path: "/merchants",
+      path: "/merchant",
       component: () => import("./WrapperMerchants.vue"),
       redirect: { name: "merchants-dashboard" },
       children: [

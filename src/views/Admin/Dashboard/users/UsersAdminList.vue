@@ -1,9 +1,9 @@
 <template>
   <div class="">
     <data-table
-      :title="$t('admin_navbar_links.merchant_users')"
+      :title="$t('admin_navbar_links.users')"
       :placeholder="$t('admin_merchant.search_placeholder_users')"
-      :create-page="'/admin/merchant-users/create'"
+      :create-page="'/admin/users-admin/create'"
       :headers="headers"
       :slots-items="['actions']"
       :isLoading="uiFlags?.isLoading"
@@ -13,24 +13,10 @@
       @changePerPage="changePerPage"
       @search="search"
     >
-      <template #filter>
-        <v-select
-          :placeholder="$t('admin_merchant.title')"
-          v-model="params['filter[merchant_id]']"
-          :items="merchants?.data"
-          item-text="name"
-          item-value="id"
-          menu-icon="mdi mdi-chevron-down"
-          class="w-100"
-          outlined
-          :loader="merchantsUiFlags?.isLoading"
-          @update:modelValue="getMerchantUsersAdmin(params)"
-        />
-      </template>
       <template #actions="{ item }">
         <div class="d-flex ga-2 align-center">
           <router-link
-            :to="`/admin/merchant-users/${item.item.id}/edit`"
+            :to="`/admin/users-admin/${item.item.id}/edit`"
             class="button button--edit px-2 rounded"
           >
             <v-tooltip :text="$t('global.actions.edit')">
@@ -55,40 +41,29 @@
   </div>
 </template>
 <script>
-import { useMerchantUsersAdminStore } from "@/stores/admin/merchant/merchantUsers.admin.store";
-import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
 import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
 import ConfirmDialog from "@/components/common/ConfirmDialog.vue";
 import { showConfirmationDialog } from "@/helper/showAlert.helper";
+
+import { useUsersAdminStore } from "@/stores/admin/users/users.admin.store";
+
 export default {
   components: { DataTable, ConfirmDialog },
   data() {
     return {
       params: {
         "filter[keyword]": null,
-        "filter[merchant_id]": null,
         perPage: 10,
         page: 1,
       },
     };
   },
   async mounted() {
-    await this.getMerchantAdmin();
-    if (this.$route.query.merchant_id) {
-      this.params["filter[merchant_id]"] = this.merchants.data.find(
-        (item) => item.id == this.$route.query.merchant_id
-      ).id;
-    }
-    await this.getMerchantUsersAdmin(this.params);
+    await this.getUsersAdmin(this.params);
   },
   computed: {
-    ...mapState(useMerchantUsersAdminStore, ["records", "uiFlags"]),
-    ...mapState(useMerchantAdminStore, {
-      merchants: "records",
-      merchantsUiFlags: "uiFlags",
-    }),
-
+    ...mapState(useUsersAdminStore, ["records", "uiFlags"]),
     headers() {
       return [
         {
@@ -136,7 +111,7 @@ export default {
       ];
     },
     items() {
-      return this.records?.data.map((item) => {
+      return this.records?.data?.map((item) => {
         return {
           ...item,
           address: item.address ? item.address : "---",
@@ -149,12 +124,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useMerchantUsersAdminStore, [
-      "getMerchantUsersAdmin",
-      "deleteMerchantUsersAdmin",
+    ...mapActions(useUsersAdminStore, [
+      "getUsersAdmin",
+      "deleteUsersAdmin",
     ]),
-
-    ...mapActions(useMerchantAdminStore, ["getMerchantAdmin"]),
 
     async deleteRecord(item) {
       const result = await showConfirmationDialog({
@@ -164,26 +137,25 @@ export default {
         cancelButtonText: this.$t("global.actions.cancel"),
       });
       if (result.isConfirmed) {
-        await this.deleteMerchantUsersAdmin(item.id);
-        await this.getMerchantUsersAdmin(this.params);
+        await this.deleteUsersAdmin(item.id);
       }
     },
 
     changePage(page) {
       this.params.page = page;
-      this.getMerchantUsersAdmin(this.params);
+      this.getUsersAdmin(this.params);
     },
     changePerPage(perPage) {
       this.params.perPage = perPage;
       this.params.page = 1;
-      this.getMerchantUsersAdmin(this.params);
+      this.getUsersAdmin(this.params);
     },
     search(text) {
       this.params["filter[keyword]"] = text;
       const key = {
         "filter[keyword]": text,
       };
-      this.getMerchantUsersAdmin(key);
+      this.getUsersAdmin(key);
     },
   },
 };

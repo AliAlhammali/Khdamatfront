@@ -137,12 +137,12 @@ export default {
             ],
           ],
         },
-        // {
-        //   title: this.$t("admin_navbar_links.users"),
-        //   icon: "mdi-store",
-        //   key: "users",
-        //   pages: [[this.$t("admin_navbar_links.users"), "/admin/users-admin"]],
-        // },
+        {
+          title: this.$t("admin_navbar_links.users"),
+          icon: "mdi-account-group",
+          key: "users",
+          pages: [[this.$t("admin_navbar_links.users"), "/admin/users-admin"]],
+        },
         // {
         //   title: this.$t("admin_navbar_links.categories"),
         //   icon: "mdi-store",

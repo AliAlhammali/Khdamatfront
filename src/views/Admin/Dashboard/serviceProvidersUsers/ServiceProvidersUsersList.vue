@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <data-table
-      :title="$t('admin_navbar_links.merchant_users')"
+      :title="$t('admin_navbar_links.services_providers_users')"
       :placeholder="$t('admin_merchant.search_placeholder_users')"
       :create-page="'/admin/service-provider-users/create'"
       :headers="headers"
@@ -15,7 +15,8 @@
     >
       <template #filter>
         <v-select
-          :placeholder="$t('admin_merchant.title')"
+          :placeholder="$t('admin_navbar_links.services_providers')"
+          :label="$t('admin_navbar_links.services_providers')"
           v-model="params['filter[merchant_id]']"
           :items="merchants?.data"
           item-text="name"

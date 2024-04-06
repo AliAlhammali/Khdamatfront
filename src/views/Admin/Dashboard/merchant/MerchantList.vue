@@ -118,7 +118,7 @@ export default {
       ];
     },
     items() {
-      return this.records?.data.map((item) => {
+      return this.records?.data?.map((item) => {
         return {
           ...item,
           address: item.address ? item.address : "---",
