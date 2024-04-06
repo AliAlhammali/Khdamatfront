@@ -8,8 +8,8 @@
         <h2 class="">
           {{
             isEditMerchant
-              ? $t("admin_merchant.edit_title")
-              : $t("admin_merchant.add_new")
+              ? $t("service_providers.edit_title")
+              : $t("service_providers.add_new")
           }}
         </h2>
         <button class="d-flex ga-2 align-center" @click="$router.go(-1)">
@@ -57,7 +57,6 @@
             <span> {{ $t("admin_merchant.fields.status") }}</span>
             <span class="text-red">*</span>
           </p>
-
           <v-select
             v-model="merchant.status"
             :items="listStatus"
@@ -235,7 +234,7 @@
 </template>
 <script>
 import FiledInput from "@/components/common/FiledInput.vue";
-import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
+import { useServiceProvidersAdminStore } from "@/stores/admin/serviceProviders/serviceProviders.admin.store";
 import { useGlobalActionsStore } from "@/stores/actions/upload.store";
 import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
@@ -316,14 +315,14 @@ export default {
   async mounted() {
     if (this.isEditMerchant) {
       const id = this.$route.params.id;
-      await this.showMerchantAdmin(id);
+      await this.showServiceProvidersAdmin(id);
       this.merchant = { ...this.record };
     }
   },
   computed: {
-    ...mapState(useMerchantAdminStore, ["uiFlags", "record"]),
+    ...mapState(useServiceProvidersAdminStore, ["uiFlags", "record"]),
     isEditMerchant() {
-      return this.$route.name === "admin-merchant-edit";
+      return this.$route.name === "admin-service-provider-edit";
     },
     merchantData() {
       return [
@@ -402,10 +401,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useMerchantAdminStore, [
-      "createMerchantAdmin",
-      "showMerchantAdmin",
-      "updateMerchantAdmin",
+    ...mapActions(useServiceProvidersAdminStore, [
+      "createServiceProvidersAdmin",
+      "showServiceProvidersAdmin",
+      "updateServiceProvidersAdmin",
     ]),
 
     ...mapActions(useGlobalActionsStore, ["uploadFile"]),
@@ -414,10 +413,10 @@ export default {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditMerchant) {
-        this.updateMerchantAdmin({ ...this.merchant });
+        this.updateServiceProvidersAdmin({ ...this.merchant });
         return;
       } else {
-        this.createMerchantAdmin({ ...this.merchant });
+        this.createServiceProvidersAdmin({ ...this.merchant });
       }
     },
     async upload(event, key) {

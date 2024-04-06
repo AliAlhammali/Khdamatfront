@@ -1,14 +1,14 @@
 import { defineStore } from "pinia";
 import router from "@/router";
-import MerchantAdminService from "@/services/admin/merchant/merchant.admin.service";
+import ServiceProvidersAdmin from "@/services/admin/serviceProvidersAdmin/service.providers.admin.service";
 import { useToast } from "vue-toastification";
 import { i18n } from "@/plugins/I18n";
 
 const toast = useToast();
 
-export const useMerchantAdminStore = defineStore("MerchantAdmin", {
+export const useServiceProvidersAdminStore = defineStore("ServiceProvidersAdmin", {
   state: () => ({
-    records: [],
+    records: null,
     record: {},
     uiFlags: {
       isLoading: false,
@@ -19,10 +19,10 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
   }),
   getters: {},
   actions: {
-    getMerchantAdmin: async function (params) {
+    getServiceProvidersAdmin: async function (params) {
       this.uiFlags.isLoading = true;
       try {
-        const { data } = await MerchantAdminService.get(params);
+        const { data } = await ServiceProvidersAdmin.get(params);
         this.records = data;
       } catch (error) {
         console.error(error);
@@ -30,10 +30,10 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    showMerchantAdmin: async function (id) {
+    showServiceProvidersAdmin: async function (id) {
       this.uiFlags.isLoading = true;
       try {
-        const { data } = await MerchantAdminService.show(id);
+        const { data } = await ServiceProvidersAdmin.show(id);
         this.record = data.data;
       } catch (error) {
         console.error(error);
@@ -41,11 +41,11 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    createMerchantAdmin: async function (payload) {
+    createServiceProvidersAdmin: async function (payload) {
       this.uiFlags.isCreated = true;
       try {
-        await MerchantAdminService.create(payload);
-        router.push({ name: "admin-merchant-dashboard" });
+        await ServiceProvidersAdmin.create(payload);
+        router.push({ name: "admin-service-provider-dashboard" });
         toast.success(i18n.global.t("global.actions.add_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.add_error"));
@@ -53,11 +53,11 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         this.uiFlags.isCreated = false;
       }
     },
-    updateMerchantAdmin: async function (payload) {
+    updateServiceProvidersAdmin: async function (payload) {
       this.uiFlags.isUpdated = true;
       try {
-        await MerchantAdminService.update(payload.id, payload);
-        router.push({ name: "admin-merchant-dashboard" });
+        await ServiceProvidersAdmin.update(payload.id, payload);
+        router.push({ name: "admin-service-provider-dashboard" });
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.edit_error"));
@@ -65,11 +65,11 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         this.uiFlags.isUpdated = false;
       }
     },
-    deleteMerchantAdmin: async function (id) {
+    deleteServiceProvidersAdmin: async function (id) {
       this.uiFlags.isDeleted = true;
       try {
-        await MerchantAdminService.delete(id);
-        this.getMerchantAdmin();
+        await ServiceProvidersAdmin.delete(id);
+        this.getServiceProvidersAdmin();
         toast.success(i18n.global.t("global.actions.delete_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.delete_error"));

@@ -22,6 +22,10 @@
       "upload_error": "Error uploading file",
       "logout": "Logout"
     },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
     "table": {
       "noData": "No data available",
       "noResults": "No results found",

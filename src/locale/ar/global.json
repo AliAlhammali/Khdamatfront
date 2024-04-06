@@ -22,6 +22,10 @@
       "upload_error": "حدث خطأ أثناء رفع الملف",
       "logout": "تسجيل الخروج"
     },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
     "table": {
       "noData": "لا توجد بيانات",
       "noResults": "لا توجد نتائج",

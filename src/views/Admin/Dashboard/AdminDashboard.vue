@@ -1,12 +1,7 @@
 <template>
   <div>
     <v-layout class="rounded rounded-md" v-if="record">
-      <v-navigation-drawer
-        v-model="drawer"
-        :rail="rail"
-        permanent
-        @click="rail = false"
-      >
+      <v-navigation-drawer v-model="drawer" permanent>
         <v-list>
           <v-list-item
             prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
@@ -16,45 +11,44 @@
           </v-list-item>
           <v-divider></v-divider>
 
-          <v-list v-model:opened="open">
-            <v-list-item>
-              <router-link
-                to="/admin/dashboard"
-                class="d-flex align-center ga-2 router-link"
-              >
-                <span class="mdi mdi-24px mdi-view-dashboard"></span>
-                <span>{{ $t("admin_navbar_links.dashboard") }}</span>
-              </router-link>
-            </v-list-item>
-
-            <v-list-group
-              v-for="(item, index) in pagesList"
-              :key="index"
-              :value="item.title"
-              expand-icon="mdi mdi-chevron-down"
-              collapse-icon="mdi mdi-chevron-up"
-              open
+          <v-list-item>
+            <router-link
+              to="/admin/dashboard"
+              class="d-flex align-center ga-2 router-link"
             >
-              <template v-slot:activator="{ props }">
-                <v-list-item v-bind="props">
-                  <div class="d-flex align-center ga-2">
-                    <span class="mdi mdi-24px" :class="item.icon"></span>
-                    <span>{{ item.title }}</span>
-                  </div>
-                </v-list-item>
-              </template>
-              <v-list-item
-                v-for="([title, link], index) in item.pages"
-                :key="index"
-                :to="link"
-              >
+              <span class="mdi mdi-24px mdi-view-dashboard"></span>
+              <span>{{ $t("admin_navbar_links.dashboard") }}</span>
+            </router-link>
+          </v-list-item>
+
+          <v-list-group
+            v-for="(item, index) in pagesList"
+            :key="index"
+            :value="item.key"
+            expand-icon="mdi mdi-chevron-down"
+            collapse-icon="mdi mdi-chevron-up"
+          >
+            <template v-slot:activator="{ props }">
+              <v-list-item v-bind="props">
                 <div class="d-flex align-center ga-2">
-                  <span class="mdi mdi-circle-outline mdi-18px"></span>
-                  <span>{{ title }}</span>
+                  <span class="mdi mdi-24px" :class="item.icon"></span>
+                  <span>{{ item.title }}</span>
                 </div>
               </v-list-item>
-            </v-list-group>
-          </v-list>
+            </template>
+            <v-list-item
+              v-for="([title, link], index) in item.pages"
+              :key="index"
+              :to="link"
+              class="px-0"
+              exact
+            >
+              <div class="d-flex align-center ga-2">
+                <span class="mdi mdi-circle-outline mdi-18px"></span>
+                <span>{{ title }}</span>
+              </div>
+            </v-list-item>
+          </v-list-group>
         </v-list>
       </v-navigation-drawer>
 
@@ -91,7 +85,7 @@
         </v-menu>
       </v-app-bar>
 
-      <v-main style="min-height: 300px">
+      <v-main style="min-height: 350px">
         <v-container fluid>
           <router-view />
         </v-container>
@@ -107,7 +101,6 @@ export default {
   data() {
     return {
       drawer: true,
-      rail: false,
     };
   },
   mounted() {
@@ -120,6 +113,7 @@ export default {
         {
           title: this.$t("admin_navbar_links.merchant"),
           icon: "mdi-store",
+          key: "merchant",
           pages: [
             [this.$t("admin_navbar_links.merchant"), "/admin/merchant"],
             [
@@ -128,7 +122,41 @@ export default {
             ],
           ],
         },
-        
+        {
+          title: this.$t("admin_navbar_links.services_providers"),
+          icon: "mdi-store",
+          key: "services_providers",
+          pages: [
+            [
+              this.$t("admin_navbar_links.services_providers"),
+              "/admin/service-provider",
+            ],
+            [
+              this.$t("admin_navbar_links.services_providers_users"),
+              "/admin/service-provider-users",
+            ],
+          ],
+        },
+        // {
+        //   title: this.$t("admin_navbar_links.users"),
+        //   icon: "mdi-store",
+        //   key: "users",
+        //   pages: [[this.$t("admin_navbar_links.users"), "/admin/users-admin"]],
+        // },
+        // {
+        //   title: this.$t("admin_navbar_links.categories"),
+        //   icon: "mdi-store",
+        //   key: "categories",
+        //   pages: [
+        //     [this.$t("admin_navbar_links.categories"), "/admin/categories"],
+        //   ],
+        // },
+        // {
+        //   title: this.$t("admin_navbar_links.services"),
+        //   icon: "mdi-store",
+        //   key: "services",
+        //   pages: [[this.$t("admin_navbar_links.services"), "/admin/service"]],
+        // },
       ];
     },
   },

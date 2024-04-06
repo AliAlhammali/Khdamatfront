@@ -1,0 +1,10 @@
+{
+  "service_providers": {
+    "search_placeholder": "Search for service providers",
+    "search_placeholder_users": "Search for users",
+    "add_new": "Add New Service Provider",
+    "add_new_user": "Add New User",
+    "edit_title": "Edit Service Provider",
+    "edit_user_title": "Edit User"
+  }
+}

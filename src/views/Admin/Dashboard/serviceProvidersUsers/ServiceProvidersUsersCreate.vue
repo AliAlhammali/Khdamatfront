@@ -106,12 +106,13 @@
 </template>
 <script>
 import FiledInput from "@/components/common/FiledInput.vue";
-import { useMerchantUsersAdminStore } from "@/stores/admin/merchant/merchantUsers.admin.store";
 import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
 import Loader from "@/components/common/Loader.vue";
+
+import { useServiceProvidersUsersAdminStore } from "@/stores/admin/serviceProviders/serviceProviderUsers.admin.store";
+import { useServiceProvidersAdminStore } from "@/stores/admin/serviceProviders/serviceProviders.admin.store";
 
 export default {
   components: { FiledInput, Loader },
@@ -139,27 +140,25 @@ export default {
       showPassword: false,
     };
   },
-  async created() {
-    await this.getMerchantAdmin();
-  },
   async mounted() {
     if (this.isEditMerchant) {
       const id = this.$route.params.id;
-      await this.showMerchantUsersAdmin(id);
+      await this.showServiceProvidersUsersAdmin(id);
       this.merchant = { ...this.record };
       this.merchant.merchant_id = this.merchants.data.find(
-        (item) => item.id === this.record.merchant_id
+        (item) => item.id ===  this.record.service_provider_id
       );
     }
+    await this.getServiceProvidersAdmin();
   },
   computed: {
-    ...mapState(useMerchantAdminStore, {
+    ...mapState(useServiceProvidersAdminStore, {
       merchants: "records",
       merchantsUiFlags: "uiFlags",
     }),
-    ...mapState(useMerchantUsersAdminStore, ["uiFlags", "record"]),
+    ...mapState(useServiceProvidersUsersAdminStore, ["uiFlags", "record"]),
     isEditMerchant() {
-      return this.$route.name === "admin-merchant-users-edit";
+      return this.$route.name === "admin-service-provider-users-edit";
     },
     merchantData() {
       return [
@@ -189,21 +188,21 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useMerchantUsersAdminStore, [
-      "createMerchantUsersAdmin",
-      "showMerchantUsersAdmin",
-      "updateMerchantUsersAdmin",
+    ...mapActions(useServiceProvidersUsersAdminStore, [
+      "createServiceProvidersUsersAdmin",
+      "showServiceProvidersUsersAdmin",
+      "updateServiceProvidersUsersAdmin",
     ]),
-    ...mapActions(useMerchantAdminStore, ["getMerchantAdmin"]),
+    ...mapActions(useServiceProvidersAdminStore, ["getServiceProvidersAdmin"]),
 
     actionBtn() {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditMerchant) {
-        this.updateMerchantUsersAdmin({ ...this.merchant });
+        this.updateServiceProvidersUsersAdmin({ ...this.merchant });
         return;
       } else {
-        this.createMerchantUsersAdmin({ ...this.merchant });
+        this.createServiceProvidersUsersAdmin({ ...this.merchant });
       }
     },
   },

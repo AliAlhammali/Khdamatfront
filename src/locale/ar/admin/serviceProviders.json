@@ -1,0 +1,10 @@
+{
+  "service_providers": {
+    "search_placeholder": "بحث عن مقدمي الخدمات",
+    "search_placeholder_users": "بحث عن المستخدمين",
+    "add_new": "إضافة مقدم خدمة جديد",
+    "add_new_user": "إضافة مستخدم جديد",
+    "edit_title": "تعديل مقدم الخدمة",
+    "edit_user_title": "تعديل المستخدم"
+  }
+}
