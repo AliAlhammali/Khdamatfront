@@ -23,6 +23,7 @@
       "merchant_id": "Merchant ID",
       "name": "Name",
       "role": "Role",
+      "password": "Password",
       "owner": {
         "name": "Owner Name",
         "email": "Owner Email"

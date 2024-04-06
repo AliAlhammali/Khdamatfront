@@ -19,7 +19,8 @@
       "add_success": "Item added successfully",
       "add_error": "Error adding item",
       "upload_success": "File uploaded successfully",
-      "upload_error": "Error uploading file"
+      "upload_error": "Error uploading file",
+      "logout": "Logout"
     },
     "table": {
       "noData": "No data available",

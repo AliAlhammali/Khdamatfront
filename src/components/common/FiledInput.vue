@@ -34,7 +34,7 @@
         </button>
       </label>
 
-      <p class="text-error mt-3 d-flex ga-2 align-center" v-if="error">
+      <p class="text-error mt-2 d-flex ga-2 align-center" v-if="error">
         <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
         <span>{{ errorText }}</span>
       </p>
@@ -106,7 +106,7 @@ export default {
     font-weight: 600;
   }
   &__input {
-    height: 44px;
+    height: 48px;
     border: 1px solid $gray;
     &.error {
       border-color: $error;

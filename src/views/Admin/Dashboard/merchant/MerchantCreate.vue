@@ -1,188 +1,231 @@
 <template>
   <div class="content">
-    <div class="d-flex border-b mb-4 pb-4 justify-space-between">
-      <h2 class="">
-        {{
-          isEditMerchant
-            ? $t("admin_merchant.edit_title")
-            : $t("admin_merchant.add_new")
-        }}
-      </h2>
-      <button class="d-flex ga-2 align-center" @click="$router.go(-1)">
-        <span>
-          {{ $t("global.actions.back") }}
-        </span>
-        <span class="fa fa-arrow-left"></span>
-      </button>
-    </div>
-    <v-row>
-      <!--  Owner-->
-      <template v-if="!isEditMerchant">
-        <v-col cols="12" md="6">
-          <filed-input
-            :label="$t('admin_merchant.fields.owner.name')"
-            v-model="merchant.owner.name"
-            :value="merchant.owner.name"
-            type="text"
-            :error="v$.merchant.owner.name.$error"
-            :error-text="
-              v$.merchant.owner.name.required.$invalid && $t('errors.required')
-            "
-            @blur="v$.merchant.owner.name.$touch()"
-          />
-        </v-col>
-        <v-col cols="12" md="6">
-          <filed-input
-            :label="$t('admin_merchant.fields.owner.email')"
-            v-model="merchant.owner.email"
-            :value="merchant.owner.email"
-            type="email"
-            :error="v$.merchant.owner.email.$error"
-            :error-text="
-              (v$.merchant.owner.email.required?.$invalid &&
-                $t('errors.required')) ||
-              (v$.merchant.owner.email.email?.$invalid && $t('errors.email'))
-            "
-            @blur="v$.merchant.owner.email.$touch()"
-          />
-        </v-col>
-      </template>
-      <v-col cols="12" md="6">
-        <p class="d-flex align-center ga-2 mb-3 filed__label">
-          <span> {{ $t("admin_merchant.fields.status") }}</span>
-          <span class="text-red">*</span>
-        </p>
-
-        <v-select
-          v-model="merchant.status"
-          :items="['active', 'inactive']"
-          outlined
-          menu-icon="mdi mdi-chevron-down"
-          class="text-capitalize rounded-xl"
-          @blur="v$.merchant.status.$touch()"
-        />
-        <p class="text-error" v-if="v$.merchant.status.required.$error">
-          {{ $t("errors.required") }}
-        </p>
-      </v-col>
-
-      <!-- data -->
-      <v-col
-        cols="12"
-        md="6"
-        v-for="(item, index) in merchantData"
-        :key="index"
-      >
-        <filed-input
-          :label="item.label"
-          v-model="merchant[item.name]"
-          :value="merchant[item.name]"
-          :type="item.type"
-          :error="v$.merchant[item.name].$error"
-          :error-text="item.errorText"
-          @blur="v$.merchant[item.name].$touch()"
-        />
-      </v-col>
-
-      <!--  Files -->
-      <v-col cols="12" md="6">
-        <p class="d-flex align-center ga-2 mb-3 filed__label">
-          {{ $t("admin_merchant.fields.logo") }}
-        </p>
-        <label
-          class="filed__input d-flex align-center ga-2 pa-2 rounded-lg"
-          :class="{
-            'border-red-500': v$.files.logo.required.$error,
-          }"
-        >
-          <input
-            type="file"
-            @input="upload($event, 'logo')"
-            @blur="v$.files.logo.$touch()"
-          />
-        </label>
-        <p class="text-error" v-if="v$.files.logo.required.$error">
-          {{ $t("errors.required") }}
-        </p>
-      </v-col>
-      <v-col cols="12" md="6">
-        <p class="d-flex align-center ga-2 mb-3 filed__label">
-          {{ $t("admin_merchant.fields.vat_file") }}
-        </p>
-        <label class="filed__input d-flex align-center ga-2 pa-2 rounded-lg">
-          <input
-            type="file"
-            @input="upload($event, 'vat_file')"
-            :class="{
-              'border-red-500': v$.files.vat_file.required.$error,
-            }"
-            @blur="v$.files.vat_file.$touch()"
-          />
-        </label>
-        <p class="text-error" v-if="v$.files.vat_file.required.$error">
-          {{ $t("errors.required") }}
-        </p>
-      </v-col>
-      <v-col cols="12" md="6">
-        <p class="d-flex align-center ga-2 mb-3 filed__label">
-          {{ $t("admin_merchant.fields.cr_file") }}
-        </p>
-        <label class="filed__input d-flex align-center ga-2 pa-2 rounded-lg">
-          <input
-            type="file"
-            @input="upload($event, 'cr_file')"
-            :class="{
-              'border-red-500': v$.files.cr_file.required.$error,
-            }"
-            @blur="v$.files.cr_file.$touch()"
-          />
-        </label>
-        <p class="text-error" v-if="v$.files.cr_file.required.$error">
-          {{ $t("errors.required") }}
-        </p>
-      </v-col>
-
-      <v-col cols="12" md="6">
-        <p class="d-flex align-center ga-2 mb-3 filed__label">
-          {{ $t("admin_merchant.fields.sales_agreement_file") }}
-        </p>
-        <label class="filed__input d-flex align-center ga-2 pa-2 rounded-lg">
-          <input
-            type="file"
-            @input="upload($event, 'sales_agreement_file')"
-            :class="{
-              'border-red-500': v$.files.sales_agreement_file.required.$error,
-            }"
-            @blur="v$.files.sales_agreement_file.$touch()"
-          />
-        </label>
-        <p
-          class="text-error"
-          v-if="v$.files.sales_agreement_file.required.$error"
-        >
-          {{ $t("errors.required") }}
-        </p>
-      </v-col>
-
-      <v-col cols="12">
-        <v-btn
-          class="w-100"
-          color="primary"
-          size="large"
-          @click="actionBtn"
-          :loading="uiFlags.isCreating || uiFlags.isUpdated"
-          :disabled="
-            uiFlags.isCreating || uiFlags.isUpdated || v$.merchant.$error
-          "
-        >
+    <template v-if="uiFlags.isLoading">
+      <loader />
+    </template>
+    <template v-else>
+      <div class="d-flex border-b mb-4 pb-4 justify-space-between">
+        <h2 class="">
           {{
             isEditMerchant
-              ? $t("global.actions.edit")
-              : $t("global.actions.add")
+              ? $t("admin_merchant.edit_title")
+              : $t("admin_merchant.add_new")
           }}
-        </v-btn>
-      </v-col>
-    </v-row>
+        </h2>
+        <button class="d-flex ga-2 align-center" @click="$router.go(-1)">
+          <span>
+            {{ $t("global.actions.back") }}
+          </span>
+          <span class="fa fa-arrow-left"></span>
+        </button>
+      </div>
+      <v-row>
+        <!--  Owner-->
+        <template v-if="!isEditMerchant">
+          <v-col cols="12" md="6">
+            <filed-input
+              :label="$t('admin_merchant.fields.owner.name')"
+              v-model="merchant.owner.name"
+              :value="merchant.owner.name"
+              type="text"
+              :error="v$.merchant.owner.name.$error"
+              :error-text="
+                v$.merchant.owner.name.required.$invalid &&
+                $t('errors.required')
+              "
+              @blur="v$.merchant.owner.name.$touch()"
+            />
+          </v-col>
+          <v-col cols="12" md="6">
+            <filed-input
+              :label="$t('admin_merchant.fields.owner.email')"
+              v-model="merchant.owner.email"
+              :value="merchant.owner.email"
+              type="email"
+              :error="v$.merchant.owner.email.$error"
+              :error-text="
+                (v$.merchant.owner.email.required?.$invalid &&
+                  $t('errors.required')) ||
+                (v$.merchant.owner.email.email?.$invalid && $t('errors.email'))
+              "
+              @blur="v$.merchant.owner.email.$touch()"
+            />
+          </v-col>
+        </template>
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            <span> {{ $t("admin_merchant.fields.status") }}</span>
+            <span class="text-red">*</span>
+          </p>
+
+          <v-select
+            v-model="merchant.status"
+            :items="['active', 'inactive']"
+            outlined
+            menu-icon="mdi mdi-chevron-down"
+            class="text-capitalize rounded-xl"
+            @blur="v$.merchant.status.$touch()"
+            :error="
+              v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
+            "
+          />
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="
+              v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
+            "
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
+        </v-col>
+
+        <!-- data -->
+        <v-col
+          cols="12"
+          md="6"
+          v-for="(item, index) in merchantData"
+          :key="index"
+        >
+          <filed-input
+            :label="item.label"
+            v-model="merchant[item.name]"
+            :value="merchant[item.name]"
+            :type="item.type"
+            :error="v$.merchant[item.name].$error"
+            :error-text="item.errorText"
+            @blur="v$.merchant[item.name].$touch()"
+          />
+        </v-col>
+
+        <!--  Files -->
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            {{ $t("admin_merchant.fields.logo") }}
+          </p>
+          <label
+            class="filed__input d-flex align-center ga-2 pa-2 rounded-lg"
+            :class="{
+              error: v$.files.logo.$dirty && v$.files.logo.required.$invalid,
+            }"
+          >
+            <input
+              type="file"
+              @input="upload($event, 'logo')"
+              @blur="v$.files.logo.$touch()"
+            />
+          </label>
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="v$.files.logo.$dirty && v$.files.logo.required.$invalid"
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
+        </v-col>
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            {{ $t("admin_merchant.fields.vat_file") }}
+          </p>
+          <label
+            class="filed__input d-flex align-center ga-2 pa-2 rounded-lg"
+            :class="{
+              error:
+                v$.files.vat_file.$dirty && v$.files.vat_file.required.$invalid,
+            }"
+          >
+            <input
+              type="file"
+              @input="upload($event, 'vat_file')"
+              @blur="v$.files.vat_file.$touch()"
+            />
+          </label>
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="
+              v$.files.vat_file.$dirty && v$.files.vat_file.required.$invalid
+            "
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
+        </v-col>
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            {{ $t("admin_merchant.fields.cr_file") }}
+          </p>
+          <label
+            class="filed__input d-flex align-center ga-2 pa-2 rounded-lg"
+            :class="{
+              error:
+                v$.files.cr_file.$dirty && v$.files.cr_file.required.$invalid,
+            }"
+          >
+            <input
+              type="file"
+              @input="upload($event, 'cr_file')"
+              @blur="v$.files.cr_file.$touch()"
+            />
+          </label>
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="v$.files.cr_file.$dirty && v$.files.cr_file.required.$invalid"
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
+        </v-col>
+
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            {{ $t("admin_merchant.fields.sales_agreement_file") }}
+          </p>
+          <label
+            class="filed__input d-flex align-center ga-2 pa-2 rounded-lg"
+            :class="{
+              error:
+                v$.files.sales_agreement_file.$dirty &&
+                v$.files.sales_agreement_file.required.$invalid,
+            }"
+          >
+            <input
+              type="file"
+              @input="upload($event, 'sales_agreement_file')"
+              @blur="v$.files.sales_agreement_file.$touch()"
+            />
+          </label>
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="
+              v$.files.sales_agreement_file.$dirty &&
+              v$.files.sales_agreement_file.required.$invalid
+            "
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
+        </v-col>
+
+        <v-col cols="12">
+          <v-btn
+            class="w-100"
+            color="primary"
+            size="large"
+            @click="actionBtn"
+            :loading="uiFlags.isCreating || uiFlags.isUpdated"
+            :disabled="
+              uiFlags.isCreating || uiFlags.isUpdated || v$.merchant.$error
+            "
+          >
+            {{
+              isEditMerchant
+                ? $t("global.actions.edit")
+                : $t("global.actions.add")
+            }}
+          </v-btn>
+        </v-col>
+      </v-row>
+    </template>
   </div>
 </template>
 <script>
@@ -192,8 +235,9 @@ import { useGlobalActionsStore } from "@/stores/actions/upload.store";
 import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, requiredIf } from "@vuelidate/validators";
+import Loader from "@/components/common/Loader.vue";
 export default {
-  components: { FiledInput },
+  components: { FiledInput, Loader },
   setup() {
     return { v$: useVuelidate() };
   },
