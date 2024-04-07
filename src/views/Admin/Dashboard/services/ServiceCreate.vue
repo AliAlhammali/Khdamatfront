@@ -48,7 +48,7 @@
           />
         </v-col>
 
-        <v-col md="6" cols="12">
+        <!-- <v-col md="6" cols="12">
           <filed-input
             :label="$t('admin_categories.fields.slug_ar')"
             v-model="merchant.slug.ar"
@@ -74,7 +74,7 @@
             "
             @blur="v$.merchant.slug.en.$touch()"
           />
-        </v-col>
+        </v-col> -->
 
         <v-col cols="12" md="6">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
@@ -170,7 +170,6 @@ import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
-import { useCategoriesAdminStore } from "@/stores/admin/categories/categories.admin.store";
 import { useServicesAdminStore } from "@/stores/admin/services/services.admin.store";
 
 import Loader from "@/components/common/Loader.vue";
@@ -187,10 +186,10 @@ export default {
           ar: { required },
           en: { required },
         },
-        slug: {
-          ar: { required },
-          en: { required },
-        },
+        // slug: {
+        //   ar: { required },
+        //   en: { required },
+        // },
         merchant_id: { required },
         status: { required },
       },
@@ -203,10 +202,10 @@ export default {
           ar: "",
           en: "",
         },
-        slug: {
-          ar: "",
-          en: "",
-        },
+        // slug: {
+        //   ar: "",
+        //   en: "",
+        // },
         status: null,
         merchant_id: null,
       },

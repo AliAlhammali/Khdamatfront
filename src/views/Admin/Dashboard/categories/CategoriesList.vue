@@ -120,7 +120,6 @@ export default {
       ];
     },
     items() {
-
       return this.records?.data?.map((item) => {
         return {
           ...item,

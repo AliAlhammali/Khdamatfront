@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import adminRoute from "@/views/Admin/admin.route";
-import merchantsRoute from "@/views/Merchants/merchants.route";
+import merchantsRoute from "@/views/Merchants/merchant.route";
 import serviceProviderRoute from "@/views/ServiceProvider/serviceProvider.route";
 import landingRoute from "@/views/Landing/landing.route";
 

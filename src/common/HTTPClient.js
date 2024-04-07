@@ -13,10 +13,17 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
-  const token = window.$cookies.get("admin_khadamat_token");
   if (router.currentRoute.value.path.includes("admin")) {
+    const token = window.$cookies.get("admin_khadamat_token");
+    config.headers.Authorization = `Bearer ${token}`;
+  } else if (router.currentRoute.value.path.includes("merchant")) {
+    const token = window.$cookies.get("merchant_khadamat_token");
+    config.headers.Authorization = `Bearer ${token}`;
+  } else if (router.currentRoute.value.path.includes("service-provider")) {
+    const token = window.$cookies.get("service_provider_khadamat_token");
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
 
