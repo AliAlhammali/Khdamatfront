@@ -1,0 +1,17 @@
+{
+  "admin_categories": {
+    "search_categories": "البحث في الفئات",
+    "edit_title_category": "تعديل الفئة",
+    "add_title_category": "إضافة فئة",
+    "fields": {
+      "title": "العنوان",
+      "title_ar": "العنوان بالعربية",
+      "title_en": "العنوان بالإنجليزية",
+      "slug": "الرابط",
+      "slug_ar": "الرابط بالعربية",
+      "slug_en": "الرابط بالإنجليزية",
+      "status": "الحالة",
+      "merchant_id": "التاجر"
+    }
+  }
+}

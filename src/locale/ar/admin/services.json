@@ -1,0 +1,17 @@
+{
+  "admin_services": {
+    "search_services": "البحث في الخدمات",
+    "edit_title_service": "تعديل الخدمة",
+    "add_title_service": "إضافة الخدمة",
+    "fields": {
+      "title":"العنوان",
+      "title_ar": "العنوان بالعربية",
+      "title_en": "العنوان بالإنجليزية",
+      "slug": "الرابط",
+      "slug_ar": "الرابط بالعربية",
+      "slug_en": "الرابط بالإنجليزية",
+      "status": "الحالة",
+      "merchant_id": "التاجر"
+    }
+  }
+}

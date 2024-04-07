@@ -2,10 +2,10 @@
   <div class="">
     <data-table
       :title="$t('admin_navbar_links.categories')"
-      :placeholder="$t('admin_merchant.search_placeholder_users')"
-      :create-page="'/admin/merchant-users/create'"
+      :placeholder="$t('admin_categories.search_categories')"
+      :create-page="'/admin/categories/create'"
       :headers="headers"
-      :slots-items="['actions']"
+      :slots-items="['actions', 'title', 'slug']"
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
@@ -13,10 +13,20 @@
       @changePerPage="changePerPage"
       @search="search"
     >
+      <template #title="{ item }">
+        <p>{{ item.item.title.ar }}</p>
+        <p>{{ item.item.title.en }}</p>
+      </template>
+
+      <template #slug="{ item }">
+        <p>{{ item.item.slug.ar }}</p>
+        <p>{{ item.item.slug.en }}</p>
+      </template>
+
       <template #actions="{ item }">
         <div class="d-flex ga-2 align-center">
           <router-link
-            :to="`/admin/merchant-users/${item.item.id}/edit`"
+            :to="`/admin/categories/${item.item.id}/edit`"
             class="button button--edit px-2 rounded"
           >
             <v-tooltip :text="$t('global.actions.edit')">
@@ -46,13 +56,14 @@ import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
 import ConfirmDialog from "@/components/common/ConfirmDialog.vue";
 import { showConfirmationDialog } from "@/helper/showAlert.helper";
+import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
+
 export default {
   components: { DataTable, ConfirmDialog },
   data() {
     return {
       params: {
         "filter[keyword]": null,
-        "filter[merchant_id]": null,
         perPage: 10,
         page: 1,
       },
@@ -60,9 +71,13 @@ export default {
   },
   async mounted() {
     await this.getCategoriesAdmin(this.params);
+    await this.getMerchantAdmin();
   },
   computed: {
     ...mapState(useCategoriesAdminStore, ["records", "uiFlags"]),
+    ...mapState(useMerchantAdminStore, {
+      merchants: "records",
+    }),
 
     headers() {
       return [
@@ -73,34 +88,28 @@ export default {
           key: "id",
         },
         {
-          title: this.$t("admin_merchant.fields.name"),
+          title: this.$t("admin_categories.fields.title"),
           align: "start",
           sortable: true,
-          key: "name",
+          key: "title",
         },
         {
-          title: this.$t("admin_merchant.fields.phone"),
+          title: this.$t("admin_categories.fields.slug"),
           align: "start",
           sortable: true,
-          key: "phone",
+          key: "slug",
         },
         {
-          title: this.$t("admin_merchant.fields.email"),
-          align: "start",
-          sortable: true,
-          key: "email",
-        },
-        {
-          title: this.$t("admin_merchant.fields.role"),
-          align: "start",
-          sortable: true,
-          key: "role",
-        },
-        {
-          title: this.$t("admin_merchant.fields.status"),
+          title: this.$t("admin_categories.fields.status"),
           align: "start",
           sortable: true,
           key: "status",
+        },
+        {
+          title: this.$t("admin_categories.fields.merchant_id"),
+          align: "start",
+          sortable: true,
+          key: "merchant_id",
         },
         {
           title: "#",
@@ -114,11 +123,11 @@ export default {
       return this.records?.data?.map((item) => {
         return {
           ...item,
-          address: item.address ? item.address : "---",
-          phone: item.phone ? item.phone : "---",
+          title: item.title ? item.title : "---",
+          slug: item.slug ? item.slug : "---",
           email: item.email ? item.email : "---",
           status: item.status ? item.status : "---",
-          role: item.role ? item.role : "---",
+          merchant_id: this.findMerchantName(item.merchant_id),
         };
       });
     },
@@ -128,18 +137,25 @@ export default {
       "getCategoriesAdmin",
       "deleteCategoriesAdmin",
     ]),
-
+    ...mapActions(useMerchantAdminStore, ["getMerchantAdmin"]),
 
     async deleteRecord(item) {
       const result = await showConfirmationDialog({
         title: this.$t("global.actions.delete"),
-        text: this.$t("global.actions.delete_confirmation") + item.name,
+        text: this.$t("global.actions.delete_confirmation") + item.title[this.$i18n.locale] ,
         confirmButtonText: this.$t("global.actions.delete"),
         cancelButtonText: this.$t("global.actions.cancel"),
       });
       if (result.isConfirmed) {
         await this.deleteCategoriesAdmin(item.id);
       }
+    },
+
+    findMerchantName(id) {
+      const merchant = this.merchants?.data?.find(
+        (merchant) => merchant.id === id
+      );
+      return merchant ? merchant.title : "---";
     },
 
     changePage(page) {

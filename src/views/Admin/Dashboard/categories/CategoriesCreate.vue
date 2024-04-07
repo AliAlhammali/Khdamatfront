@@ -8,8 +8,8 @@
         <h2 class="">
           {{
             isEditMerchant
-              ? $t("admin_merchant.edit_user_title")
-              : $t("admin_merchant.add_new_user")
+              ? $t("admin_categories.edit_title_category")
+              : $t("admin_categories.add_title_category")
           }}
         </h2>
         <button class="d-flex ga-2 align-center" @click="$router.go(-1)">
@@ -20,13 +20,70 @@
         </button>
       </div>
       <v-row>
+        <v-col md="6" cols="12">
+          <filed-input
+            :label="$t('admin_categories.fields.title_ar')"
+            v-model="merchant.title.ar"
+            :value="merchant.title.ar"
+            type="text"
+            :error="v$.merchant.title.ar.$error"
+            :error-text="
+              v$.merchant.title.ar.required.$invalid && $t('errors.required')
+            "
+            @blur="v$.merchant.title.ar.$touch()"
+          />
+        </v-col>
+
+        <v-col md="6" cols="12">
+          <filed-input
+            :label="$t('admin_categories.fields.title_en')"
+            v-model="merchant.title.en"
+            :value="merchant.title.en"
+            type="text"
+            :error="v$.merchant.title.en.$error"
+            :error-text="
+              v$.merchant.title.en.required.$invalid && $t('errors.required')
+            "
+            @blur="v$.merchant.title.en.$touch()"
+          />
+        </v-col>
+
+        <v-col md="6" cols="12">
+          <filed-input
+            :label="$t('admin_categories.fields.slug_ar')"
+            v-model="merchant.slug.ar"
+            :value="merchant.slug.ar"
+            type="text"
+            :error="v$.merchant.slug.ar.$error"
+            :error-text="
+              v$.merchant.slug.ar.required.$invalid && $t('errors.required')
+            "
+            @blur="v$.merchant.slug.ar.$touch()"
+          />
+        </v-col>
+
+        <v-col md="6" cols="12">
+          <filed-input
+            :label="$t('admin_categories.fields.slug_en')"
+            v-model="merchant.slug.en"
+            :value="merchant.slug.en"
+            type="text"
+            :error="v$.merchant.slug.en.$error"
+            :error-text="
+              v$.merchant.slug.en.required.$invalid && $t('errors.required')
+            "
+            @blur="v$.merchant.slug.en.$touch()"
+          />
+        </v-col>
+
         <v-col cols="12" md="6">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
-            <span> {{ $t("admin_merchant.title") }}</span>
+            <span> {{ $t("admin_categories.fields.merchant_id") }}</span>
             <span class="text-red">*</span>
           </p>
           <v-select
             v-model="merchant.merchant_id"
+            :placeholder="$t('admin_categories.fields.merchant_id')"
             :items="merchants?.data"
             item-text="name"
             item-value="id"
@@ -38,6 +95,7 @@
               v$.merchant.merchant_id.required.$invalid
             "
           />
+
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
             v-if="
@@ -49,37 +107,39 @@
             <span>{{ $t("errors.required") }}</span>
           </p>
         </v-col>
-        <v-col
-          cols="12"
-          md="6"
-          v-for="(item, index) in merchantData"
-          :key="index"
-        >
-          <filed-input
-            :label="item.label"
-            v-model="merchant[item.name]"
-            :value="merchant[item.name]"
-            :type="item.type"
-            :error="v$.merchant[item.name].$error"
-            :error-text="item.errorText"
-            @blur="v$.merchant[item.name].$touch()"
-          />
-        </v-col>
 
-        <v-col md="6" cols="12" v-if="!isEditMerchant">
-          <filed-input
-            :label="$t('admin_merchant.fields.password')"
-            v-model="merchant.password"
-            :value="merchant.password"
-            type="password"
-            :error="v$.merchant.password.$error"
-            :error-text="
-              v$.merchant.password.required.$invalid && $t('errors.required')
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            <span> {{ $t("admin_merchant.fields.status") }}</span>
+            <span class="text-red">*</span>
+          </p>
+
+          <v-select
+            v-model="merchant.status"
+            :placeholder="$t('admin_merchant.fields.status')"
+            :items="listStatus"
+            :item-title="'text'"
+            :item-value="'value'"
+            outlined
+            menu-icon="mdi mdi-chevron-down"
+            class="text-capitalize rounded-xl"
+            @blur="v$.merchant.status.$touch()"
+            :error="
+              v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
             "
-            :show-password="showPassword"
-            @show-password="showPassword = !showPassword"
-            @blur="v$.merchant.password.$touch()"
+            hide-details
+            hide-selected
+            hide-no-data
           />
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="
+              v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
+            "
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
         </v-col>
 
         <v-col cols="12">
@@ -106,11 +166,11 @@
 </template>
 <script>
 import FiledInput from "@/components/common/FiledInput.vue";
-import { useMerchantUsersAdminStore } from "@/stores/admin/merchant/merchantUsers.admin.store";
 import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
+import { required } from "@vuelidate/validators";
 import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
+import { useCategoriesAdminStore } from "@/stores/admin/categories/categories.admin.store";
 import Loader from "@/components/common/Loader.vue";
 
 export default {
@@ -121,28 +181,49 @@ export default {
   validations() {
     return {
       merchant: {
-        name: { required },
-        email: { required, email },
+        title: {
+          ar: { required },
+          en: { required },
+        },
+        slug: {
+          ar: { required },
+          en: { required },
+        },
         merchant_id: { required },
-        password: { required },
+        status: { required },
       },
     };
   },
   data() {
     return {
       merchant: {
-        name: null,
-        email: null,
+        title: {
+          ar: "",
+          en: "",
+        },
+        slug: {
+          ar: "",
+          en: "",
+        },
+        status: null,
         merchant_id: null,
-        password: null,
       },
-      showPassword: false,
+      listStatus: [
+        {
+          text: this.$t("global.status.active"),
+          value: "active",
+        },
+        {
+          text: this.$t("global.status.inactive"),
+          value: "inactive",
+        },
+      ],
     };
   },
   async mounted() {
     if (this.isEditMerchant) {
       const id = this.$route.params.id;
-      await this.showMerchantUsersAdmin(id);
+      await this.showCategoriesAdmin(id);
       this.merchant = { ...this.record };
     }
     await this.getMerchantAdmin();
@@ -152,42 +233,16 @@ export default {
       merchants: "records",
       merchantsUiFlags: "uiFlags",
     }),
-    ...mapState(useMerchantUsersAdminStore, ["uiFlags", "record"]),
+    ...mapState(useCategoriesAdminStore, ["uiFlags", "record"]),
     isEditMerchant() {
-      return this.$route.name === "admin-merchant-users-edit";
-    },
-    merchantData() {
-      return [
-        {
-          name: "name",
-          type: "text",
-          label: this.$t("admin_merchant.fields.name"),
-          error: "v$.merchant.name.$error",
-          errorText:
-            this.v$.merchant.name.required.$invalid &&
-            this.$t("errors.required"),
-          blur: "v$.merchant.name.$touch()",
-        },
-        {
-          name: "email",
-          type: "email",
-          label: this.$t("admin_merchant.fields.email"),
-          error: "v$.merchant.email.$error",
-          errorText:
-            (this.v$.merchant.email.required.$invalid &&
-              this.$t("errors.required")) ||
-            (this.v$.merchant.email.email.$invalid && this.$t("errors.email")),
-
-          blur: "v$.merchant.email.$touch()",
-        },
-      ];
+      return this.$route.name === "admin-categories-edit";
     },
   },
   methods: {
-    ...mapActions(useMerchantUsersAdminStore, [
-      "createMerchantUsersAdmin",
-      "showMerchantUsersAdmin",
-      "updateMerchantUsersAdmin",
+    ...mapActions(useCategoriesAdminStore, [
+      "createCategoriesAdmin",
+      "showCategoriesAdmin",
+      "updateCategoriesAdmin",
     ]),
     ...mapActions(useMerchantAdminStore, ["getMerchantAdmin"]),
 
@@ -195,10 +250,10 @@ export default {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditMerchant) {
-        this.updateMerchantUsersAdmin({ ...this.merchant });
+        this.updateCategoriesAdmin({ ...this.merchant });
         return;
       } else {
-        this.createMerchantUsersAdmin({ ...this.merchant });
+        this.createCategoriesAdmin({ ...this.merchant });
       }
     },
   },

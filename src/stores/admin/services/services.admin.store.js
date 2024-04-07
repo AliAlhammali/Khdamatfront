@@ -45,7 +45,7 @@ export const useServicesAdminStore = defineStore("ServicesAdmin", {
       this.uiFlags.isCreated = true;
       try {
         await ServicesAdminService.create(payload);
-        router.push({ name: "users-service-dashboard" });
+        router.push({ name: "admin-service-dashboard" });
         toast.success(i18n.global.t("global.actions.add_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.add_error"));
@@ -57,7 +57,7 @@ export const useServicesAdminStore = defineStore("ServicesAdmin", {
       this.uiFlags.isUpdated = true;
       try {
         await ServicesAdminService.update(payload.id, payload);
-        router.push({ name: "users-service-dashboard" });
+        router.push({ name: "admin-service-dashboard" });
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.edit_error"));
