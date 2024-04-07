@@ -48,7 +48,7 @@
           />
         </v-col>
 
-        <v-col md="6" cols="12">
+        <!-- <v-col md="6" cols="12">
           <filed-input
             :label="$t('admin_categories.fields.slug_ar')"
             v-model="merchant.slug.ar"
@@ -74,7 +74,7 @@
             "
             @blur="v$.merchant.slug.en.$touch()"
           />
-        </v-col>
+        </v-col> -->
 
         <v-col cols="12" md="6">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
@@ -185,10 +185,10 @@ export default {
           ar: { required },
           en: { required },
         },
-        slug: {
-          ar: { required },
-          en: { required },
-        },
+        // slug: {
+        //   ar: { required },
+        //   en: { required },
+        // },
         merchant_id: { required },
         status: { required },
       },
@@ -201,10 +201,10 @@ export default {
           ar: "",
           en: "",
         },
-        slug: {
-          ar: "",
-          en: "",
-        },
+        // slug: {
+        //   ar: "",
+        //   en: "",
+        // },
         status: null,
         merchant_id: null,
       },
