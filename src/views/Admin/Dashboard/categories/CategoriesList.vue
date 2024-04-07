@@ -94,10 +94,10 @@ export default {
           key: "title",
         },
         {
-          title: this.$t("admin_categories.fields.slug"),
+          title: this.$t("admin_categories.fields.merchant"),
           align: "start",
           sortable: true,
-          key: "slug",
+          key: "merchant.title",
         },
         {
           title: this.$t("admin_categories.fields.status"),
@@ -120,11 +120,12 @@ export default {
       ];
     },
     items() {
+
       return this.records?.data?.map((item) => {
         return {
           ...item,
           title: item.title ? item.title : "---",
-          slug: item.slug ? item.slug : "---",
+          slug: item.merchant.title ? item.merchant.title : "---",
           email: item.email ? item.email : "---",
           status: item.status ? item.status : "---",
           merchant_id: this.findMerchantName(item.merchant_id),

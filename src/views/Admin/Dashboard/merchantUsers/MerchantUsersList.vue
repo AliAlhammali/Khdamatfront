@@ -117,6 +117,12 @@ export default {
           key: "email",
         },
         {
+          title: this.$t("admin_merchant.fields.merchant"),
+          align: "start",
+          sortable: true,
+          key: "merchant.title",
+        },
+        {
           title: this.$t("admin_merchant.fields.role"),
           align: "start",
           sortable: true,
