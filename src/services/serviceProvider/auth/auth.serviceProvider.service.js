@@ -2,7 +2,7 @@ import ApiClient from "@/helper/api.helper";
 
 class AuthAdmin extends ApiClient {
   constructor() {
-    super("admin-auth");
+    super("sp-auth");
   }
 
   login(data) {

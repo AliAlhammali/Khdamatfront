@@ -93,12 +93,12 @@ export default {
           sortable: true,
           key: "title",
         },
-        {
-          title: this.$t("admin_categories.fields.slug"),
-          align: "start",
-          sortable: true,
-          key: "slug",
-        },
+        // {
+        //   title: this.$t("admin_categories.fields.slug"),
+        //   align: "start",
+        //   sortable: true,
+        //   key: "slug",
+        // },
         {
           title: this.$t("admin_categories.fields.status"),
           align: "start",

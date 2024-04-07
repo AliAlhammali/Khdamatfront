@@ -26,6 +26,15 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
         this.isLoading = false;
       }
     },
+
+    logoutAdmin: async function () {
+      await authAdminService.logout();
+      this.record = null;
+      $cookies.remove("admin_khadamat_token");
+      $cookies.remove("admin_khadamat_user");
+      router.push({ name: "admin-login" });
+    },
+
     checkCookie: function () {
       const token = $cookies.get("admin_khadamat_token");
       const user = $cookies.get("admin_khadamat_user");
@@ -35,6 +44,6 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
       } else {
         router.push({ name: "admin-login" });
       }
-    },
+    }
   }
 });

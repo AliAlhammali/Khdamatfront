@@ -74,7 +74,12 @@
                 {{ record?.email }}
               </p>
               <v-divider class="my-3"></v-divider>
-              <v-btn class="w-100 d-flex align-center ga-2">
+              <v-btn
+                class="w-100 d-flex align-center ga-2"
+                @click="logoutAdmin"
+                :loading="isLoading"
+                :disabled="isLoading"
+              >
                 <span>
                   {{ $t("global.actions.logout") }}
                 </span>
@@ -161,7 +166,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useAuthAdminStore, ["checkCookie"]),
+    ...mapActions(useAuthAdminStore, ["checkCookie", "logoutAdmin"]),
     getInitials,
   },
 };

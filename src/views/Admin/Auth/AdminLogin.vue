@@ -104,7 +104,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: rgba($primary, 0.1);
 }
 </style>
