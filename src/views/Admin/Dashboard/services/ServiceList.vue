@@ -5,7 +5,7 @@
       :placeholder="$t('admin_services.search_services')"
       :create-page="'/admin/service/create'"
       :headers="headers"
-      :slots-items="['actions', 'title', 'slug']"
+      :slots-items="['actions', 'title', 'slug','categoryTitle']"
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
@@ -16,6 +16,10 @@
       <template #title="{ item }">
         <p>{{ item.item.title.ar }}</p>
         <p>{{ item.item.title.en }}</p>
+      </template>
+      <template #categoryTitle="{ item }">
+        <p>{{ item.item.category.title.ar }}</p>
+        <p>{{ item.item.category.title.en }}</p>
       </template>
 
       <template #slug="{ item }">
@@ -93,24 +97,43 @@ export default {
           sortable: true,
           key: "title",
         },
-        // {
-        //   title: this.$t("admin_services.fields.slug"),
-        //   align: "start",
-        //   sortable: true,
-        //   key: "slug",
-        // },
+        {
+          title: this.$t("admin_services.fields.category"),
+          align: "start",
+          sortable: true,
+          key: "categoryTitle",
+        },
+        {
+          title: this.$t("admin_services.fields.merchant"),
+          align: "start",
+          sortable: true,
+          key: "merchant.title",
+        },
+        {
+          title: this.$t("admin_services.fields.price"),
+          align: "start",
+          sortable: true,
+          key: "price",
+        },
+        {
+          title: this.$t("admin_services.fields.cost_price"),
+          align: "start",
+          sortable: true,
+          key: "cost_price",
+        },
+        {
+          title: this.$t("admin_services.fields.sp_price"),
+          align: "start",
+          sortable: true,
+          key: "sp_price",
+        },
         {
           title: this.$t("admin_services.fields.status"),
           align: "start",
           sortable: true,
           key: "status",
         },
-        {
-          title: this.$t("admin_services.fields.merchant_id"),
-          align: "start",
-          sortable: true,
-          key: "merchant_id",
-        },
+
         {
           title: "#",
           align: "start",
@@ -127,6 +150,7 @@ export default {
           slug: item.slug ? item.slug : "---",
           email: item.email ? item.email : "---",
           status: item.status ? item.status : "---",
+          categoryTitle: item.category.title ? item.category.title : "---",
           merchant_id: this.findMerchantName(item.merchant_id),
         };
       });
