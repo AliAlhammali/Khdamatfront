@@ -26,6 +26,10 @@
       "active": "نشط",
       "inactive": "غير نشط"
     },
+    "role": {
+      "Admin": "مدير",
+      "Staff": "موظف"
+    },
     "table": {
       "noData": "لا توجد بيانات",
       "noResults": "لا توجد نتائج",

@@ -21,7 +21,7 @@
             </router-link>
           </v-list-item>
 
-          <!-- <v-list-group
+          <v-list-group
             v-for="(item, index) in pagesList"
             :key="index"
             :value="item.key"
@@ -48,7 +48,7 @@
                 <span>{{ title }}</span>
               </div>
             </v-list-item>
-          </v-list-group> -->
+          </v-list-group>
         </v-list>
       </v-navigation-drawer>
 
@@ -117,52 +117,51 @@ export default {
     pagesList() {
       return [
         {
-          title: this.$t("admin_navbar_links.merchant"),
-          icon: "mdi-store",
-          key: "merchant",
-          pages: [
-            [this.$t("admin_navbar_links.merchant"), "/admin/merchant"],
-            [
-              this.$t("admin_navbar_links.merchant_users"),
-              "/admin/merchant-users",
-            ],
-          ],
-        },
-        {
-          title: this.$t("admin_navbar_links.services_providers"),
-          icon: "mdi-store",
-          key: "services_providers",
-          pages: [
-            [
-              this.$t("admin_navbar_links.services_providers"),
-              "/admin/service-provider",
-            ],
-            [
-              this.$t("admin_navbar_links.services_providers_users"),
-              "/admin/service-provider-users",
-            ],
-          ],
-        },
-        {
           title: this.$t("admin_navbar_links.users"),
-          icon: "mdi-account-group",
-          key: "users",
-          pages: [[this.$t("admin_navbar_links.users"), "/admin/users-admin"]],
-        },
-        {
-          title: this.$t("admin_navbar_links.categories"),
           icon: "mdi-store",
-          key: "categories",
+          key: "service_provider_users",
           pages: [
-            [this.$t("admin_navbar_links.categories"), "/admin/categories"],
+            [
+              this.$t("admin_navbar_links.users"),
+              "/service-provider/users-service-provider",
+            ],
           ],
         },
-        {
-          title: this.$t("admin_navbar_links.services"),
-          icon: "mdi-store",
-          key: "services",
-          pages: [[this.$t("admin_navbar_links.services"), "/admin/service"]],
-        },
+        // {
+        //   title: this.$t("admin_navbar_links.services_providers"),
+        //   icon: "mdi-store",
+        //   key: "services_providers",
+        //   pages: [
+        //     [
+        //       this.$t("admin_navbar_links.services_providers"),
+        //       "/admin/service-provider",
+        //     ],
+        //     [
+        //       this.$t("admin_navbar_links.services_providers_users"),
+        //       "/admin/service-provider-users",
+        //     ],
+        //   ],
+        // },
+        // {
+        //   title: this.$t("admin_navbar_links.users"),
+        //   icon: "mdi-account-group",
+        //   key: "users",
+        //   pages: [[this.$t("admin_navbar_links.users"), "/admin/users-admin"]],
+        // },
+        // {
+        //   title: this.$t("admin_navbar_links.categories"),
+        //   icon: "mdi-store",
+        //   key: "categories",
+        //   pages: [
+        //     [this.$t("admin_navbar_links.categories"), "/admin/categories"],
+        //   ],
+        // },
+        // {
+        //   title: this.$t("admin_navbar_links.services"),
+        //   icon: "mdi-store",
+        //   key: "services",
+        //   pages: [[this.$t("admin_navbar_links.services"), "/admin/service"]],
+        // },
       ];
     },
   },
