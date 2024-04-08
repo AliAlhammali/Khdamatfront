@@ -1,3 +1,5 @@
+import categoriesMerchantRoute from "./MerchantCategories/categories.merchant.route";
+import servicesMerchantRoute from "./MerchantServices/services.merchant.route";
 import usersMerchantRoute from "./MerchantUsers/users.merchant.route";
 
 export default {
@@ -7,6 +9,8 @@ export default {
       name: "merchant-dashboard",
       component: () => import("./home/MerchantHome.vue")
     },
-    ...usersMerchantRoute.routes
+    ...usersMerchantRoute.routes,
+    ...categoriesMerchantRoute.routes,
+    ...servicesMerchantRoute.routes
   ]
 };

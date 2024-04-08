@@ -148,20 +148,28 @@ export default {
         //   key: "users",
         //   pages: [[this.$t("admin_navbar_links.users"), "/admin/users-admin"]],
         // },
-        // {
-        //   title: this.$t("admin_navbar_links.categories"),
-        //   icon: "mdi-store",
-        //   key: "categories",
-        //   pages: [
-        //     [this.$t("admin_navbar_links.categories"), "/admin/categories"],
-        //   ],
-        // },
-        // {
-        //   title: this.$t("admin_navbar_links.services"),
-        //   icon: "mdi-store",
-        //   key: "services",
-        //   pages: [[this.$t("admin_navbar_links.services"), "/admin/service"]],
-        // },
+        {
+          title: this.$t("admin_navbar_links.categories"),
+          icon: "mdi-store",
+          key: "categories",
+          pages: [
+            [
+              this.$t("admin_navbar_links.categories"),
+              "/service-provider/categories-service-provider",
+            ],
+          ],
+        },
+        {
+          title: this.$t("admin_navbar_links.services"),
+          icon: "mdi-store",
+          key: "services",
+          pages: [
+            [
+              this.$t("admin_navbar_links.services"),
+              "/service-provider/services-service-provider",
+            ],
+          ],
+        },
       ];
     },
   },
