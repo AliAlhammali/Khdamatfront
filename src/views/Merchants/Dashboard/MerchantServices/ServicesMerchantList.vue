@@ -13,26 +13,19 @@
       @search="search"
     >
       <template #filter>
-        <!-- {{ categories?.data[0].title[$i18n.locale] }} -->
-        <!-- <v-select
+        <v-select
           :placeholder="$t('admin_navbar_links.categories')"
           :label="$t('admin_navbar_links.categories')"
           v-model="params['filter[category_id]']"
-          :items="categories?.data"
+          :items="listCategories"
           item-value="id"
           menu-icon="mdi mdi-chevron-down"
           class="w-100"
           outlined
           :loader="uiFlagsCategories?.isLoading"
           @update:modelValue="getServicesMerchant(params)"
-          return-object
         >
-          <template #item="{ item }">
-            <button @click="()=> params['filter[category_id]'] = item.props.value  " class="d-flex align-center">
-              <span>{{ item.props.title[$i18n.locale] }}</span>
-            </button>
-          </template>
-        </v-select> -->
+        </v-select>
       </template>
       <template #status="{ item }">
         <span
@@ -83,9 +76,11 @@ export default {
   },
   async mounted() {
     if (this.$route.query.category_id) {
-      this.params["filter[category_id]"] = this.$route.query.category_id;
-      await this.getCategoriesMerchant(this.paramsCategories);
+      this.params["filter[category_id]"] = this.listCategories.find(
+        (item) => item.id == this.$route.query.category_id
+      ).id;
     }
+    await this.getCategoriesMerchant(this.paramsCategories);
     await this.getServicesMerchant(this.params);
   },
   computed: {
@@ -130,6 +125,14 @@ export default {
           email: item.email ? item.email : "---",
           status: item.status ? item.status : "---",
           merchant: item.category ? item.category : "---",
+        };
+      });
+    },
+    listCategories() {
+      return this.categories?.data?.map((item) => {
+        return {
+          ...item,
+          title: item.title ? item.title[this.$i18n.locale] : "---",
         };
       });
     },
