@@ -5,7 +5,7 @@
       :placeholder="$t('admin_merchant.search_placeholder_users')"
       :create-page="'/admin/service-provider-users/create'"
       :headers="headers"
-      :slots-items="['actions']"
+      :slots-items="['actions', 'status', 'role']"
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
@@ -27,6 +27,22 @@
           :loader="merchantsUiFlags?.isLoading"
           @update:modelValue="getServiceProvidersUsersAdmin(params)"
         />
+      </template>
+      <template #status="{ item }">
+        <span
+          class="badge badge--status"
+          :class="
+            item.item.status === 'active' ? 'badge--success' : 'badge--danger'
+          "
+        >
+          {{ $t(`global.status.${item.item.status}`) }}
+        </span>
+      </template>
+
+      <template #role="{ item }">
+        <span class="badge badge--status">
+          {{ $t(`global.role.${item.item.role}`) }}
+        </span>
       </template>
       <template #actions="{ item }">
         <div class="d-flex ga-2 align-center">
@@ -75,7 +91,9 @@ export default {
     };
   },
   async mounted() {
-    await this.getServiceProvidersAdmin();
+    await this.getServiceProvidersAdmin({
+      listing: 1,
+    });
     if (this.$route.query.service_provider_id) {
       this.params["filter[merchant_id]"] = this.merchants.data.find(
         (item) => item.id == this.$route.query.service_provider_id

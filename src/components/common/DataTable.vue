@@ -1,5 +1,5 @@
 <template>
-  <div class="table">
+  <div class="table border">
     <div class="mb-4 pa-4 border-b">
       <v-row class="w-100 justify-end align-center">
         <v-col md="3" cols="6">

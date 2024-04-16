@@ -140,7 +140,9 @@ export default {
     };
   },
   async created() {
-    await this.getMerchantAdmin();
+    await this.getMerchantAdmin({
+      listing: 1,
+    });
   },
   async mounted() {
     if (this.isEditMerchant) {

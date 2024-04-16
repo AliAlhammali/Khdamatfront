@@ -141,7 +141,9 @@ export default {
     };
   },
   async created() {
-    await this.getServiceProvidersAdmin();
+    await this.getServiceProvidersAdmin({
+      listing: 1,
+    });
   },
   async mounted() {
     if (this.isEditMerchant) {

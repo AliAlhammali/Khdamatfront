@@ -15,6 +15,13 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
       isCreated: false,
       isUpdated: false,
       isDeleted: false
+    },
+    subCategories: [],
+    uiFlagsSub: {
+      isLoading: false,
+      isCreated: false,
+      isUpdated: false,
+      isDeleted: false
     }
   }),
   getters: {},
@@ -28,6 +35,17 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         console.error(error);
       } finally {
         this.uiFlags.isLoading = false;
+      }
+    },
+    getSubCategoriesAdmin: async function (params) {
+      this.uiFlagsSub.isLoading = true;
+      try {
+        const { data } = await CategoriesAdminService.get(params);
+        this.subCategories = data.data;
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.uiFlagsSub.isLoading = false;
       }
     },
     showCategoriesAdmin: async function (id) {

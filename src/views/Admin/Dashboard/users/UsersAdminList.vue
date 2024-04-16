@@ -5,7 +5,7 @@
       :placeholder="$t('admin_merchant.search_placeholder_users')"
       :create-page="'/admin/users-admin/create'"
       :headers="headers"
-      :slots-items="['actions']"
+      :slots-items="['actions', 'status', 'role']"
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
@@ -13,6 +13,25 @@
       @changePerPage="changePerPage"
       @search="search"
     >
+      <template #status="{ item }">
+        <span
+          v-if="item.item.status !== '---'"
+          class="badge badge--status"
+          :class="
+            item.item.status === 'active' ? 'badge--success' : 'badge--danger'
+          "
+        >
+          {{ $t(`global.status.${item.item.status}`) }}
+        </span>
+        <span v-else> {{ item.item.status }} </span>
+      </template>
+
+      <template #role="{ item }">
+        <span class="badge badge--status" v-if="item.item.role !== '---'">
+          {{ $t(`global.role.${item.item.role}`) }}
+        </span>
+        <span v-else> {{ item.item.role }} </span>
+      </template>
       <template #actions="{ item }">
         <div class="d-flex ga-2 align-center">
           <router-link
@@ -124,10 +143,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useUsersAdminStore, [
-      "getUsersAdmin",
-      "deleteUsersAdmin",
-    ]),
+    ...mapActions(useUsersAdminStore, ["getUsersAdmin", "deleteUsersAdmin"]),
 
     async deleteRecord(item) {
       const result = await showConfirmationDialog({

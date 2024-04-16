@@ -6,7 +6,7 @@
         :placeholder="$t('admin_merchant.search_placeholder')"
         :create-page="'/admin/merchant/create'"
         :headers="headers"
-        :slots-items="['actions']"
+        :slots-items="['actions', 'status']"
         :isLoading="uiFlags?.isLoading"
         :items="items"
         :meta="records?.meta"
@@ -14,6 +14,16 @@
         @changePerPage="changePerPage"
         @search="search"
       >
+        <template #status="{ item }">
+          <span
+            class="badge badge--status"
+            :class="
+              item.item.status === 'active' ? 'badge--success' : 'badge--danger'
+            "
+          >
+            {{ $t(`global.status.${item.item.status}`) }}
+          </span>
+        </template>
         <template #actions="{ item }">
           <div class="d-flex ga-2 align-center">
             <router-link

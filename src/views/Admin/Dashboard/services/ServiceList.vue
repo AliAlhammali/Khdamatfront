@@ -5,7 +5,7 @@
       :placeholder="$t('admin_services.search_services')"
       :create-page="'/admin/service/create'"
       :headers="headers"
-      :slots-items="['actions', 'title', 'slug','categoryTitle']"
+      :slots-items="['actions', 'status']"
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
@@ -13,20 +13,16 @@
       @changePerPage="changePerPage"
       @search="search"
     >
-      <template #title="{ item }">
-        <p>{{ item.item.title.ar }}</p>
-        <p>{{ item.item.title.en }}</p>
+      <template #status="{ item }">
+        <span
+          class="badge badge--status"
+          :class="
+            item.item.status === 'active' ? 'badge--success' : 'badge--danger'
+          "
+        >
+          {{ $t(`global.status.${item.item.status}`) }}
+        </span>
       </template>
-      <template #categoryTitle="{ item }">
-        <p>{{ item.item.category.title.ar }}</p>
-        <p>{{ item.item.category.title.en }}</p>
-      </template>
-
-      <template #slug="{ item }">
-        <p>{{ item.item.slug.ar }}</p>
-        <p>{{ item.item.slug.en }}</p>
-      </template>
-
       <template #actions="{ item }">
         <div class="d-flex ga-2 align-center">
           <router-link
@@ -60,7 +56,6 @@ import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
 import ConfirmDialog from "@/components/common/ConfirmDialog.vue";
 import { showConfirmationDialog } from "@/helper/showAlert.helper";
-import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
 
 export default {
   components: { DataTable, ConfirmDialog },
@@ -75,13 +70,9 @@ export default {
   },
   async mounted() {
     await this.getServicesAdmin(this.params);
-    await this.getMerchantAdmin();
   },
   computed: {
     ...mapState(useServicesAdminStore, ["records", "uiFlags"]),
-    ...mapState(useMerchantAdminStore, {
-      merchants: "records",
-    }),
 
     headers() {
       return [
@@ -146,12 +137,12 @@ export default {
       return this.records?.data?.map((item) => {
         return {
           ...item,
-          title: item.title ? item.title : "---",
-          slug: item.slug ? item.slug : "---",
+          title: item.title ? item.title[this.$i18n.locale] : "---",
           email: item.email ? item.email : "---",
           status: item.status ? item.status : "---",
-          categoryTitle: item.category.title ? item.category.title : "---",
-          merchant_id: this.findMerchantName(item.merchant_id),
+          categoryTitle: item.category.title
+            ? item.category.title[this.$i18n.locale]
+            : "---",
         };
       });
     },
@@ -161,7 +152,6 @@ export default {
       "getServicesAdmin",
       "deleteServicesAdmin",
     ]),
-    ...mapActions(useMerchantAdminStore, ["getMerchantAdmin"]),
 
     async deleteRecord(item) {
       const result = await showConfirmationDialog({
@@ -175,13 +165,6 @@ export default {
       if (result.isConfirmed) {
         await this.deleteServicesAdmin(item.id);
       }
-    },
-
-    findMerchantName(id) {
-      const merchant = this.merchants?.data?.find(
-        (merchant) => merchant.id === id
-      );
-      return merchant ? merchant.title : "---";
     },
 
     changePage(page) {

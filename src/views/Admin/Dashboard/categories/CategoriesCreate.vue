@@ -48,34 +48,6 @@
           />
         </v-col>
 
-        <!-- <v-col md="6" cols="12">
-          <filed-input
-            :label="$t('admin_categories.fields.slug_ar')"
-            v-model="merchant.slug.ar"
-            :value="merchant.slug.ar"
-            type="text"
-            :error="v$.merchant.slug.ar.$error"
-            :error-text="
-              v$.merchant.slug.ar.required.$invalid && $t('errors.required')
-            "
-            @blur="v$.merchant.slug.ar.$touch()"
-          />
-        </v-col>
-
-        <v-col md="6" cols="12">
-          <filed-input
-            :label="$t('admin_categories.fields.slug_en')"
-            v-model="merchant.slug.en"
-            :value="merchant.slug.en"
-            type="text"
-            :error="v$.merchant.slug.en.$error"
-            :error-text="
-              v$.merchant.slug.en.required.$invalid && $t('errors.required')
-            "
-            @blur="v$.merchant.slug.en.$touch()"
-          />
-        </v-col> -->
-
         <v-col cols="12" md="6">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
             <span> {{ $t("admin_categories.fields.merchant_id") }}</span>
@@ -94,6 +66,7 @@
               v$.merchant.merchant_id.$dirty &&
               v$.merchant.merchant_id.required.$invalid
             "
+            @blur="v$.merchant.merchant_id.$touch()"
           />
 
           <p
@@ -135,6 +108,42 @@
             class="text-error mt-2 d-flex ga-2 align-center"
             v-if="
               v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
+            "
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
+        </v-col>
+
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            <span> {{ $t("admin_navbar_links.categories") }}</span>
+            <span class="text-red">*</span>
+          </p>
+
+          <v-select
+            v-model="merchant.parent_id"
+            :placeholder="$t('admin_navbar_links.categories')"
+            :items="categoryList"
+            :item-title="'title'"
+            :item-value="'id'"
+            outlined
+            menu-icon="mdi mdi-chevron-down"
+            class="text-capitalize rounded-xl"
+            @blur="v$.merchant.parent_id.$touch()"
+            :error="
+              v$.merchant.parent_id.$dirty &&
+              v$.merchant.parent_id.required.$invalid
+            "
+            hide-details
+            hide-selected
+            hide-no-data
+          />
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="
+              v$.merchant.parent_id.$dirty &&
+              v$.merchant.parent_id.required.$invalid
             "
           >
             <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
@@ -185,11 +194,8 @@ export default {
           ar: { required },
           en: { required },
         },
-        // slug: {
-        //   ar: { required },
-        //   en: { required },
-        // },
         merchant_id: { required },
+        parent_id: { required },
         status: { required },
       },
     };
@@ -201,12 +207,9 @@ export default {
           ar: "",
           en: "",
         },
-        // slug: {
-        //   ar: "",
-        //   en: "",
-        // },
         status: null,
         merchant_id: null,
+        parent_id: null,
       },
       listStatus: [
         {
@@ -221,21 +224,32 @@ export default {
     };
   },
   async mounted() {
+    await this.getCategoriesAdmin({ "filter[isParent]": 1, listing: 1 });
+    await this.getMerchantAdmin({
+      listing: 1,
+    });
     if (this.isEditMerchant) {
       const id = this.$route.params.id;
       await this.showCategoriesAdmin(id);
       this.merchant = { ...this.record };
     }
-    await this.getMerchantAdmin();
   },
   computed: {
     ...mapState(useMerchantAdminStore, {
       merchants: "records",
       merchantsUiFlags: "uiFlags",
     }),
-    ...mapState(useCategoriesAdminStore, ["uiFlags", "record"]),
+    ...mapState(useCategoriesAdminStore, ["uiFlags", "record", "records"]),
     isEditMerchant() {
       return this.$route.name === "admin-categories-edit";
+    },
+    categoryList() {
+      return this.records?.data?.map((item) => {
+        return {
+          ...item,
+          title: item.title[this.$i18n.locale],
+        };
+      });
     },
   },
   methods: {
@@ -243,6 +257,7 @@ export default {
       "createCategoriesAdmin",
       "showCategoriesAdmin",
       "updateCategoriesAdmin",
+      "getCategoriesAdmin",
     ]),
     ...mapActions(useMerchantAdminStore, ["getMerchantAdmin"]),
 

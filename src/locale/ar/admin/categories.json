@@ -3,6 +3,7 @@
     "search_categories": "البحث في التصنيفات",
     "edit_title_category": "تعديل التصنيف",
     "add_title_category": "إضافة تصنيف",
+    "sub_categories": "التصنيفات الفرعية",
     "fields": {
       "title": "العنوان",
       "title_ar": "العنوان بالعربية",

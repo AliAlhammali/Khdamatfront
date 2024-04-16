@@ -8,8 +8,8 @@
         <h2 class="">
           {{
             isEditMerchant
-              ? $t("admin_categories.edit_title_category")
-              : $t("admin_categories.add_title_category")
+              ? $t("admin_services.edit_title_service")
+              : $t("admin_services.add_title_service")
           }}
         </h2>
         <button class="d-flex ga-2 align-center" @click="$router.go(-1)">
@@ -48,34 +48,6 @@
           />
         </v-col>
 
-        <!-- <v-col md="6" cols="12">
-          <filed-input
-            :label="$t('admin_categories.fields.slug_ar')"
-            v-model="merchant.slug.ar"
-            :value="merchant.slug.ar"
-            type="text"
-            :error="v$.merchant.slug.ar.$error"
-            :error-text="
-              v$.merchant.slug.ar.required.$invalid && $t('errors.required')
-            "
-            @blur="v$.merchant.slug.ar.$touch()"
-          />
-        </v-col>
-
-        <v-col md="6" cols="12">
-          <filed-input
-            :label="$t('admin_categories.fields.slug_en')"
-            v-model="merchant.slug.en"
-            :value="merchant.slug.en"
-            type="text"
-            :error="v$.merchant.slug.en.$error"
-            :error-text="
-              v$.merchant.slug.en.required.$invalid && $t('errors.required')
-            "
-            @blur="v$.merchant.slug.en.$touch()"
-          />
-        </v-col> -->
-
         <v-col cols="12" md="6">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
             <span> {{ $t("admin_categories.fields.merchant_id") }}</span>
@@ -94,6 +66,7 @@
               v$.merchant.merchant_id.$dirty &&
               v$.merchant.merchant_id.required.$invalid
             "
+            @blur="v$.merchant.merchant_id.$touch()"
           />
 
           <p
@@ -142,6 +115,85 @@
           </p>
         </v-col>
 
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            <span> {{ $t("admin_navbar_links.categories") }}</span>
+            <span class="text-red">*</span>
+          </p>
+
+          <v-select
+            v-model="merchant.parent_id"
+            :placeholder="$t('admin_navbar_links.categories')"
+            :items="categoryList"
+            :item-title="'title'"
+            :item-value="'id'"
+            outlined
+            menu-icon="mdi mdi-chevron-down"
+            class="text-capitalize rounded-xl"
+            @blur="v$.merchant.parent_id.$touch()"
+            :error="
+              v$.merchant.parent_id.$dirty &&
+              v$.merchant.parent_id.required.$invalid
+            "
+            hide-details
+            hide-selected
+            hide-no-data
+            @update:model-value="
+              getSubCategoriesAdmin({
+                main_category_id: merchant.parent_id,
+                listing: 1,
+              })
+            "
+          />
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="
+              v$.merchant.parent_id.$dirty &&
+              v$.merchant.parent_id.required.$invalid
+            "
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
+        </v-col>
+
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            <span> {{ $t("admin_categories.sub_categories") }}</span>
+            <span class="text-red">*</span>
+          </p>
+
+          <v-select
+            v-model="merchant.category_id"
+            :placeholder="$t('admin_categories.sub_categories')"
+            :items="subCategoryList"
+            :item-title="'title'"
+            :item-value="'id'"
+            outlined
+            menu-icon="mdi mdi-chevron-down"
+            class="text-capitalize rounded-xl"
+            @blur="v$.merchant.category_id.$touch()"
+            :error="
+              v$.merchant.category_id.$dirty &&
+              v$.merchant.category_id.required.$invalid
+            "
+            hide-details
+            hide-selected
+            hide-no-data
+            :disabled="merchant.parent_id == null"
+          />
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="
+              v$.merchant.category_id.$dirty &&
+              v$.merchant.category_id.required.$invalid
+            "
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
+        </v-col>
+
         <v-col cols="12">
           <v-btn
             class="w-100"
@@ -173,6 +225,7 @@ import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.st
 import { useServicesAdminStore } from "@/stores/admin/services/services.admin.store";
 
 import Loader from "@/components/common/Loader.vue";
+import { useCategoriesAdminStore } from "@/stores/admin/categories/categories.admin.store";
 
 export default {
   components: { FiledInput, Loader },
@@ -186,11 +239,9 @@ export default {
           ar: { required },
           en: { required },
         },
-        // slug: {
-        //   ar: { required },
-        //   en: { required },
-        // },
         merchant_id: { required },
+        parent_id: { required },
+        category_id: { required },
         status: { required },
       },
     };
@@ -202,12 +253,11 @@ export default {
           ar: "",
           en: "",
         },
-        // slug: {
-        //   ar: "",
-        //   en: "",
-        // },
+
         status: null,
         merchant_id: null,
+        parent_id: null,
+        category_id: null,
       },
       listStatus: [
         {
@@ -219,15 +269,20 @@ export default {
           value: "inactive",
         },
       ],
+      main_category_id: null,
     };
   },
   async mounted() {
+    await this.getMerchantAdmin({
+      listing: 1,
+    });
+    await this.getCategoriesAdmin({ "filter[isParent]": 1, listing: 1 });
+
     if (this.isEditMerchant) {
       const id = this.$route.params.id;
       await this.showServicesAdmin(id);
       this.merchant = { ...this.record };
     }
-    await this.getMerchantAdmin();
   },
   computed: {
     ...mapState(useMerchantAdminStore, {
@@ -235,8 +290,31 @@ export default {
       merchantsUiFlags: "uiFlags",
     }),
     ...mapState(useServicesAdminStore, ["uiFlags", "record"]),
+    ...mapState(useCategoriesAdminStore, {
+      categories: "records",
+      categoriesUiFlags: "uiFlags",
+      subCategories: "subCategories",
+      uiFlagsSub: "uiFlagsSub",
+    }),
+
     isEditMerchant() {
       return this.$route.name === "admin-service-edit";
+    },
+    categoryList() {
+      return this.categories?.data?.map((item) => {
+        return {
+          ...item,
+          title: item.title[this.$i18n.locale],
+        };
+      });
+    },
+    subCategoryList() {
+      return this.subCategories?.map((item) => {
+        return {
+          ...item,
+          title: item.title[this.$i18n.locale],
+        };
+      });
     },
   },
   methods: {
@@ -246,7 +324,10 @@ export default {
       "updateServicesAdmin",
     ]),
     ...mapActions(useMerchantAdminStore, ["getMerchantAdmin"]),
-
+    ...mapActions(useCategoriesAdminStore, [
+      "getCategoriesAdmin",
+      "getSubCategoriesAdmin",
+    ]),
     actionBtn() {
       this.v$.$touch();
       if (this.v$.$error) return;

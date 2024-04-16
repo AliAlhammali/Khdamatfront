@@ -6,7 +6,7 @@
         :placeholder="$t('service_providers.search_placeholder')"
         :create-page="'/admin/service-provider/create'"
         :headers="headers"
-        :slots-items="['actions']"
+        :slots-items="['actions', 'status']"
         :isLoading="uiFlags?.isLoading"
         :items="items"
         :meta="records?.meta"
@@ -14,13 +14,25 @@
         @changePerPage="changePerPage"
         @search="search"
       >
+        <template #status="{ item }">
+          <span
+            class="badge badge--status"
+            :class="
+              item.item.status === 'active' ? 'badge--success' : 'badge--danger'
+            "
+          >
+            {{ $t(`global.status.${item.item.status}`) }}
+          </span>
+        </template>
         <template #actions="{ item }">
           <div class="d-flex ga-2 align-center">
             <router-link
               :to="`/admin/service-provider-users?service_provider_id=${item.item.id}`"
               class="button button--edit px-2 rounded"
             >
-              <v-tooltip :text="$t('admin_navbar_links.services_providers_users')">
+              <v-tooltip
+                :text="$t('admin_navbar_links.services_providers_users')"
+              >
                 <template v-slot:activator="{ props }">
                   <span
                     v-bind="props"
