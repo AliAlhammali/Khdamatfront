@@ -101,7 +101,6 @@
               v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
             "
             hide-details
-            hide-selected
             hide-no-data
           />
           <p
@@ -118,9 +117,7 @@
         <v-col cols="12" md="6">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
             <span> {{ $t("admin_navbar_links.categories") }}</span>
-            <span class="text-red">*</span>
           </p>
-
           <v-select
             v-model="merchant.parent_id"
             :placeholder="$t('admin_navbar_links.categories')"
@@ -130,25 +127,9 @@
             outlined
             menu-icon="mdi mdi-chevron-down"
             class="text-capitalize rounded-xl"
-            @blur="v$.merchant.parent_id.$touch()"
-            :error="
-              v$.merchant.parent_id.$dirty &&
-              v$.merchant.parent_id.required.$invalid
-            "
             hide-details
-            hide-selected
             hide-no-data
           />
-          <p
-            class="text-error mt-2 d-flex ga-2 align-center"
-            v-if="
-              v$.merchant.parent_id.$dirty &&
-              v$.merchant.parent_id.required.$invalid
-            "
-          >
-            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
-            <span>{{ $t("errors.required") }}</span>
-          </p>
         </v-col>
 
         <v-col cols="12">
@@ -195,7 +176,7 @@ export default {
           en: { required },
         },
         merchant_id: { required },
-        parent_id: { required },
+        // parent_id: { required },
         status: { required },
       },
     };
@@ -224,15 +205,17 @@ export default {
     };
   },
   async mounted() {
-    await this.getCategoriesAdmin({ "filter[isParent]": 1, listing: 1 });
-    await this.getMerchantAdmin({
-      listing: 1,
-    });
     if (this.isEditMerchant) {
       const id = this.$route.params.id;
       await this.showCategoriesAdmin(id);
       this.merchant = { ...this.record };
+      this.merchant.parent_id = this.merchant.parent.id;
     }
+
+    await this.getCategoriesAdmin({ "filter[isParent]": 1, listing: 1 });
+    await this.getMerchantAdmin({
+      listing: 1,
+    });
   },
   computed: {
     ...mapState(useMerchantAdminStore, {

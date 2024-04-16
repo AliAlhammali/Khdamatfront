@@ -101,7 +101,6 @@
               v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
             "
             hide-details
-            hide-selected
             hide-no-data
           />
           <p
@@ -136,7 +135,6 @@
               v$.merchant.parent_id.required.$invalid
             "
             hide-details
-            hide-selected
             hide-no-data
             @update:model-value="
               getSubCategoriesAdmin({
@@ -178,7 +176,6 @@
               v$.merchant.category_id.required.$invalid
             "
             hide-details
-            hide-selected
             hide-no-data
             :disabled="merchant.parent_id == null"
           />
@@ -273,16 +270,22 @@ export default {
     };
   },
   async mounted() {
+    if (this.isEditMerchant) {
+      const id = this.$route.params.id;
+      await this.showServicesAdmin(id);
+      await this.getSubCategoriesAdmin({
+        main_category_id: this.record.category_id,
+        listing: 1,
+      });
+      this.merchant = { ...this.record };
+      this.merchant.parent_id = this.merchant?.main_category_id;
+      this.merchant.category_id = this.merchant?.category_id;
+    }
+
     await this.getMerchantAdmin({
       listing: 1,
     });
     await this.getCategoriesAdmin({ "filter[isParent]": 1, listing: 1 });
-
-    if (this.isEditMerchant) {
-      const id = this.$route.params.id;
-      await this.showServicesAdmin(id);
-      this.merchant = { ...this.record };
-    }
   },
   computed: {
     ...mapState(useMerchantAdminStore, {

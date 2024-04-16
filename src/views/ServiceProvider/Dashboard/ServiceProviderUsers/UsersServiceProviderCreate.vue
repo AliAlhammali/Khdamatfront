@@ -58,7 +58,6 @@
               v$.dataObj.status.$dirty && v$.dataObj.status.required.$invalid
             "
             hide-details
-            hide-selected
             hide-no-data
           />
           <p
@@ -90,7 +89,6 @@
             @blur="v$.dataObj.role.$touch()"
             :error="v$.dataObj.role.$dirty && v$.dataObj.role.required.$invalid"
             hide-details
-            hide-selected
             hide-no-data
           />
           <p
