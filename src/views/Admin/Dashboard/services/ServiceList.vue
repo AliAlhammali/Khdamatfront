@@ -140,7 +140,7 @@ export default {
           title: item.title ? item.title[this.$i18n.locale] : "---",
           email: item.email ? item.email : "---",
           status: item.status ? item.status : "---",
-          categoryTitle: item.category.title
+          categoryTitle: item.category?.title
             ? item.category.title[this.$i18n.locale]
             : "---",
         };

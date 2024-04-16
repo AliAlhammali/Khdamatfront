@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <template v-if="uiFlags.isLoading">
+    <template v-if="uiFlags.isLoading || categoriesUiFlags.isLoading || uiFlagsSub.isLoading">
       <loader />
     </template>
     <template v-else>
@@ -121,7 +121,7 @@
           </p>
 
           <v-select
-            v-model="merchant.parent_id"
+            v-model="merchant.main_category_id"
             :placeholder="$t('admin_navbar_links.categories')"
             :items="categoryList"
             :item-title="'title'"
@@ -129,16 +129,16 @@
             outlined
             menu-icon="mdi mdi-chevron-down"
             class="text-capitalize rounded-xl"
-            @blur="v$.merchant.parent_id.$touch()"
+            @blur="v$.merchant.main_category_id.$touch()"
             :error="
-              v$.merchant.parent_id.$dirty &&
-              v$.merchant.parent_id.required.$invalid
+              v$.merchant.main_category_id.$dirty &&
+              v$.merchant.main_category_id.required.$invalid
             "
             hide-details
             hide-no-data
             @update:model-value="
               getSubCategoriesAdmin({
-                main_category_id: merchant.parent_id,
+                'filter[parent_id]': merchant.main_category_id,
                 listing: 1,
               })
             "
@@ -146,8 +146,8 @@
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
             v-if="
-              v$.merchant.parent_id.$dirty &&
-              v$.merchant.parent_id.required.$invalid
+              v$.merchant.main_category_id.$dirty &&
+              v$.merchant.main_category_id.required.$invalid
             "
           >
             <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
@@ -160,7 +160,6 @@
             <span> {{ $t("admin_categories.sub_categories") }}</span>
             <span class="text-red">*</span>
           </p>
-
           <v-select
             v-model="merchant.category_id"
             :placeholder="$t('admin_categories.sub_categories')"
@@ -177,7 +176,8 @@
             "
             hide-details
             hide-no-data
-            :disabled="merchant.parent_id == null"
+            :disabled="merchant.main_category_id == null"
+
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -237,7 +237,7 @@ export default {
           en: { required },
         },
         merchant_id: { required },
-        parent_id: { required },
+        main_category_id: { required },
         category_id: { required },
         status: { required },
       },
@@ -253,7 +253,7 @@ export default {
 
         status: null,
         merchant_id: null,
-        parent_id: null,
+        main_category_id: null,
         category_id: null,
       },
       listStatus: [
@@ -266,7 +266,6 @@ export default {
           value: "inactive",
         },
       ],
-      main_category_id: null,
     };
   },
   async mounted() {
@@ -274,12 +273,10 @@ export default {
       const id = this.$route.params.id;
       await this.showServicesAdmin(id);
       await this.getSubCategoriesAdmin({
-        main_category_id: this.record.category_id,
+        "filter[parent_id]": this.record.main_category_id,
         listing: 1,
       });
       this.merchant = { ...this.record };
-      this.merchant.parent_id = this.merchant?.main_category_id;
-      this.merchant.category_id = this.merchant?.category_id;
     }
 
     await this.getMerchantAdmin({
