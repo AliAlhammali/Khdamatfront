@@ -37,6 +37,7 @@ export const useAuthServiceProviderStore = defineStore("AuthServiceProvider", {
         $cookies.remove("service_provider_khadamat_user");
 
         router.push({ name: "service-provider-login" });
+        window.location.reload();
       } catch (error) {
         console.error(error);
       }

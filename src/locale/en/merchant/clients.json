@@ -1,0 +1,14 @@
+{
+  "merchant": {
+    "clients": {
+      "search_placeholder": "Search clients",
+      "add_new": "Add new client",
+      "edit": "Edit client"
+    },
+    "branches": {
+      "search_placeholder": "Search Branches",
+      "add_new": "Add New Branch",
+      "edit": "Edit Branch"
+    }
+  }
+}

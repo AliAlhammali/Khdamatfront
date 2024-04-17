@@ -33,6 +33,7 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
       $cookies.remove("admin_khadamat_token");
       $cookies.remove("admin_khadamat_user");
       router.push({ name: "admin-login" });
+      window.location.reload();
     },
 
     checkCookie: function () {

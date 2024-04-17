@@ -117,49 +117,58 @@ export default {
       return [
         {
           title: this.$t("admin_navbar_links.users"),
-          icon: "mdi-store",
+          icon: "mdi-account-group-outline",
           key: "users_merchant",
           pages: [
-            [
-              this.$t("admin_navbar_links.users"),
-              "/merchant/users-merchant",
-            ],
+            [this.$t("admin_navbar_links.users"), "/merchant/users-merchant"],
           ],
         },
-        // {
-        //   title: this.$t("admin_navbar_links.services_providers"),
-        //   icon: "mdi-store",
-        //   key: "services_providers",
-        //   pages: [
-        //     [
-        //       this.$t("admin_navbar_links.services_providers"),
-        //       "/admin/service-provider",
-        //     ],
-        //     [
-        //       this.$t("admin_navbar_links.services_providers_users"),
-        //       "/admin/service-provider-users",
-        //     ],
-        //   ],
-        // },
-        // {
-        //   title: this.$t("admin_navbar_links.users"),
-        //   icon: "mdi-account-group",
-        //   key: "users",
-        //   pages: [[this.$t("admin_navbar_links.users"), "/admin/users-admin"]],
-        // },
+
         {
           title: this.$t("admin_navbar_links.categories"),
-          icon: "mdi-store",
+          icon: "mdi-store-outline",
           key: "merchant_categories",
           pages: [
-            [this.$t("admin_navbar_links.categories"), "/merchant/categories-merchant"],
+            [
+              this.$t("admin_navbar_links.categories"),
+              "/merchant/categories-merchant",
+            ],
           ],
         },
         {
           title: this.$t("admin_navbar_links.services"),
-          icon: "mdi-store",
+          icon: "mdi-cog-outline",
           key: "merchant_services",
-          pages: [[this.$t("admin_navbar_links.services"), "/merchant/services-merchant"]],
+          pages: [
+            [
+              this.$t("admin_navbar_links.services"),
+              "/merchant/services-merchant",
+            ],
+          ],
+        },
+
+
+        {
+          title: this.$t("admin_navbar_links.branches"),
+          icon: "mdi-storefront-plus-outline",
+          key: "merchant_branches",
+          pages: [
+            [
+              this.$t("admin_navbar_links.branches"),
+              "/merchant/branches-merchant",
+            ],
+          ],
+        },
+        {
+          title: this.$t("admin_navbar_links.clients"),
+          icon: "mdi-account-multiple-outline",
+          key: "merchant_clients",
+          pages: [
+            [
+              this.$t("admin_navbar_links.clients"),
+              "/merchant/clients-merchant",
+            ],
+          ],
         },
       ];
     },

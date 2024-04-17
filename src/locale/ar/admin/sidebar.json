@@ -7,6 +7,9 @@
     "services_providers": "مقدمين الخدمات",
     "services_providers_users": "مستخدمين مقدمي الخدمات",
     "categories": "التصنيفات",
-    "services": "الخدمات"
+    "services": "الخدمات",
+    "branches": "الفروع",
+    "orders": "الطلبات",
+    "clients": "العملاء"
   }
 }

@@ -1,0 +1,14 @@
+{
+  "merchant": {
+    "clients": {
+      "search_placeholder": "بحث عن عميل",
+      "add_new": "إضافة عميل جديد",
+      "edit": "تعديل"
+    },
+    "branches": {
+      "search_placeholder": "بحث عن فرع",
+      "add_new": "إضافة فرع جديد",
+      "edit": "تعديل"
+    }
+  }
+}

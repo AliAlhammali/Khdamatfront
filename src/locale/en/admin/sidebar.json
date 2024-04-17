@@ -7,6 +7,9 @@
     "services_providers": "Service Providers",
     "services_providers_users": "Service Providers Users",
     "categories": "Categories",
-    "services": "Services"
+    "services": "Services",
+    "branches": "Branches",
+    "order": "Orders",
+    "clients": "Clients"
   }
 }

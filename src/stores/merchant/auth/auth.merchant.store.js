@@ -36,6 +36,7 @@ export const useAuthMerchantStore = defineStore("AuthMerchant", {
         $cookies.remove("merchant_khadamat_user");
 
         router.push({ name: "merchant-login" });
+        window.location.reload();
       } catch (error) {
         console.error(error);
       }
