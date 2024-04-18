@@ -17,7 +17,7 @@
         <v-select
           :placeholder="$t('admin_navbar_links.services_providers')"
           :label="$t('admin_navbar_links.services_providers')"
-          v-model="params['filter[merchant_id]']"
+          v-model="params['filter[service_provider_id]']"
           :items="merchants?.data"
           item-text="name"
           item-value="id"
@@ -84,7 +84,7 @@ export default {
     return {
       params: {
         "filter[keyword]": null,
-        "filter[merchant_id]": null,
+        "filter[service_provider_id]": null,
         perPage: 10,
         page: 1,
       },
@@ -95,7 +95,7 @@ export default {
       listing: 1,
     });
     if (this.$route.query.service_provider_id) {
-      this.params["filter[merchant_id]"] = this.merchants.data.find(
+      this.params["filter[service_provider_id]"] = this.merchants.data.find(
         (item) => item.id == this.$route.query.service_provider_id
       ).id;
     }
