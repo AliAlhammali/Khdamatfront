@@ -66,6 +66,7 @@
               v$.merchant.merchant_id.$dirty &&
               v$.merchant.merchant_id.required.$invalid
             "
+            :no-data-text="$t('global.actions.no_data')"
             @blur="v$.merchant.merchant_id.$touch()"
           />
 
@@ -101,7 +102,7 @@
               v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
             "
             hide-details
-            hide-no-data
+            :no-data-text="$t('global.actions.no_data')"
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -128,7 +129,7 @@
             menu-icon="mdi mdi-chevron-down"
             class="text-capitalize rounded-xl"
             hide-details
-            hide-no-data
+            :no-data-text="$t('global.actions.no_data')"
           />
         </v-col>
 
@@ -162,6 +163,7 @@ import { required } from "@vuelidate/validators";
 import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
 import { useCategoriesAdminStore } from "@/stores/admin/categories/categories.admin.store";
 import Loader from "@/components/common/Loader.vue";
+import { updateToPatchData } from "@/helper/update.inputs.helper";
 
 export default {
   components: { FiledInput, Loader },
@@ -176,7 +178,6 @@ export default {
           en: { required },
         },
         merchant_id: { required },
-        // parent_id: { required },
         status: { required },
       },
     };
@@ -209,7 +210,7 @@ export default {
       const id = this.$route.params.id;
       await this.showCategoriesAdmin(id);
       this.merchant = { ...this.record };
-      this.merchant.parent_id = this.merchant.parent.id;
+      this.merchant.parent_id = this.record.parent.id;
     }
 
     await this.getCategoriesAdmin({ "filter[isParent]": 1, listing: 1 });
@@ -227,7 +228,10 @@ export default {
       return this.$route.name === "admin-categories-edit";
     },
     categoryList() {
-      return this.records?.data?.map((item) => {
+      const isEditList = this.isEditMerchant
+        ? this.records?.data?.filter((item) => item.id !== this.record.id)
+        : this.records?.data;
+      return isEditList?.map((item) => {
         return {
           ...item,
           title: item.title[this.$i18n.locale],
@@ -248,7 +252,8 @@ export default {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditMerchant) {
-        this.updateCategoriesAdmin({ ...this.merchant });
+        const data = updateToPatchData(this.merchant, this.record);
+        this.updateCategoriesAdmin(this.record.id, data);
         return;
       } else {
         this.createCategoriesAdmin({ ...this.merchant });

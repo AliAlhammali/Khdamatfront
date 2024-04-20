@@ -16,12 +16,12 @@ export const useServiceProvidersUsersAdminStore = defineStore(
         isLoading: false,
         isCreated: false,
         isUpdated: false,
-        isDeleted: false
-      }
+        isDeleted: false,
+      },
     }),
     getters: {},
     actions: {
-      getServiceProvidersUsersAdmin: async function (params) {
+      getServiceProvidersUsersAdmin: async function(params) {
         this.uiFlags.isLoading = true;
         try {
           const { data } = await ServiceProvidersUsersAdmin.get(params);
@@ -32,7 +32,7 @@ export const useServiceProvidersUsersAdminStore = defineStore(
           this.uiFlags.isLoading = false;
         }
       },
-      showServiceProvidersUsersAdmin: async function (id) {
+      showServiceProvidersUsersAdmin: async function(id) {
         this.uiFlags.isLoading = true;
         try {
           const { data } = await ServiceProvidersUsersAdmin.show(id);
@@ -43,11 +43,13 @@ export const useServiceProvidersUsersAdminStore = defineStore(
           this.uiFlags.isLoading = false;
         }
       },
-      createServiceProvidersUsersAdmin: async function (payload) {
+      createServiceProvidersUsersAdmin: async function(payload) {
         this.uiFlags.isCreated = true;
         try {
           await ServiceProvidersUsersAdmin.create(payload);
-          router.push({ name: "admin-service-provider-users-dashboard" });
+          router.push({
+            name: "admin-service-provider-users-dashboard",
+          });
           toast.success(i18n.global.t("global.actions.add_success"));
         } catch (error) {
           toast.error(i18n.global.t("global.actions.add_error"));
@@ -55,11 +57,13 @@ export const useServiceProvidersUsersAdminStore = defineStore(
           this.uiFlags.isCreated = false;
         }
       },
-      updateServiceProvidersUsersAdmin: async function (payload) {
+      updateServiceProvidersUsersAdmin: async function(id, payload) {
         this.uiFlags.isUpdated = true;
         try {
-          await ServiceProvidersUsersAdmin.update(payload.id, payload);
-          router.push({ name: "admin-service-provider-users-dashboard" });
+          await ServiceProvidersUsersAdmin.update(id, payload);
+          router.push({
+            name: "admin-service-provider-users-dashboard",
+          });
           toast.success(i18n.global.t("global.actions.edit_success"));
         } catch (error) {
           console.log(error, "error");
@@ -68,7 +72,7 @@ export const useServiceProvidersUsersAdminStore = defineStore(
           this.uiFlags.isUpdated = false;
         }
       },
-      deleteServiceProvidersUsersAdmin: async function (id) {
+      deleteServiceProvidersUsersAdmin: async function(id) {
         try {
           await ServiceProvidersUsersAdmin.delete(id);
           this.uiFlags.isDeleted = true;
@@ -78,7 +82,7 @@ export const useServiceProvidersUsersAdminStore = defineStore(
         } finally {
           this.uiFlags.isDeleted = false;
         }
-      }
-    }
-  }
+      },
+    },
+  },
 );

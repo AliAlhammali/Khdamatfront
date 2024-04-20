@@ -14,12 +14,12 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
       isLoading: false,
       isCreated: false,
       isUpdated: false,
-      isDeleted: false
-    }
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
-    getMerchantAdmin: async function (params) {
+    getMerchantAdmin: async function(params) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await MerchantAdminService.get(params);
@@ -30,7 +30,7 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    showMerchantAdmin: async function (id) {
+    showMerchantAdmin: async function(id) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await MerchantAdminService.show(id);
@@ -41,7 +41,7 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    createMerchantAdmin: async function (payload) {
+    createMerchantAdmin: async function(payload) {
       this.uiFlags.isCreated = true;
       try {
         await MerchantAdminService.create(payload);
@@ -53,10 +53,10 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         this.uiFlags.isCreated = false;
       }
     },
-    updateMerchantAdmin: async function (payload) {
+    updateMerchantAdmin: async function(id, payload) {
       this.uiFlags.isUpdated = true;
       try {
-        await MerchantAdminService.update(payload.id, payload);
+        await MerchantAdminService.update(id, payload);
         router.push({ name: "admin-merchant-dashboard" });
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
@@ -65,7 +65,7 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
         this.uiFlags.isUpdated = false;
       }
     },
-    deleteMerchantAdmin: async function (id) {
+    deleteMerchantAdmin: async function(id) {
       this.uiFlags.isDeleted = true;
       try {
         await MerchantAdminService.delete(id);
@@ -76,6 +76,6 @@ export const useMerchantAdminStore = defineStore("MerchantAdmin", {
       } finally {
         this.uiFlags.isDeleted = false;
       }
-    }
-  }
+    },
+  },
 });

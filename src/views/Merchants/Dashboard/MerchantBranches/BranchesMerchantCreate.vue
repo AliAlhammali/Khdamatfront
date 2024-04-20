@@ -81,6 +81,7 @@ import { required } from "@vuelidate/validators";
 import Loader from "@/components/common/Loader.vue";
 
 import { useBranchesMerchantStore } from "@/stores/merchant/branches/branches.merchant.store";
+import { updateToPatchData } from "@/helper/update.inputs.helper";
 
 export default {
   components: { FiledInput, Loader },
@@ -114,6 +115,8 @@ export default {
     };
   },
   async mounted() {
+    this.getLocation();
+
     if (this.isEditDataObj) {
       const id = this.$route.params.id;
       await this.showBranchesMerchant(id);
@@ -159,11 +162,11 @@ export default {
     ]),
 
     actionBtn() {
-      this.getLocation();
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditDataObj) {
-        this.updateBranchesMerchant({ ...this.dataObj });
+        const data = updateToPatchData(this.dataObj, this.record);
+        this.updateBranchesMerchant(this.record.id, data);
         return;
       } else {
         this.createBranchesMerchant({ ...this.dataObj });

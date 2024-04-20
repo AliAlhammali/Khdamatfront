@@ -35,7 +35,7 @@ export default defineConfig({
   },
   define: { "process.env": {} },
 
-  base: "./",
+  base: "/",
   build: {
     target: "esnext"
   }

@@ -117,7 +117,7 @@ export default {
       return [
         {
           title: this.$t("admin_navbar_links.merchant"),
-          icon: "mdi-store",
+          icon: "mdi-account-tie-outline",
           key: "merchant",
           pages: [
             [this.$t("admin_navbar_links.merchant"), "/admin/merchant"],
@@ -129,7 +129,7 @@ export default {
         },
         {
           title: this.$t("admin_navbar_links.services_providers"),
-          icon: "mdi-store",
+          icon: "mdi-account-supervisor-outline",
           key: "services_providers",
           pages: [
             [
@@ -144,13 +144,13 @@ export default {
         },
         {
           title: this.$t("admin_navbar_links.users"),
-          icon: "mdi-account-group",
+          icon: "mdi-account-group-outline",
           key: "users",
           pages: [[this.$t("admin_navbar_links.users"), "/admin/users-admin"]],
         },
         {
           title: this.$t("admin_navbar_links.categories"),
-          icon: "mdi-store",
+          icon: "mdi-store-outline",
           key: "categories",
           pages: [
             [this.$t("admin_navbar_links.categories"), "/admin/categories"],
@@ -158,7 +158,7 @@ export default {
         },
         {
           title: this.$t("admin_navbar_links.services"),
-          icon: "mdi-store",
+          icon: "mdi-cog-outline",
           key: "services",
           pages: [[this.$t("admin_navbar_links.services"), "/admin/service"]],
         },

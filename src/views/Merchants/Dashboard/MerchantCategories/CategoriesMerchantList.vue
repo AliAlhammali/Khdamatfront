@@ -4,7 +4,7 @@
       :title="$t('admin_navbar_links.categories')"
       :placeholder="$t('admin_merchant.search_placeholder_categories')"
       :headers="headers"
-      :slots-items="['title', 'status', 'actions']"
+      :slots-items="['status', 'actions']"
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
@@ -21,10 +21,6 @@
         >
           {{ $t(`global.status.${item.item.status}`) }}
         </span>
-      </template>
-      <template #title="{ item }">
-        <p>{{ item.item.title.ar }}</p>
-        <p>{{ item.item.title.en }}</p>
       </template>
 
       <template #actions="{ item }">
@@ -110,7 +106,7 @@ export default {
       return this.records?.data?.map((item) => {
         return {
           ...item,
-          title: item.title ? item.title : "---",
+          title: item.title ? item.title[this.$i18n.locale] : "---",
           email: item.email ? item.email : "---",
           status: item.status ? item.status : "---",
           merchant: item.merchant ? item.merchant.title : "---",

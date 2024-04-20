@@ -9,6 +9,7 @@
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
+      :has-filter="true"
       @changePage="changePage"
       @changePerPage="changePerPage"
       @search="search"
@@ -26,6 +27,9 @@
           outlined
           :loader="merchantsUiFlags?.isLoading"
           @update:modelValue="getMerchantUsersAdmin(params)"
+          :no-data-text="$t('global.actions.no_data')"
+          hide-details
+          hide-selected
         />
       </template>
       <template #role="{ item }">
@@ -208,6 +212,18 @@ export default {
         "filter[keyword]": text,
       };
       this.getMerchantUsersAdmin(key);
+    },
+  },
+  watch: {
+    $route(to, from) {
+      if (to.query.merchant_id) {
+        this.params["filter[merchant_id]"] = this.merchants.data.find(
+          (item) => item.id == to.query.merchant_id
+        ).id;
+      } else {
+        this.params["filter[merchant_id]"] = null;
+      }
+      this.getMerchantUsersAdmin(this.params);
     },
   },
 };

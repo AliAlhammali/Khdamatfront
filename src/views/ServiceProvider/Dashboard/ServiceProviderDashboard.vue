@@ -118,7 +118,7 @@ export default {
       return [
         {
           title: this.$t("admin_navbar_links.users"),
-          icon: "mdi-store",
+          icon: "mdi-account-group-outline",
           key: "service_provider_users",
           pages: [
             [
@@ -127,30 +127,9 @@ export default {
             ],
           ],
         },
-        // {
-        //   title: this.$t("admin_navbar_links.services_providers"),
-        //   icon: "mdi-store",
-        //   key: "services_providers",
-        //   pages: [
-        //     [
-        //       this.$t("admin_navbar_links.services_providers"),
-        //       "/admin/service-provider",
-        //     ],
-        //     [
-        //       this.$t("admin_navbar_links.services_providers_users"),
-        //       "/admin/service-provider-users",
-        //     ],
-        //   ],
-        // },
-        // {
-        //   title: this.$t("admin_navbar_links.users"),
-        //   icon: "mdi-account-group",
-        //   key: "users",
-        //   pages: [[this.$t("admin_navbar_links.users"), "/admin/users-admin"]],
-        // },
         {
           title: this.$t("admin_navbar_links.categories"),
-          icon: "mdi-store",
+          icon: "mdi-store-outline",
           key: "categories",
           pages: [
             [
@@ -161,7 +140,7 @@ export default {
         },
         {
           title: this.$t("admin_navbar_links.services"),
-          icon: "mdi-store",
+          icon: "mdi-cog-outline",
           key: "services",
           pages: [
             [

@@ -72,7 +72,7 @@
             "
             hide-details
             hide-selected
-            hide-no-data
+            :no-data-text="$t('global.actions.no_data')"
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -268,10 +268,12 @@ export default {
         },
       },
       files: {
-        logo: { required },
-        vat_file: { required },
-        cr_file: { required },
-        sales_agreement_file: { required },
+        logo: { required: requiredIf(() => !this.isEditMerchant) },
+        vat_file: { required: requiredIf(() => !this.isEditMerchant) },
+        cr_file: { required: requiredIf(() => !this.isEditMerchant) },
+        sales_agreement_file: {
+          required: requiredIf(() => !this.isEditMerchant),
+        },
       },
     };
   },

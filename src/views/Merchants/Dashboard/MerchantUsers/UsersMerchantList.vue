@@ -16,17 +16,17 @@
       <template #status="{ item }">
         <span
           class="badge badge--status"
-          :class="item.item.status === 'active' ? 'badge--success' : 'badge--danger'"
+          :class="
+            item.item.status === 'active' ? 'badge--success' : 'badge--danger'
+          "
         >
-        {{ $t(`global.status.${item.item.status}`) }}
+          {{ $t(`global.status.${item.item.status}`) }}
         </span>
       </template>
 
       <template #role="{ item }">
-        <span
-          class="badge badge--status"
-        >
-          {{ $t(`global.role.${item.item.role}`)  }}
+        <span class="badge badge--status">
+          {{ $t(`global.role.${item.item.role}`) }}
         </span>
       </template>
 

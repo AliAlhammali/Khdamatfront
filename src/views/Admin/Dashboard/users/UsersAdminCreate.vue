@@ -83,6 +83,7 @@ import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import Loader from "@/components/common/Loader.vue";
+import { updateToPatchData } from "@/helper/update.inputs.helper";
 export default {
   components: { FiledInput, Loader },
   setup() {
@@ -155,7 +156,8 @@ export default {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditMerchant) {
-        this.updateUsersAdmin({ ...this.merchant });
+        const data = updateToPatchData(this.merchant, this.record);
+        this.updateUsersAdmin(this.record.id, data);
         return;
       } else {
         this.createUsersAdmin({ ...this.merchant });

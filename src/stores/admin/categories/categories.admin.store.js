@@ -14,19 +14,19 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
       isLoading: false,
       isCreated: false,
       isUpdated: false,
-      isDeleted: false
+      isDeleted: false,
     },
     subCategories: [],
     uiFlagsSub: {
       isLoading: false,
       isCreated: false,
       isUpdated: false,
-      isDeleted: false
-    }
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
-    getCategoriesAdmin: async function (params) {
+    getCategoriesAdmin: async function(params) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await CategoriesAdminService.get(params);
@@ -37,7 +37,7 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    getSubCategoriesAdmin: async function (params) {
+    getSubCategoriesAdmin: async function(params) {
       this.uiFlagsSub.isLoading = true;
       try {
         const { data } = await CategoriesAdminService.get(params);
@@ -48,7 +48,7 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         this.uiFlagsSub.isLoading = false;
       }
     },
-    showCategoriesAdmin: async function (id) {
+    showCategoriesAdmin: async function(id) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await CategoriesAdminService.show(id);
@@ -59,7 +59,7 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    createCategoriesAdmin: async function (payload) {
+    createCategoriesAdmin: async function(payload) {
       this.uiFlags.isCreated = true;
       try {
         await CategoriesAdminService.create(payload);
@@ -71,10 +71,10 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         this.uiFlags.isCreated = false;
       }
     },
-    updateCategoriesAdmin: async function (payload) {
+    updateCategoriesAdmin: async function(id, payload) {
       this.uiFlags.isUpdated = true;
       try {
-        await CategoriesAdminService.update(payload.id, payload);
+        await CategoriesAdminService.update(id, payload);
         router.push({ name: "admin-categories-dashboard" });
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
@@ -83,7 +83,7 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         this.uiFlags.isUpdated = false;
       }
     },
-    deleteCategoriesAdmin: async function (id) {
+    deleteCategoriesAdmin: async function(id) {
       this.uiFlags.isDeleted = true;
       try {
         await CategoriesAdminService.delete(id);
@@ -94,6 +94,6 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
       } finally {
         this.uiFlags.isDeleted = false;
       }
-    }
-  }
+    },
+  },
 });

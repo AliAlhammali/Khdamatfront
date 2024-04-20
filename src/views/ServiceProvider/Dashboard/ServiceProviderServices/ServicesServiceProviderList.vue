@@ -4,10 +4,11 @@
       :title="$t('admin_navbar_links.services')"
       :placeholder="$t('admin_services.search_services')"
       :headers="headers"
-      :slots-items="['title', 'status', 'category']"
+      :slots-items="['status']"
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
+      :has-filter="true"
       @changePage="changePage"
       @changePerPage="changePerPage"
       @search="search"
@@ -24,6 +25,9 @@
           outlined
           :loader="uiFlagsCategories?.isLoading"
           @update:modelValue="getServicesServiceProvider(params)"
+          :no-data-text="$t('global.actions.no_data')"
+          hide-details
+          hide-selected
         >
         </v-select>
       </template>
@@ -36,18 +40,6 @@
         >
           {{ $t(`global.status.${item.item.status}`) }}
         </span>
-      </template>
-      <template #category="{ item }">
-        <p>
-          {{ item.item.category.title.ar }}
-        </p>
-        <p>
-          {{ item.item.category.title.en }}
-        </p>
-      </template>
-      <template #title="{ item }">
-        <p>{{ item.item.title.ar }}</p>
-        <p>{{ item.item.title.en }}</p>
       </template>
     </data-table>
   </div>
@@ -76,7 +68,7 @@ export default {
   },
   async mounted() {
     if (this.$route.query.category_id) {
-      this.params["filter[category_id]"]= this.listCategories.find(
+      this.params["filter[category_id]"] = this.listCategories.find(
         (item) => item.id == this.$route.query.category_id
       ).id;
     }
@@ -110,6 +102,12 @@ export default {
           key: "category",
         },
         {
+          title: this.$t("admin_merchant.fields.sp_price"),
+          align: "start",
+          sortable: true,
+          key: "sp_price",
+        },
+        {
           title: this.$t("admin_categories.fields.status"),
           align: "start",
           sortable: true,
@@ -121,10 +119,12 @@ export default {
       return this.records?.data?.map((item) => {
         return {
           ...item,
-          title: item.title ? item.title : "---",
+          title: item.title ? item.title[this.$i18n.locale] : "---",
           email: item.email ? item.email : "---",
           status: item.status ? item.status : "---",
-          merchant: item.category ? item.category : "---",
+          category: item.category
+            ? item.category.title[this.$i18n.locale]
+            : "---",
         };
       });
     },
@@ -159,6 +159,18 @@ export default {
         "filter[keyword]": text,
       };
       this.getServicesServiceProvider(key);
+    },
+  },
+  watch: {
+    $route(to, from) {
+      if (to.query.category_id) {
+        this.params["filter[category_id]"] = this.listCategories.find(
+          (item) => item.id == to.query.category_id
+        ).id;
+      } else {
+        this.params["filter[category_id]"] = null;
+      }
+      this.getServicesServiceProvider(this.params);
     },
   },
 };

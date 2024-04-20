@@ -9,7 +9,7 @@
     "edit_title": "تعديل تاجر",
     "edit_user_title": "تعديل مستخدم",
     "fields": {
-      "title": "العنوان",
+      "title": "الاسم",
       "description": "الوصف",
       "address": "العنوان",
       "merchant": "التاجر",
@@ -28,6 +28,8 @@
       "name": "الاسم",
       "role": "الدور",
       "password": "كلمة المرور",
+      "sp_price": "سعر مقدم الخدمة",
+      "price": "السعر",
       "owner": {
         "name": "اسم المالك",
         "email": "بريد المالك"

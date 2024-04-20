@@ -14,12 +14,12 @@ export const useClientsMerchantStore = defineStore("ClientsMerchant", {
       isLoading: false,
       isCreated: false,
       isUpdated: false,
-      isDeleted: false
-    }
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
-    getClientsMerchant: async function (params) {
+    getClientsMerchant: async function(params) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await ClientsMerchant.get(params);
@@ -30,7 +30,7 @@ export const useClientsMerchantStore = defineStore("ClientsMerchant", {
         this.uiFlags.isLoading = false;
       }
     },
-    showClientsMerchant: async function (id) {
+    showClientsMerchant: async function(id) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await ClientsMerchant.show(id);
@@ -41,7 +41,7 @@ export const useClientsMerchantStore = defineStore("ClientsMerchant", {
         this.uiFlags.isLoading = false;
       }
     },
-    createClientsMerchant: async function (payload) {
+    createClientsMerchant: async function(payload) {
       this.uiFlags.isCreated = true;
       try {
         await ClientsMerchant.create(payload);
@@ -53,10 +53,10 @@ export const useClientsMerchantStore = defineStore("ClientsMerchant", {
         this.uiFlags.isCreated = false;
       }
     },
-    updateClientsMerchant: async function (payload) {
+    updateClientsMerchant: async function(id, payload) {
       this.uiFlags.isUpdated = true;
       try {
-        await ClientsMerchant.update(payload.id, payload);
+        await ClientsMerchant.update(id, payload);
         router.push({ name: "clients-merchant-dashboard" });
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
@@ -65,7 +65,7 @@ export const useClientsMerchantStore = defineStore("ClientsMerchant", {
         this.uiFlags.isUpdated = false;
       }
     },
-    deleteClientsMerchant: async function (id) {
+    deleteClientsMerchant: async function(id) {
       this.uiFlags.isDeleted = true;
       try {
         await ClientsMerchant.delete(id);
@@ -76,6 +76,6 @@ export const useClientsMerchantStore = defineStore("ClientsMerchant", {
       } finally {
         this.uiFlags.isDeleted = false;
       }
-    }
-  }
+    },
+  },
 });

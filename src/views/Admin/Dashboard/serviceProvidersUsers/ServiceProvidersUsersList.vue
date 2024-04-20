@@ -9,6 +9,7 @@
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
+      :has-filter="true"
       @changePage="changePage"
       @changePerPage="changePerPage"
       @search="search"
@@ -26,6 +27,9 @@
           outlined
           :loader="merchantsUiFlags?.isLoading"
           @update:modelValue="getServiceProvidersUsersAdmin(params)"
+          :no-data-text="$t('global.actions.no_data')"
+          hide-details
+          hide-selected
         />
       </template>
       <template #status="{ item }">
@@ -209,6 +213,18 @@ export default {
         "filter[keyword]": text,
       };
       this.getServiceProvidersUsersAdmin(key);
+    },
+  },
+  watch: {
+    $route(to, from) {
+      if (to.query.service_provider_id) {
+        this.params["filter[service_provider_id]"] = this.merchants.data.find(
+          (item) => item.id == to.query.service_provider_id
+        ).id;
+      } else {
+        this.params["filter[service_provider_id]"] = null;
+      }
+      this.getServiceProvidersUsersAdmin(this.params);
     },
   },
 };

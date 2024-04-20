@@ -1,39 +1,47 @@
 <template>
   <div class="table border">
     <div class="mb-4 pa-4 border-b">
-      <v-row class="w-100 justify-end align-center">
-        <v-col md="3" cols="6">
+      <v-row class="align-center justify-space-between">
+        <v-col md="4">
           <h2>
             {{ title }}
           </h2>
         </v-col>
-        <v-col md="4" cols="6">
+
+        <v-col md="8">
+          <v-row class="align-center justify-end">
+            <v-col md="8" cols="6">
+              <label class="border d-flex align-center ga-2 pa-3 rounded w-100">
+                <input
+                  type="text"
+                  :placeholder="placeholder"
+                  v-model="search"
+                  @input="searchItems"
+                  class="w-100"
+                />
+                <span>
+                  <span class="fa fa-search"></span>
+                </span>
+              </label>
+            </v-col>
+            <v-col md="4" cols="6" v-if="createPage.length">
+              <router-link
+                :to="createPage"
+                class="button button--outline pa-3 w-100 d-flex"
+              >
+                <span class="fa fa-plus"></span>
+                <span>
+                  {{ $t("global.actions.add") }}
+                </span>
+              </router-link>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+
+      <v-row class="justify-end align-center border-t" v-if="hasFilter">
+        <v-col md="12" cols="6">
           <slot name="filter"></slot>
-        </v-col>
-        <v-col md="3" cols="6">
-          <label class="border d-flex align-center ga-2 pa-3 rounded w-100">
-            <input
-              type="text"
-              :placeholder="placeholder"
-              v-model="search"
-              @input="searchItems"
-              class="w-100"
-            />
-            <span>
-              <span class="fa fa-search"></span>
-            </span>
-          </label>
-        </v-col>
-        <v-col md="2" cols="6">
-          <router-link
-            :to="createPage"
-            class="button button--outline pa-3 w-100"
-          >
-            <span class="fa fa-plus"></span>
-            <span>
-              {{ $t("global.actions.add") }}
-            </span>
-          </router-link>
         </v-col>
       </v-row>
     </div>
@@ -169,6 +177,10 @@ export default {
     createPage: {
       type: String,
       default: "",
+    },
+    hasFilter: {
+      type: Boolean,
+      default: false,
     },
   },
 

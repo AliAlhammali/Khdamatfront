@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <template v-if="uiFlags.isLoading || categoriesUiFlags.isLoading || uiFlagsSub.isLoading">
+    <template v-if="uiFlags.isLoading">
       <loader />
     </template>
     <template v-else>
@@ -66,6 +66,7 @@
               v$.merchant.merchant_id.$dirty &&
               v$.merchant.merchant_id.required.$invalid
             "
+            :no-data-text="$t('global.actions.no_data')"
             @blur="v$.merchant.merchant_id.$touch()"
           />
 
@@ -86,7 +87,6 @@
             <span> {{ $t("admin_merchant.fields.status") }}</span>
             <span class="text-red">*</span>
           </p>
-
           <v-select
             v-model="merchant.status"
             :placeholder="$t('admin_merchant.fields.status')"
@@ -101,7 +101,7 @@
               v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
             "
             hide-details
-            hide-no-data
+            :no-data-text="$t('global.actions.no_data')"
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -119,7 +119,6 @@
             <span> {{ $t("admin_navbar_links.categories") }}</span>
             <span class="text-red">*</span>
           </p>
-
           <v-select
             v-model="merchant.main_category_id"
             :placeholder="$t('admin_navbar_links.categories')"
@@ -135,12 +134,16 @@
               v$.merchant.main_category_id.required.$invalid
             "
             hide-details
-            hide-no-data
+            :no-data-text="$t('global.actions.no_data')"
             @update:model-value="
-              getSubCategoriesAdmin({
-                'filter[parent_id]': merchant.main_category_id,
-                listing: 1,
-              })
+              () => {
+                getSubCategoriesAdmin({
+                  'filter[parent_id]': merchant.main_category_id,
+                  listing: 1,
+                });
+                this.merchant.category_id = null;
+                this.v$.merchant.category_id.$reset();
+              }
             "
           />
           <p
@@ -175,9 +178,8 @@
               v$.merchant.category_id.required.$invalid
             "
             hide-details
-            hide-no-data
+            :no-data-text="$t('global.actions.no_data')"
             :disabled="merchant.main_category_id == null"
-
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -223,6 +225,7 @@ import { useServicesAdminStore } from "@/stores/admin/services/services.admin.st
 
 import Loader from "@/components/common/Loader.vue";
 import { useCategoriesAdminStore } from "@/stores/admin/categories/categories.admin.store";
+import { updateToPatchData } from "@/helper/update.inputs.helper";
 
 export default {
   components: { FiledInput, Loader },
@@ -277,6 +280,7 @@ export default {
         listing: 1,
       });
       this.merchant = { ...this.record };
+      this.merchant.category_id = this.record.category_id;
     }
 
     await this.getMerchantAdmin({
@@ -332,7 +336,8 @@ export default {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditMerchant) {
-        this.updateServicesAdmin({ ...this.merchant });
+        const data = updateToPatchData(this.merchant, this.record);
+        this.updateServicesAdmin(this.record.id, data);
         return;
       } else {
         this.createServicesAdmin({ ...this.merchant });

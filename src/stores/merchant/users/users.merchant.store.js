@@ -14,12 +14,12 @@ export const useUsersMerchantStore = defineStore("UsersMerchant", {
       isLoading: false,
       isCreated: false,
       isUpdated: false,
-      isDeleted: false
-    }
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
-    getUsersMerchant: async function (params) {
+    getUsersMerchant: async function(params) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await UsersMerchant.get(params);
@@ -30,7 +30,7 @@ export const useUsersMerchantStore = defineStore("UsersMerchant", {
         this.uiFlags.isLoading = false;
       }
     },
-    showUsersMerchant: async function (id) {
+    showUsersMerchant: async function(id) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await UsersMerchant.show(id);
@@ -41,7 +41,7 @@ export const useUsersMerchantStore = defineStore("UsersMerchant", {
         this.uiFlags.isLoading = false;
       }
     },
-    createUsersMerchant: async function (payload) {
+    createUsersMerchant: async function(payload) {
       this.uiFlags.isCreated = true;
       try {
         await UsersMerchant.create(payload);
@@ -53,10 +53,10 @@ export const useUsersMerchantStore = defineStore("UsersMerchant", {
         this.uiFlags.isCreated = false;
       }
     },
-    updateUsersMerchant: async function (payload) {
+    updateUsersMerchant: async function(id, payload) {
       this.uiFlags.isUpdated = true;
       try {
-        await UsersMerchant.update(payload.id, payload);
+        await UsersMerchant.update(id, payload);
         router.push({ name: "users-merchant-dashboard" });
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
@@ -65,7 +65,7 @@ export const useUsersMerchantStore = defineStore("UsersMerchant", {
         this.uiFlags.isUpdated = false;
       }
     },
-    deleteUsersMerchant: async function (id) {
+    deleteUsersMerchant: async function(id) {
       this.uiFlags.isDeleted = true;
       try {
         await UsersMerchant.delete(id);
@@ -76,6 +76,6 @@ export const useUsersMerchantStore = defineStore("UsersMerchant", {
       } finally {
         this.uiFlags.isDeleted = false;
       }
-    }
-  }
+    },
+  },
 });

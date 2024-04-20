@@ -69,9 +69,9 @@
             :error="
               v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
             "
+            :no-data-text="$t('global.actions.no_data')"
             hide-details
             hide-selected
-            hide-no-data
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -240,6 +240,7 @@ import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, requiredIf } from "@vuelidate/validators";
 import Loader from "@/components/common/Loader.vue";
+import { updateToPatchData } from "@/helper/update.inputs.helper";
 export default {
   components: { FiledInput, Loader },
   setup() {
@@ -267,10 +268,12 @@ export default {
         },
       },
       files: {
-        logo: { required },
-        vat_file: { required },
-        cr_file: { required },
-        sales_agreement_file: { required },
+        logo: { required: requiredIf(() => !this.isEditMerchant) },
+        vat_file: { required: requiredIf(() => !this.isEditMerchant) },
+        cr_file: { required: requiredIf(() => !this.isEditMerchant) },
+        sales_agreement_file: {
+          required: requiredIf(() => !this.isEditMerchant),
+        },
       },
     };
   },
@@ -413,7 +416,8 @@ export default {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditMerchant) {
-        this.updateServiceProvidersAdmin({ ...this.merchant });
+        const data = updateToPatchData(this.record, this.merchant);
+        this.updateServiceProvidersAdmin(this.record.id, data);
         return;
       } else {
         this.createServiceProvidersAdmin({ ...this.merchant });
@@ -422,7 +426,7 @@ export default {
     async upload(event, key) {
       const file = event.target.files[0];
       const { data } = await this.uploadFile(file);
-      this.files[key] = file; // Update the file property in Vue.js
+      this.files[key] = file;
       this.merchant[key] = data.data.path;
     },
   },

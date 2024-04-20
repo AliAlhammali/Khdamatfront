@@ -20,7 +20,9 @@
       "add_error": "Error adding item",
       "upload_success": "File uploaded successfully",
       "upload_error": "Error uploading file",
-      "logout": "Logout"
+      "logout": "Logout",
+      "view_file": "View file",
+      "no_data": "No data available"
     },
     "status": {
       "active": "Active",

@@ -81,6 +81,7 @@ import { required, email } from "@vuelidate/validators";
 import Loader from "@/components/common/Loader.vue";
 
 import { useClientsMerchantStore } from "@/stores/merchant/clients/clients.merchant.store";
+import { updateToPatchData } from "@/helper/update.inputs.helper";
 
 export default {
   components: { FiledInput, Loader },
@@ -118,6 +119,8 @@ export default {
     };
   },
   async mounted() {
+    this.getLocation();
+
     if (this.isEditDataObj) {
       const id = this.$route.params.id;
       await this.showClientsMerchant(id);
@@ -183,11 +186,11 @@ export default {
     ]),
 
     actionBtn() {
-      this.getLocation();
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditDataObj) {
-        this.updateClientsMerchant({ ...this.dataObj });
+        const data = updateToPatchData(this.dataObj, this.record);
+        this.updateClientsMerchant(this.record.id, data);
         return;
       } else {
         this.createClientsMerchant({ ...this.dataObj });

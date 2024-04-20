@@ -37,6 +37,9 @@
               v$.merchant.merchant_id.$dirty &&
               v$.merchant.merchant_id.required.$invalid
             "
+            :no-data-text="$t('global.actions.no_data')"
+            hide-details
+            hide-selected
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -112,6 +115,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
 import Loader from "@/components/common/Loader.vue";
+import { updateToPatchData } from "@/helper/update.inputs.helper";
 
 export default {
   components: { FiledInput, Loader },
@@ -202,7 +206,8 @@ export default {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditMerchant) {
-        this.updateMerchantUsersAdmin({ ...this.merchant });
+        const data = updateToPatchData(this.merchant, this.record);
+        this.updateMerchantUsersAdmin(this.record.id, data);
         return;
       } else {
         this.createMerchantUsersAdmin({ ...this.merchant });

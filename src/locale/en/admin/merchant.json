@@ -26,6 +26,8 @@
       "name": "Name",
       "role": "Role",
       "password": "Password",
+      "sp_price": "SP Price",
+      "price": "Price",
       "owner": {
         "name": "Owner Name",
         "email": "Owner Email"

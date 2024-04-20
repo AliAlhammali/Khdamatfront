@@ -14,12 +14,12 @@ export const useBranchesMerchantStore = defineStore("BranchesMerchant", {
       isLoading: false,
       isCreated: false,
       isUpdated: false,
-      isDeleted: false
-    }
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
-    getBranchesMerchant: async function (params) {
+    getBranchesMerchant: async function(params) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await BranchesMerchant.get(params);
@@ -30,7 +30,7 @@ export const useBranchesMerchantStore = defineStore("BranchesMerchant", {
         this.uiFlags.isLoading = false;
       }
     },
-    showBranchesMerchant: async function (id) {
+    showBranchesMerchant: async function(id) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await BranchesMerchant.show(id);
@@ -41,7 +41,7 @@ export const useBranchesMerchantStore = defineStore("BranchesMerchant", {
         this.uiFlags.isLoading = false;
       }
     },
-    createBranchesMerchant: async function (payload) {
+    createBranchesMerchant: async function(payload) {
       this.uiFlags.isCreated = true;
       try {
         await BranchesMerchant.create(payload);
@@ -53,10 +53,10 @@ export const useBranchesMerchantStore = defineStore("BranchesMerchant", {
         this.uiFlags.isCreated = false;
       }
     },
-    updateBranchesMerchant: async function (payload) {
+    updateBranchesMerchant: async function(id, payload) {
       this.uiFlags.isUpdated = true;
       try {
-        await BranchesMerchant.update(payload.id, payload);
+        await BranchesMerchant.update(id, payload);
         router.push({ name: "branches-merchant-dashboard" });
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
@@ -65,7 +65,7 @@ export const useBranchesMerchantStore = defineStore("BranchesMerchant", {
         this.uiFlags.isUpdated = false;
       }
     },
-    deleteBranchesMerchant: async function (id) {
+    deleteBranchesMerchant: async function(id) {
       this.uiFlags.isDeleted = true;
       try {
         await BranchesMerchant.delete(id);
@@ -76,6 +76,6 @@ export const useBranchesMerchantStore = defineStore("BranchesMerchant", {
       } finally {
         this.uiFlags.isDeleted = false;
       }
-    }
-  }
+    },
+  },
 });

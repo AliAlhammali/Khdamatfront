@@ -14,12 +14,12 @@ export const useUsersAdminStore = defineStore("UsersAdmin", {
       isLoading: false,
       isCreated: false,
       isUpdated: false,
-      isDeleted: false
-    }
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
-    getUsersAdmin: async function (params) {
+    getUsersAdmin: async function(params) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await UsersAdminService.get(params);
@@ -30,7 +30,7 @@ export const useUsersAdminStore = defineStore("UsersAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    showUsersAdmin: async function (id) {
+    showUsersAdmin: async function(id) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await UsersAdminService.show(id);
@@ -41,7 +41,7 @@ export const useUsersAdminStore = defineStore("UsersAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    createUsersAdmin: async function (payload) {
+    createUsersAdmin: async function(payload) {
       this.uiFlags.isCreated = true;
       try {
         await UsersAdminService.create(payload);
@@ -53,10 +53,10 @@ export const useUsersAdminStore = defineStore("UsersAdmin", {
         this.uiFlags.isCreated = false;
       }
     },
-    updateUsersAdmin: async function (payload) {
+    updateUsersAdmin: async function(id, payload) {
       this.uiFlags.isUpdated = true;
       try {
-        await UsersAdminService.update(payload.id, payload);
+        await UsersAdminService.update(id, payload);
         router.push({ name: "users-admin-dashboard" });
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
@@ -65,7 +65,7 @@ export const useUsersAdminStore = defineStore("UsersAdmin", {
         this.uiFlags.isUpdated = false;
       }
     },
-    deleteUsersAdmin: async function (id) {
+    deleteUsersAdmin: async function(id) {
       this.uiFlags.isDeleted = true;
       try {
         await UsersAdminService.delete(id);
@@ -76,6 +76,6 @@ export const useUsersAdminStore = defineStore("UsersAdmin", {
       } finally {
         this.uiFlags.isDeleted = false;
       }
-    }
-  }
+    },
+  },
 });

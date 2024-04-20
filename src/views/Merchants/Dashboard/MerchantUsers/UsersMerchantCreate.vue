@@ -57,8 +57,9 @@
             :error="
               v$.dataObj.status.$dirty && v$.dataObj.status.required.$invalid
             "
+            :no-data-text="$t('global.actions.no_data')"
             hide-details
-            hide-no-data
+            hide-selected
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -88,8 +89,9 @@
             class="text-capitalize rounded-xl"
             @blur="v$.dataObj.role.$touch()"
             :error="v$.dataObj.role.$dirty && v$.dataObj.role.required.$invalid"
+            :no-data-text="$t('global.actions.no_data')"
             hide-details
-            hide-no-data
+            hide-selected
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -146,6 +148,7 @@ import { required, email } from "@vuelidate/validators";
 import Loader from "@/components/common/Loader.vue";
 
 import { useUsersMerchantStore } from "@/stores/merchant/users/users.merchant.store";
+import { updateToPatchData } from "@/helper/update.inputs.helper";
 
 export default {
   components: { FiledInput, Loader },
@@ -268,7 +271,8 @@ export default {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditDataObj) {
-        this.updateUsersMerchant({ ...this.dataObj });
+        const data = updateToPatchData(this.dataObj, this.record);
+        this.updateUsersMerchant(this.record.id, data);
         return;
       } else {
         this.createUsersMerchant({ ...this.dataObj });

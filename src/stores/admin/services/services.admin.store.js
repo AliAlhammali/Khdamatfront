@@ -14,12 +14,12 @@ export const useServicesAdminStore = defineStore("ServicesAdmin", {
       isLoading: false,
       isCreated: false,
       isUpdated: false,
-      isDeleted: false
-    }
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
-    getServicesAdmin: async function (params) {
+    getServicesAdmin: async function(params) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await ServicesAdminService.get(params);
@@ -30,7 +30,7 @@ export const useServicesAdminStore = defineStore("ServicesAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    showServicesAdmin: async function (id) {
+    showServicesAdmin: async function(id) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await ServicesAdminService.show(id);
@@ -41,7 +41,7 @@ export const useServicesAdminStore = defineStore("ServicesAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    createServicesAdmin: async function (payload) {
+    createServicesAdmin: async function(payload) {
       this.uiFlags.isCreated = true;
       try {
         await ServicesAdminService.create(payload);
@@ -53,10 +53,10 @@ export const useServicesAdminStore = defineStore("ServicesAdmin", {
         this.uiFlags.isCreated = false;
       }
     },
-    updateServicesAdmin: async function (payload) {
+    updateServicesAdmin: async function(id, payload) {
       this.uiFlags.isUpdated = true;
       try {
-        await ServicesAdminService.update(payload.id, payload);
+        await ServicesAdminService.update(id, payload);
         router.push({ name: "admin-service-dashboard" });
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
@@ -65,7 +65,7 @@ export const useServicesAdminStore = defineStore("ServicesAdmin", {
         this.uiFlags.isUpdated = false;
       }
     },
-    deleteServicesAdmin: async function (id) {
+    deleteServicesAdmin: async function(id) {
       this.uiFlags.isDeleted = true;
       try {
         await ServicesAdminService.delete(id);
@@ -76,6 +76,6 @@ export const useServicesAdminStore = defineStore("ServicesAdmin", {
       } finally {
         this.uiFlags.isDeleted = false;
       }
-    }
-  }
+    },
+  },
 });

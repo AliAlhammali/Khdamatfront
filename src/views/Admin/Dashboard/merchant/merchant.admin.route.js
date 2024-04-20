@@ -3,17 +3,17 @@ export default {
     {
       path: "merchant",
       name: "admin-merchant-dashboard",
-      component: () => import("./MerchantList.vue")
+      component: () => import("./MerchantList.vue"),
     },
     {
       path: "merchant/create",
       name: "admin-merchant-create",
-      component: () => import("./MerchantCreate.vue")
+      component: () => import("./MerchantCreate.vue"),
     },
     {
       path: "merchant/:id/edit",
       name: "admin-merchant-edit",
-      component: () => import("./MerchantCreate.vue")
-    }
-  ]
+      component: () => import("./MerchantEdit.vue"),
+    },
+  ],
 };

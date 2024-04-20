@@ -37,6 +37,9 @@
               v$.merchant.service_provider_id.$dirty &&
               v$.merchant.service_provider_id.required.$invalid
             "
+            :no-data-text="$t('global.actions.no_data')"
+            hide-details
+            hide-selected
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -113,6 +116,7 @@ import Loader from "@/components/common/Loader.vue";
 
 import { useServiceProvidersUsersAdminStore } from "@/stores/admin/serviceProviders/serviceProviderUsers.admin.store";
 import { useServiceProvidersAdminStore } from "@/stores/admin/serviceProviders/serviceProviders.admin.store";
+import { updateToPatchData } from "@/helper/update.inputs.helper";
 
 export default {
   components: { FiledInput, Loader },
@@ -185,7 +189,6 @@ export default {
             (this.v$.merchant.email.required.$invalid &&
               this.$t("errors.required")) ||
             (this.v$.merchant.email.email.$invalid && this.$t("errors.email")),
-
           blur: "v$.merchant.email.$touch()",
         },
       ];
@@ -203,7 +206,8 @@ export default {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditMerchant) {
-        this.updateServiceProvidersUsersAdmin({ ...this.merchant });
+        const data = updateToPatchData(this.merchant, this.record);
+        this.updateServiceProvidersUsersAdmin(this.record.id, data);
         return;
       } else {
         this.createServiceProvidersUsersAdmin({ ...this.merchant });

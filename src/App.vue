@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  methods: {}
+  methods: {},
 };
 </script>
 <style lang="scss">

@@ -14,12 +14,12 @@ export const useMerchantUsersAdminStore = defineStore("MerchantUsersAdmin", {
       isLoading: false,
       isCreated: false,
       isUpdated: false,
-      isDeleted: false
-    }
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
-    getMerchantUsersAdmin: async function (params) {
+    getMerchantUsersAdmin: async function(params) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await MerchantUsersAdminService.get(params);
@@ -30,7 +30,7 @@ export const useMerchantUsersAdminStore = defineStore("MerchantUsersAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    showMerchantUsersAdmin: async function (id) {
+    showMerchantUsersAdmin: async function(id) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await MerchantUsersAdminService.show(id);
@@ -41,11 +41,11 @@ export const useMerchantUsersAdminStore = defineStore("MerchantUsersAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    createMerchantUsersAdmin: async function (payload) {
+    createMerchantUsersAdmin: async function(payload) {
       this.uiFlags.isCreated = true;
       try {
         await MerchantUsersAdminService.create(payload);
-        router.push({ name: "admin-merchant-dashboard" });
+        router.push({ name: "admin-merchant-users-dashboard" });
         toast.success(i18n.global.t("global.actions.add_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.add_error"));
@@ -53,11 +53,11 @@ export const useMerchantUsersAdminStore = defineStore("MerchantUsersAdmin", {
         this.uiFlags.isCreated = false;
       }
     },
-    updateMerchantUsersAdmin: async function (payload) {
+    updateMerchantUsersAdmin: async function(id, payload) {
       this.uiFlags.isUpdated = true;
       try {
-        await MerchantUsersAdminService.update(payload.id, payload);
-        router.push({ name: "admin-merchant-dashboard" });
+        await MerchantUsersAdminService.update(id, payload);
+        router.push({ name: "admin-merchant-users-dashboard" });
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.edit_error"));
@@ -65,7 +65,7 @@ export const useMerchantUsersAdminStore = defineStore("MerchantUsersAdmin", {
         this.uiFlags.isUpdated = false;
       }
     },
-    deleteMerchantUsersAdmin: async function (id) {
+    deleteMerchantUsersAdmin: async function(id) {
       try {
         await MerchantUsersAdminService.delete(id);
         this.uiFlags.isDeleted = true;
@@ -75,6 +75,6 @@ export const useMerchantUsersAdminStore = defineStore("MerchantUsersAdmin", {
       } finally {
         this.uiFlags.isDeleted = false;
       }
-    }
-  }
+    },
+  },
 });
