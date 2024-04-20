@@ -35,7 +35,6 @@
               v$.record.status.$dirty && v$.record.status.required.$invalid
             "
             hide-details
-            hide-selected
             :no-data-text="$t('global.actions.no_data')"
           />
           <p

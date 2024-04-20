@@ -59,7 +59,7 @@
             "
             :no-data-text="$t('global.actions.no_data')"
             hide-details
-            hide-selected
+            clearable
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -91,7 +91,7 @@
             :error="v$.dataObj.role.$dirty && v$.dataObj.role.required.$invalid"
             :no-data-text="$t('global.actions.no_data')"
             hide-details
-            hide-selected
+            clearable
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"

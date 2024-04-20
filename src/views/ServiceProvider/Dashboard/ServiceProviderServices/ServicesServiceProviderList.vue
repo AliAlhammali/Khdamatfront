@@ -27,7 +27,7 @@
           @update:modelValue="getServicesServiceProvider(params)"
           :no-data-text="$t('global.actions.no_data')"
           hide-details
-          hide-selected
+          clearable
         >
         </v-select>
       </template>

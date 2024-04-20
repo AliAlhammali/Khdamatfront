@@ -29,7 +29,7 @@
           @update:modelValue="getServiceProvidersUsersAdmin(params)"
           :no-data-text="$t('global.actions.no_data')"
           hide-details
-          hide-selected
+          clearable
         />
       </template>
       <template #status="{ item }">
