@@ -83,16 +83,16 @@ export default {
           key: "title",
         },
         {
+          title: this.$t("admin_categories.fields.main_category"),
+          align: "start",
+          sortable: true,
+          key: "parent",
+        },
+        {
           title: this.$t("admin_categories.fields.status"),
           align: "start",
           sortable: true,
           key: "status",
-        },
-        {
-          title: this.$t("admin_categories.fields.merchant_id"),
-          align: "start",
-          sortable: true,
-          key: "merchant",
         },
         {
           title: "#",
@@ -109,7 +109,7 @@ export default {
           title: item.title ? item.title[this.$i18n.locale] : "---",
           email: item.email ? item.email : "---",
           status: item.status ? item.status : "---",
-          merchant: item.merchant ? item.merchant.title : "---",
+          parent: item.parent ? item.parent.title[this.$i18n.locale] : "---",
         };
       });
     },

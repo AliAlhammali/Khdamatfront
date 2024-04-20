@@ -1,11 +1,15 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  createWebHashHistory,
+} from "vue-router";
 import adminRoute from "@/views/Admin/admin.route";
 import merchantsRoute from "@/views/Merchants/merchant.route";
 import serviceProviderRoute from "@/views/ServiceProvider/serviceProvider.route";
 import landingRoute from "@/views/Landing/landing.route";
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     ...adminRoute.routes,
     ...merchantsRoute.routes,

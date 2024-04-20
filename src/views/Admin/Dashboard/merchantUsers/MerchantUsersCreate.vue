@@ -141,6 +141,7 @@ export default {
         password: null,
       },
       showPassword: false,
+      objDataUpdate: {},
     };
   },
   async created() {
@@ -206,14 +207,15 @@ export default {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditMerchant) {
-        const data = updateToPatchData(this.merchant, this.record);
-        this.updateMerchantUsersAdmin(this.record.id, data);
+        this.objDataUpdate = updateToPatchData(this.merchant, this.record);
+        this.updateMerchantUsersAdmin(this.record.id, this.objDataUpdate);
         return;
       } else {
         this.createMerchantUsersAdmin({ ...this.merchant });
       }
     },
   },
+  watch: {},
 };
 </script>
 <style lang="scss" scoped></style>

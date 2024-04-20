@@ -5,7 +5,7 @@
       :placeholder="$t('admin_categories.search_categories')"
       :create-page="'/admin/categories/create'"
       :headers="headers"
-      :slots-items="['actions',  'status']"
+      :slots-items="['actions', 'status']"
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
@@ -90,6 +90,12 @@ export default {
           key: "title",
         },
         {
+          title: this.$t("admin_categories.fields.main_category"),
+          align: "start",
+          sortable: true,
+          key: "parent",
+        },
+        {
           title: this.$t("admin_categories.fields.merchant"),
           align: "start",
           sortable: true,
@@ -114,6 +120,7 @@ export default {
         return {
           ...item,
           title: item.title ? item.title[this.$i18n.locale] : "---",
+          parent: item.parent ? item.parent.title[this.$i18n.locale] : "---",
           email: item.email ? item.email : "---",
           status: item.status ? item.status : "---",
         };
@@ -139,7 +146,6 @@ export default {
         await this.deleteCategoriesAdmin(item.id);
       }
     },
-
 
     changePage(page) {
       this.params.page = page;

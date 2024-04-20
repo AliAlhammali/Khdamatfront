@@ -12,7 +12,8 @@
       "slug_ar": "Slug Arabic",
       "slug_en": "Slug English",
       "status": "Status",
-      "merchant_id": "Merchant"
+      "merchant_id": "Merchant",
+      "main_category": "Main Category"
     }
   }
 }

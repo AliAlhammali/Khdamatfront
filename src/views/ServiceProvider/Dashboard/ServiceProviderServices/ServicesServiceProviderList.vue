@@ -102,7 +102,7 @@ export default {
           key: "category",
         },
         {
-          title: this.$t("admin_merchant.fields.sp_price"),
+          title: this.$t("admin_merchant.fields.price"),
           align: "start",
           sortable: true,
           key: "sp_price",
