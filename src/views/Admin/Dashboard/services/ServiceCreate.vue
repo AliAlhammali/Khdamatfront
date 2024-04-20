@@ -283,6 +283,7 @@ export default {
         listing: 1,
       });
       this.merchant = { ...this.record };
+      this.merchant.title = { ...this.record.title };
       this.merchant.category_id = this.record.category_id;
     }
 

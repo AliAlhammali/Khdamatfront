@@ -6,12 +6,5 @@ export function updateToPatchData(oldObj, newObj) {
       data[key] = oldObj[key];
     }
   });
-  if (oldObj.title.en !== newObj.title.en) {
-    data.title.en = oldObj.title.en;
-  }
-  if (oldObj.title.ar !== newObj.title.ar) {
-    data.title.ar = oldObj.title.ar;
-  }
-
   return data;
 }

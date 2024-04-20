@@ -154,9 +154,6 @@ export default {
       const id = this.$route.params.id;
       await this.showServiceProvidersUsersAdmin(id);
       this.merchant = { ...this.record };
-      this.merchant.service_provider_id = this.merchants.data.find(
-        (item) => item.id === this.record.service_provider_id
-      );
     }
   },
   computed: {

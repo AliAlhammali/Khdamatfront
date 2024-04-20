@@ -212,6 +212,10 @@ export default {
       const id = this.$route.params.id;
       await this.showCategoriesAdmin(id);
       this.merchant = { ...this.record };
+      this.merchant.title = {
+        ar: this.record.title.ar,
+        en: this.record.title.en,
+      };
       this.merchant.parent_id = this.record.parent.id;
     }
 
