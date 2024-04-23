@@ -147,7 +147,6 @@ export default {
           ],
         },
 
-
         {
           title: this.$t("admin_navbar_links.branches"),
           icon: "mdi-storefront-plus-outline",
@@ -168,6 +167,14 @@ export default {
               this.$t("admin_navbar_links.clients"),
               "/merchant/clients-merchant",
             ],
+          ],
+        },
+        {
+          title: this.$t("admin_navbar_links.orders"),
+          icon: "mdi-account-multiple-outline",
+          key: "merchant_orders",
+          pages: [
+            [this.$t("admin_navbar_links.orders"), "/merchant/orders-merchant"],
           ],
         },
       ];

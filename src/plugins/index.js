@@ -12,6 +12,9 @@ import Toast, { POSITION } from "vue-toastification";
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
 
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+
 export function registerPlugins(app) {
   app
     .use(i18n)
@@ -22,8 +25,8 @@ export function registerPlugins(app) {
     .use(VueSweetalert2)
     .use(Toast, {
       position: POSITION.TOP_RIGHT,
-      timeout: 5000
+      timeout: 5000,
     });
 
-
+  app.component("VueDatePicker", VueDatePicker);
 }

@@ -8,6 +8,7 @@
     "add_new_user": "إضافة مستخدم جديد",
     "edit_title": "تعديل تاجر",
     "edit_user_title": "تعديل مستخدم",
+    "search_placeholder_orders": "بحث عن طلب",
     "fields": {
       "title": "الاسم",
       "description": "الوصف",
@@ -30,6 +31,9 @@
       "password": "كلمة المرور",
       "sp_price": "سعر مقدم الخدمة",
       "price": "السعر",
+      "pick_up_type": "نوع الاستلام",
+      "total": "الإجمالي",
+      "started_at": "التاريخ & الوقت",
       "owner": {
         "name": "اسم المالك",
         "email": "بريد المالك"

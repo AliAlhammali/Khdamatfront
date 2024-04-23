@@ -48,7 +48,7 @@
           />
         </v-col>
 
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="6" v-if="!isEditMerchant">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
             <span> {{ $t("admin_categories.fields.merchant_id") }}</span>
             <span class="text-red">*</span>
@@ -57,7 +57,7 @@
             v-model="merchant.merchant_id"
             :placeholder="$t('admin_categories.fields.merchant_id')"
             :items="merchants?.data"
-            item-text="name"
+            item-title="name"
             item-value="id"
             menu-icon="mdi mdi-chevron-down"
             class="w-100"
@@ -216,7 +216,7 @@ export default {
         ar: this.record.title.ar,
         en: this.record.title.en,
       };
-      this.merchant.parent_id = this.record.parent.id;
+      this.merchant.parent_id = this.record?.parent?.id;
     }
 
     await this.getCategoriesAdmin({ "filter[isParent]": 1, listing: 1 });
