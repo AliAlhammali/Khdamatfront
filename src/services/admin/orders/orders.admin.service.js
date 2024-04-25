@@ -1,8 +1,8 @@
 import ApiClient from "@/helper/api.helper";
 
-class OrdersMerchant extends ApiClient {
+class OrdersAdmin extends ApiClient {
   constructor() {
-    super("merchant/orders");
+    super("admin/orders");
   }
 
   get(params) {
@@ -10,4 +10,4 @@ class OrdersMerchant extends ApiClient {
   }
 }
 
-export default new OrdersMerchant();
+export default new OrdersAdmin();

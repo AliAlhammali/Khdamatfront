@@ -5,13 +5,13 @@ import categoriesAdminRoute from "./categories/categories.admin.route";
 import serviceAdminRoute from "./services/service.admin.route";
 import usersAdminRoute from "./users/users.admin.route";
 import serviceProvidersAdminRoute from "./serviceProviders/serviceProviders.admin.route";
-
+import orderAdminRoute from "./orderAdmin/orders.admin.route";
 export default {
   routes: [
     {
       path: "dashboard",
       name: "admin-dashboard",
-      component: () => import("./home/AdminHome.vue")
+      component: () => import("./home/AdminHome.vue"),
     },
     ...merchantAdminRoute.routes,
     ...merchantUsersAdminRoute.routes,
@@ -19,6 +19,7 @@ export default {
     ...serviceProvidersUsersRoute.routes,
     ...categoriesAdminRoute.routes,
     ...serviceAdminRoute.routes,
-    ...usersAdminRoute.routes
-  ]
+    ...usersAdminRoute.routes,
+    ...orderAdminRoute.routes,
+  ],
 };
