@@ -210,12 +210,16 @@ export default {
       });
     },
     servicesList() {
-      return this.services?.data?.map((item) => {
-        return {
-          ...item,
-          title: item.title[this.$i18n.locale],
-        };
-      });
+      return this.services?.data
+        ?.map((item) => {
+          return {
+            ...item,
+            title: item.title[this.$i18n.locale],
+          };
+        })
+        .filter((item) => {
+          return !this.items.some((i) => i.id === item.id);
+        });
     },
   },
   methods: {
