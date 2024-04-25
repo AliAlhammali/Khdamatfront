@@ -14,6 +14,8 @@
       :disabled="disabled"
       :format-locale="$i18n.locale == 'ar' ? arSA : enUS"
       @update:model-value="handleDate"
+      :min-date="new Date()"
+      :max-date="new Date(new Date().setMonth(new Date().getMonth() + 1))"
     />
   </div>
 </template>

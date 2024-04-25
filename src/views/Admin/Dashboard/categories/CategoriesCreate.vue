@@ -102,7 +102,6 @@
               v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
             "
             hide-details
-            clearable
             :no-data-text="$t('global.actions.no_data')"
           />
           <p
@@ -130,7 +129,6 @@
             menu-icon="mdi mdi-chevron-down"
             class="text-capitalize rounded-xl"
             hide-details
-            clearable
             :no-data-text="$t('global.actions.no_data')"
           />
         </v-col>

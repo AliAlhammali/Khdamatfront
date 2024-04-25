@@ -41,12 +41,15 @@ export const useBranchesMerchantStore = defineStore("BranchesMerchant", {
         this.uiFlags.isLoading = false;
       }
     },
-    createBranchesMerchant: async function(payload) {
+    createBranchesMerchant: async function(payload, goList = true) {
       this.uiFlags.isCreated = true;
       try {
-        await BranchesMerchant.create(payload);
-        router.push({ name: "branches-merchant-dashboard" });
+        const { data } = await BranchesMerchant.create(payload);
+        if (goList) {
+          router.push({ name: "branches-merchant-dashboard" });
+        }
         toast.success(i18n.global.t("global.actions.add_success"));
+        return data;
       } catch (error) {
         toast.error(i18n.global.t("global.actions.add_error"));
       } finally {

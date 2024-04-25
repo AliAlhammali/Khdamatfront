@@ -10,5 +10,14 @@
       "add_new": "إضافة فرع جديد",
       "edit": "تعديل"
     }
+  },
+  "orders": {
+    "price": "السعر",
+    "quantity": "الكمية",
+    "total": "الإجمالي",
+    "select_service": "اختر الخدمة",
+    "select_client": "اختر العميل",
+    "select_branch": "اختر الفرع",
+    "add_new": "إضافة طلب جديد"
   }
 }

@@ -28,6 +28,11 @@
       "active": "نشط",
       "inactive": "غير نشط"
     },
+    "order_type": {
+      "label": "طريقه الاستلام",
+      "delivered": "تم الاستلام",
+      "from_branch": "من الفرع"
+    },
     "role": {
       "Admin": "مدير",
       "Staff": "موظف"

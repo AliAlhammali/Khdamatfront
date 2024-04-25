@@ -71,7 +71,6 @@
             "
             :no-data-text="$t('global.actions.no_data')"
             hide-details
-            clearable
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"

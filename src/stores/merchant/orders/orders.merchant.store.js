@@ -41,5 +41,19 @@ export const useOrdersMerchantStore = defineStore("OrdersMerchant", {
         this.uiFlags.isLoading = false;
       }
     },
+    createOrdersMerchant: async function(payload) {
+      this.uiFlags.isCreated = true;
+      try {
+        await OrdersMerchant.create(payload);
+        this.uiFlags.isCreated = true;
+        toast.success(i18n.global.t("global.actions.add_success"));
+        // router.push({ name: "OrdersMerchant" });
+      } catch (error) {
+        console.error(error);
+        toast.error(i18n.global.t("global.actions.add_error"));
+      } finally {
+        this.uiFlags.isCreated = false;
+      }
+    },
   },
 });

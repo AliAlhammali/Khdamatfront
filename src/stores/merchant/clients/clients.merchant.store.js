@@ -41,12 +41,15 @@ export const useClientsMerchantStore = defineStore("ClientsMerchant", {
         this.uiFlags.isLoading = false;
       }
     },
-    createClientsMerchant: async function(payload) {
+    createClientsMerchant: async function(payload, goList = true) {
       this.uiFlags.isCreated = true;
       try {
-        await ClientsMerchant.create(payload);
-        router.push({ name: "clients-merchant-dashboard" });
+        const { data } = await ClientsMerchant.create(payload);
+        if (goList) {
+          router.push({ name: "clients-merchant-dashboard" });
+        }
         toast.success(i18n.global.t("global.actions.add_success"));
+        return data;
       } catch (error) {
         toast.error(i18n.global.t("global.actions.add_error"));
       } finally {

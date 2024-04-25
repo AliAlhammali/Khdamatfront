@@ -14,12 +14,19 @@ export const useCategoriesMerchantStore = defineStore("CategoriesMerchant", {
       isLoading: false,
       isCreated: false,
       isUpdated: false,
-      isDeleted: false
-    }
+      isDeleted: false,
+    },
+    subCategories: [],
+    uiFlagsSub: {
+      isLoading: false,
+      isCreated: false,
+      isUpdated: false,
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
-    getCategoriesMerchant: async function (params) {
+    getCategoriesMerchant: async function(params) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await CategoriesMerchant.get(params);
@@ -28,6 +35,17 @@ export const useCategoriesMerchantStore = defineStore("CategoriesMerchant", {
         console.error(error);
       } finally {
         this.uiFlags.isLoading = false;
+      }
+    },
+    getSubCategoriesMerchant: async function(params) {
+      this.uiFlagsSub.isLoading = true;
+      try {
+        const { data } = await CategoriesMerchant.get(params);
+        this.subCategories = data;
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.uiFlagsSub.isLoading = false;
       }
     },
     // showCategoriesMerchant: async function (id) {
@@ -77,5 +95,5 @@ export const useCategoriesMerchantStore = defineStore("CategoriesMerchant", {
     //     this.uiFlags.isDeleted = false;
     //   }
     // }
-  }
+  },
 });

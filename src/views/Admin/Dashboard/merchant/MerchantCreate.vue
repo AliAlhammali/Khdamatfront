@@ -71,7 +71,6 @@
               v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
             "
             hide-details
-            clearable
             :no-data-text="$t('global.actions.no_data')"
           />
           <p

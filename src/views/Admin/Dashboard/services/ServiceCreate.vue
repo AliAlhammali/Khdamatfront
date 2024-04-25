@@ -101,7 +101,6 @@
               v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
             "
             hide-details
-            clearable
             :no-data-text="$t('global.actions.no_data')"
           />
           <p
@@ -135,7 +134,6 @@
               v$.merchant.main_category_id.required.$invalid
             "
             hide-details
-            clearable
             :no-data-text="$t('global.actions.no_data')"
             @update:model-value="
               () => {
@@ -180,7 +178,6 @@
               v$.merchant.category_id.required.$invalid
             "
             hide-details
-            clearable
             :no-data-text="$t('global.actions.no_data')"
             :disabled="merchant.main_category_id == null"
           />
