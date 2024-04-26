@@ -1,6 +1,6 @@
 <template >
   <div class="content">
-    <template v-if="uiFlags.isLoading">
+    <template v-if="uiFlags.isLoading || uiFlags.isUpdating">
       <Loader />
     </template>
     <template v-else>
