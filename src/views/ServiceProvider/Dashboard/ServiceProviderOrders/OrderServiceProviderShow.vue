@@ -75,7 +75,13 @@
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span> {{ $t("global.show_order.created_by") }}</span>
-                  <p>{{ record?.merchant_user?.name }}</p>
+                  <p>
+                    {{
+                      record?.merchant_user?.name
+                        ? record?.merchant_user?.name
+                        : "---"
+                    }}
+                  </p>
                 </div>
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"

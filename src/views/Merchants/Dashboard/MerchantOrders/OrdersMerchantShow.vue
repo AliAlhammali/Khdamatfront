@@ -64,13 +64,13 @@
                   <span>
                     {{ $t("global.show_order.order_creation_date") }}
                   </span>
-                  <p>{{ record?.created_at }}</p>
+                  <p>{{ record?.created_at ? record?.created_at : "---" }}</p>
                 </div>
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span> {{ $t("global.show_order.order_start_date") }} </span>
-                  <p>{{ record?.started_at }}</p>
+                  <p>{{ record?.started_at ? record?.started_at : "---" }}</p>
                 </div>
               </div>
               <div class="border-b mb-2">
@@ -78,7 +78,13 @@
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span> {{ $t("global.show_order.created_by") }}</span>
-                  <p>{{ record?.merchant_user?.name }}</p>
+                  <p>
+                    {{
+                      record?.merchant_user?.name
+                        ? record?.merchant_user?.name
+                        : "---"
+                    }}
+                  </p>
                 </div>
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
