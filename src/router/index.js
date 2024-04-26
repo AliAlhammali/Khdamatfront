@@ -9,13 +9,16 @@ import serviceProviderRoute from "@/views/ServiceProvider/serviceProvider.route"
 import landingRoute from "@/views/Landing/landing.route";
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes: [
     ...adminRoute.routes,
     ...merchantsRoute.routes,
     ...serviceProviderRoute.routes,
     ...landingRoute.routes,
   ],
+  scrollBehavior() {
+    return { top: 0 };
+  },
 });
 
 export default router;
