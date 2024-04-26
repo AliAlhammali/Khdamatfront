@@ -5,19 +5,19 @@ import authAdminService from "@/services/admin/auth/auth.admin.service";
 export const useAuthAdminStore = defineStore("AuthAdmin", {
   state: () => ({
     record: null,
-    isLoading: false
+    isLoading: false,
   }),
   getters: {},
   actions: {
-    loginAdmin: async function (admin) {
+    loginAdmin: async function(admin) {
       this.isLoading = true;
       try {
         const { data } = await authAdminService.login(admin);
         this.record = data.user;
 
         // Save token to cookies
-        $cookies.set("admin_khadamat_token", data.token);
-        $cookies.set("admin_khadamat_user", data.user);
+        $cookies.set("admin_khadamat_token", data.token, "1m");
+        $cookies.set("admin_khadamat_user", data.user, "1m");
 
         router.push({ name: "admin-dashboard" });
       } catch (error) {
@@ -27,7 +27,7 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
       }
     },
 
-    logoutAdmin: async function () {
+    logoutAdmin: async function() {
       await authAdminService.logout();
       this.record = null;
       $cookies.remove("admin_khadamat_token");
@@ -36,7 +36,7 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
       window.location.reload();
     },
 
-    checkCookie: function () {
+    checkCookie: function() {
       const token = $cookies.get("admin_khadamat_token");
       const user = $cookies.get("admin_khadamat_user");
 
@@ -45,6 +45,6 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
       } else {
         router.push({ name: "admin-login" });
       }
-    }
-  }
+    },
+  },
 });

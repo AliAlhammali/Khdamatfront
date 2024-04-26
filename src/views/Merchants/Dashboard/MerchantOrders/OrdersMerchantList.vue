@@ -3,7 +3,7 @@
     <data-table
       :title="$t('admin_navbar_links.orders')"
       :placeholder="$t('admin_merchant.search_placeholder_orders')"
-      :createPage="`/merchant/orders-merchant/create`"
+      :createPage="`/merchant/orders/create`"
       :headers="headers"
       :slots-items="[]"
       :isLoading="uiFlags?.isLoading"

@@ -1,10 +1,9 @@
 export default {
   routes: [
     {
-      path: "services-merchant",
+      path: "services",
       name: "services-merchant-dashboard",
-      component: () => import("./ServicesMerchantList.vue")
-    }
-  ]
+      component: () => import("./ServicesMerchantList.vue"),
+    },
+  ],
 };
-

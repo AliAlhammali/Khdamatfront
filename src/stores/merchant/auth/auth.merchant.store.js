@@ -5,19 +5,19 @@ import authMerchantService from "@/services/merchant/auth/auth.merchant.service"
 export const useAuthMerchantStore = defineStore("AuthMerchant", {
   state: () => ({
     record: null,
-    isLoading: false
+    isLoading: false,
   }),
   getters: {},
   actions: {
-    loginMerchant: async function (user) {
+    loginMerchant: async function(user) {
       this.isLoading = true;
       try {
         const { data } = await authMerchantService.login(user);
         this.record = data.user;
 
         // Save token to cookies
-        $cookies.set("merchant_khadamat_token", data.token);
-        $cookies.set("merchant_khadamat_user", data.user);
+        $cookies.set("merchant_khadamat_token", data.token, "1m");
+        $cookies.set("merchant_khadamat_user", data.user, "1m");
 
         router.push({ name: "merchant-dashboard" });
       } catch (error) {
@@ -27,7 +27,7 @@ export const useAuthMerchantStore = defineStore("AuthMerchant", {
       }
     },
 
-    logoutMerchant: async function () {
+    logoutMerchant: async function() {
       try {
         await authMerchantService.logout();
 
@@ -42,7 +42,7 @@ export const useAuthMerchantStore = defineStore("AuthMerchant", {
       }
     },
 
-    checkCookie: function () {
+    checkCookie: function() {
       const token = $cookies.get("merchant_khadamat_token");
       const user = $cookies.get("merchant_khadamat_user");
 
@@ -51,6 +51,6 @@ export const useAuthMerchantStore = defineStore("AuthMerchant", {
       } else {
         router.push({ name: "merchant-login" });
       }
-    }
-  }
+    },
+  },
 });

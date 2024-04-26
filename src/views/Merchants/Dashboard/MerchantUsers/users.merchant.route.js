@@ -1,26 +1,25 @@
 export default {
   routes: [
     {
-      path: "users-merchant",
+      path: "users",
       name: "users-merchant-dashboard",
-      component: () => import("./UsersMerchantList.vue")
+      component: () => import("./UsersMerchantList.vue"),
     },
     {
-      path: "users-merchant/create",
+      path: "users/create",
       name: "users-merchant-create",
       component: () => import("./UsersMerchantCreate.vue"),
       meta: {
-        edit: false
-      }
+        edit: false,
+      },
     },
     {
-      path: "users-merchant/:id/edit",
+      path: "users/:id/edit",
       name: "users-merchant-edit",
       component: () => import("./UsersMerchantCreate.vue"),
       meta: {
-        edit: true
-      }
-    }
-  ]
+        edit: true,
+      },
+    },
+  ],
 };
-

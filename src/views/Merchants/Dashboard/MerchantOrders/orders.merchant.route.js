@@ -1,12 +1,12 @@
 export default {
   routes: [
     {
-      path: "orders-merchant",
+      path: "orders",
       name: "orders-merchant-dashboard",
       component: () => import("./OrdersMerchantList.vue"),
     },
     {
-      path: "orders-merchant/create",
+      path: "orders/create",
       name: "orders-merchant-create",
       component: () => import("./OrdersMerchantCreate.vue"),
       meta: {
@@ -14,7 +14,7 @@ export default {
       },
     },
     {
-      path: "orders-merchant/:id",
+      path: "orders/:id",
       name: "orders-merchant-show",
       component: () => import("./OrdersMerchantShow.vue"),
       meta: {

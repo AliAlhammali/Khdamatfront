@@ -1,9 +1,9 @@
 export default {
   routes: [
     {
-      path: "categories-merchant",
+      path: "categories",
       name: "categories-merchant-dashboard",
-      component: () => import("./CategoriesMerchantList.vue")
-    }
-  ]
+      component: () => import("./CategoriesMerchantList.vue"),
+    },
+  ],
 };

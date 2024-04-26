@@ -3,7 +3,7 @@
     <data-table
       :title="$t('admin_navbar_links.users')"
       :placeholder="$t('admin_merchant.search_placeholder_users')"
-      :create-page="'/service-provider/users-service-provider/create'"
+      :create-page="'/service-provider/users/create'"
       :headers="headers"
       :slots-items="['actions', 'status', 'role']"
       :isLoading="uiFlags?.isLoading"
@@ -16,24 +16,24 @@
       <template #status="{ item }">
         <span
           class="badge badge--status"
-          :class="item.item.status === 'active' ? 'badge--success' : 'badge--danger'"
+          :class="
+            item.item.status === 'active' ? 'badge--success' : 'badge--danger'
+          "
         >
-        {{ $t(`global.status.${item.item.status}`) }}
+          {{ $t(`global.status.${item.item.status}`) }}
         </span>
       </template>
 
       <template #role="{ item }">
-        <span
-          class="badge badge--status"
-        >
-          {{ $t(`global.role.${item.item.role}`)  }}
+        <span class="badge badge--status">
+          {{ $t(`global.role.${item.item.role}`) }}
         </span>
       </template>
 
       <template #actions="{ item }">
         <div class="d-flex ga-2 align-center">
           <router-link
-            :to="`/service-provider/users-service-provider/${item.item.id}/edit`"
+            :to="`/service-provider/users/${item.item.id}/edit`"
             class="button button--edit px-2 rounded"
           >
             <v-tooltip :text="$t('global.actions.edit')">

@@ -121,10 +121,7 @@ export default {
           icon: "mdi-account-group-outline",
           key: "service_provider_users",
           pages: [
-            [
-              this.$t("admin_navbar_links.users"),
-              "/service-provider/users-service-provider",
-            ],
+            [this.$t("admin_navbar_links.users"), "/service-provider/users"],
           ],
         },
         {
@@ -134,7 +131,7 @@ export default {
           pages: [
             [
               this.$t("admin_navbar_links.categories"),
-              "/service-provider/categories-service-provider",
+              "/service-provider/categories",
             ],
           ],
         },
@@ -145,7 +142,7 @@ export default {
           pages: [
             [
               this.$t("admin_navbar_links.services"),
-              "/service-provider/services-service-provider",
+              "/service-provider/services",
             ],
           ],
         },
@@ -154,10 +151,7 @@ export default {
           icon: "mdi-list-box-outline",
           key: "service_provider_orders",
           pages: [
-            [
-              this.$t("admin_navbar_links.orders"),
-              "/service-provider/orders-service-provider",
-            ],
+            [this.$t("admin_navbar_links.orders"), "/service-provider/orders"],
           ],
         },
       ];

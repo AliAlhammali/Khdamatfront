@@ -119,9 +119,7 @@ export default {
           title: this.$t("admin_navbar_links.users"),
           icon: "mdi-account-group-outline",
           key: "users_merchant",
-          pages: [
-            [this.$t("admin_navbar_links.users"), "/merchant/users-merchant"],
-          ],
+          pages: [[this.$t("admin_navbar_links.users"), "/merchant/users"]],
         },
 
         {
@@ -129,10 +127,7 @@ export default {
           icon: "mdi-store-outline",
           key: "merchant_categories",
           pages: [
-            [
-              this.$t("admin_navbar_links.categories"),
-              "/merchant/categories-merchant",
-            ],
+            [this.$t("admin_navbar_links.categories"), "/merchant/categories"],
           ],
         },
         {
@@ -140,10 +135,7 @@ export default {
           icon: "mdi-cog-outline",
           key: "merchant_services",
           pages: [
-            [
-              this.$t("admin_navbar_links.services"),
-              "/merchant/services-merchant",
-            ],
+            [this.$t("admin_navbar_links.services"), "/merchant/services"],
           ],
         },
 
@@ -152,30 +144,20 @@ export default {
           icon: "mdi-storefront-plus-outline",
           key: "merchant_branches",
           pages: [
-            [
-              this.$t("admin_navbar_links.branches"),
-              "/merchant/branches-merchant",
-            ],
+            [this.$t("admin_navbar_links.branches"), "/merchant/branches"],
           ],
         },
         {
           title: this.$t("admin_navbar_links.clients"),
           icon: "mdi-account-multiple-outline",
           key: "merchant_clients",
-          pages: [
-            [
-              this.$t("admin_navbar_links.clients"),
-              "/merchant/clients-merchant",
-            ],
-          ],
+          pages: [[this.$t("admin_navbar_links.clients"), "/merchant/clients"]],
         },
         {
           title: this.$t("admin_navbar_links.orders"),
           icon: "mdi-list-box-outline",
           key: "merchant_orders",
-          pages: [
-            [this.$t("admin_navbar_links.orders"), "/merchant/orders-merchant"],
-          ],
+          pages: [[this.$t("admin_navbar_links.orders"), "/merchant/orders"]],
         },
       ];
     },

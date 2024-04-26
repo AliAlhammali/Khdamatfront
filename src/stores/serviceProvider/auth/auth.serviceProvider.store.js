@@ -5,11 +5,11 @@ import authServiceProviderService from "@/services/serviceProvider/auth/auth.ser
 export const useAuthServiceProviderStore = defineStore("AuthServiceProvider", {
   state: () => ({
     record: null,
-    isLoading: false
+    isLoading: false,
   }),
   getters: {},
   actions: {
-    loginServiceProvider: async function (user) {
+    loginServiceProvider: async function(user) {
       this.isLoading = true;
       try {
         const { data } = await authServiceProviderService.login(user);
@@ -17,8 +17,8 @@ export const useAuthServiceProviderStore = defineStore("AuthServiceProvider", {
         console.log(data, "data");
 
         // Save token to cookies
-        $cookies.set("service_provider_khadamat_token", data.token);
-        $cookies.set("service_provider_khadamat_user", data.user);
+        $cookies.set("service_provider_khadamat_token", data.token, "1m");
+        $cookies.set("service_provider_khadamat_user", data.user, "1m");
 
         router.push({ name: "service-provider-dashboard" });
       } catch (error) {
@@ -28,7 +28,7 @@ export const useAuthServiceProviderStore = defineStore("AuthServiceProvider", {
       }
     },
 
-    logoutServiceProvider: async function () {
+    logoutServiceProvider: async function() {
       try {
         await authServiceProviderService.logout();
 
@@ -43,7 +43,7 @@ export const useAuthServiceProviderStore = defineStore("AuthServiceProvider", {
       }
     },
 
-    checkCookie: function () {
+    checkCookie: function() {
       const token = $cookies.get("service_provider_khadamat_token");
       const user = $cookies.get("service_provider_khadamat_user");
 
@@ -52,6 +52,6 @@ export const useAuthServiceProviderStore = defineStore("AuthServiceProvider", {
       } else {
         router.push({ name: "service-provider-login" });
       }
-    }
-  }
+    },
+  },
 });

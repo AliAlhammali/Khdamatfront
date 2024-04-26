@@ -1,26 +1,25 @@
 export default {
   routes: [
     {
-      path: "branches-merchant",
+      path: "branches",
       name: "branches-merchant-dashboard",
-      component: () => import("./BranchesMerchantList.vue")
+      component: () => import("./BranchesMerchantList.vue"),
     },
     {
-      path: "branches-merchant/create",
+      path: "branches/create",
       name: "branches-merchant-create",
       component: () => import("./BranchesMerchantCreate.vue"),
       meta: {
-        edit: false
-      }
+        edit: false,
+      },
     },
     {
-      path: "branches-merchant/:id/edit",
+      path: "branches/:id/edit",
       name: "branches-merchant-edit",
       component: () => import("./BranchesMerchantCreate.vue"),
       meta: {
-        edit: true
-      }
-    }
-  ]
+        edit: true,
+      },
+    },
+  ],
 };
-

@@ -57,7 +57,7 @@
             v-model="merchant.merchant_id"
             :placeholder="$t('admin_categories.fields.merchant_id')"
             :items="merchants?.data"
-            item-title="name"
+            :item-title="'title'"
             item-value="id"
             menu-icon="mdi mdi-chevron-down"
             class="w-100"

@@ -166,9 +166,7 @@ export default {
           title: this.$t("admin_navbar_links.orders"),
           icon: "mdi-list-box-outline",
           key: "admin_orders",
-          pages: [
-            [this.$t("admin_navbar_links.orders"), "/admin/orders-admin"],
-          ],
+          pages: [[this.$t("admin_navbar_links.orders"), "/admin/orders"]],
         },
       ];
     },

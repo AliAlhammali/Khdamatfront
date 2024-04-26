@@ -27,7 +27,7 @@
         <div class="d-flex ga-2 align-center">
           <router-link
             :to="{
-              path: `/merchant/services-merchant`,
+              path: `/merchant/services`,
               query: { category_id: item.item.id },
             }"
             class="button button--edit px-2 rounded"

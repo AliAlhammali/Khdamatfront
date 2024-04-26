@@ -1,10 +1,9 @@
 export default {
   routes: [
     {
-      path: "services-service-provider",
+      path: "services",
       name: "services-service-provider-dashboard",
-      component: () => import("./ServicesServiceProviderList.vue")
-    }
-  ]
+      component: () => import("./ServicesServiceProviderList.vue"),
+    },
+  ],
 };
-

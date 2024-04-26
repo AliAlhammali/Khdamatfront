@@ -3,7 +3,7 @@
     <data-table
       :title="$t('admin_navbar_links.branches')"
       :placeholder="$t('merchant.branches.search_placeholder')"
-      :create-page="'/merchant/branches-merchant/create'"
+      :create-page="'/merchant/branches/create'"
       :headers="headers"
       :slots-items="['actions', 'is_active']"
       :isLoading="uiFlags?.isLoading"
@@ -29,7 +29,7 @@
       <template #actions="{ item }">
         <div class="d-flex ga-2 align-center">
           <router-link
-            :to="`/merchant/branches-merchant/${item.item.id}/edit`"
+            :to="`/merchant/branches/${item.item.id}/edit`"
             class="button button--edit px-2 rounded"
           >
             <v-tooltip :text="$t('global.actions.edit')">
