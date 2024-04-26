@@ -136,9 +136,17 @@
               <tbody>
                 <tr v-for="(item, index) in record?.items" :key="item.name">
                   <td class="border-e">
-                    {{ item.item?.category?.title[$i18n.locale] }}
+                    {{
+                      item.item?.category?.title
+                        ? item.item?.category?.title[$i18n.locale]
+                        : "---"
+                    }}
                   </td>
-                  <td class="border-e">{{ item.item?.title[$i18n.locale] }}</td>
+                  <td class="border-e">
+                    {{
+                      item.item?.title ? item.item?.title[$i18n.locale] : "---"
+                    }}
+                  </td>
                   <td class="border-e">{{ item.item?.price }}</td>
                   <td class="border-e">{{ item?.quantity }}</td>
                   <td class="px-0">
