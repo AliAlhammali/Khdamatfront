@@ -11,32 +11,66 @@
       "back": "Back",
       "delete_confirmation": "Are you sure you want to delete this item?",
       "delete_success": "Item deleted successfully",
-      "delete_error": "Error deleting item",
+      "delete_error": "An error occurred while deleting the item",
       "save_success": "Item saved successfully",
-      "save_error": "Error saving item",
+      "save_error": "An error occurred while saving the item",
       "edit_success": "Item edited successfully",
-      "edit_error": "Error editing item",
-      "add_success": "Item added successfully",
-      "add_error": "Error adding item",
+      "edit_error": "An error occurred while editing the item",
+      "add_success": "Added successfully",
+      "add_error": "An error occurred while adding",
       "upload_success": "File uploaded successfully",
-      "upload_error": "Error uploading file",
+      "upload_error": "An error occurred while uploading the file",
       "logout": "Logout",
-      "view_file": "View file",
-      "no_data": "No data available"
+      "view_file": "View File",
+      "no_data": "No data"
     },
     "status": {
       "active": "Active",
       "inactive": "Inactive"
     },
+
     "table": {
-      "noData": "No data available",
-      "noResults": "No results found",
+      "noData": "No data",
+      "noResults": "No results",
       "loading": "Loading...",
       "show": "Show",
-      "from": "from",
+      "from": "From",
       "entries": "entries",
       "next": "Next",
       "previous": "Previous"
+    },
+    "order_type": {
+      "label": "Order Type",
+      "delivered": "Delivered",
+      "from_branch": "From Branch"
+    },
+    "order_status": {
+      "new": "New",
+      "confirmed": "Confirmed",
+      "on_the_way": "On the Way",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "canceled": "Canceled"
+    },
+    "role": {
+      "Admin": "Admin",
+      "Staff": "Staff"
+    },
+    "show_order": {
+      "status": "Status",
+      "order_number": "Order Number",
+      "order_creation_date": "Order Creation Date",
+      "order_start_date": "Order Start Date",
+      "created_by": "Created By",
+      "address": "Address",
+      "view_location": "View Location",
+      "subtotal": "Subtotal",
+      "tax": "Tax",
+      "total": "Total",
+      "category": "Category",
+      "service": "Service",
+      "unit_price": "Unit Price",
+      "quantity": "Quantity"
     }
   }
 }

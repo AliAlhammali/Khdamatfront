@@ -63,3 +63,17 @@ select {
 .v-list-group__items .v-list-item {
   padding-inline-start: 20px !important;
 }
+
+.v-stepper-item {
+  opacity: 1 !important;
+  &.v-stepper-item--complete {
+    .v-stepper-item__avatar.v-avatar {
+      background-color: #4caf50 !important;
+    }
+  }
+  &.active {
+    .v-stepper-item__avatar.v-avatar {
+      background-color: orange !important;
+    }
+  }
+}

@@ -92,7 +92,9 @@ export default {
       return this.records?.data?.map((item) => {
         return {
           ...item,
-          status: item.status === "pending" ? "warning" : "success",
+          pick_up_type: item.pick_up_type
+            ? this.$t(`global.order_type.${item.pick_up_type}`)
+            : "---",
         };
       });
     },

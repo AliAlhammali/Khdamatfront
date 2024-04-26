@@ -28,15 +28,7 @@
       "active": "نشط",
       "inactive": "غير نشط"
     },
-    "order_type": {
-      "label": "طريقه الاستلام",
-      "delivered": "تم الاستلام",
-      "from_branch": "من الفرع"
-    },
-    "role": {
-      "Admin": "مدير",
-      "Staff": "موظف"
-    },
+
     "table": {
       "noData": "لا توجد بيانات",
       "noResults": "لا توجد نتائج",
@@ -46,6 +38,40 @@
       "entries": "عنصر",
       "next": "التالي",
       "previous": "السابق"
+    },
+    "order_status": {
+      "new": "جديد",
+      "confirmed": "تم التأكيد",
+      "on_the_way": "في الطريق",
+      "in_progress": "قيد التنفيذ",
+      "completed": "تم التسليم",
+      "canceled": "تم الالغاء"
+    },
+    "order_type": {
+      "label": "طريقه الاستلام",
+      "delivered": "تم الاستلام",
+      "from_branch": "من الفرع"
+    },
+    "show_order": {
+      "status": "الحالة",
+      "order_number": "رقم الطلب",
+      "order_creation_date": "تاريخ إنشاء الطلب",
+      "order_start_date": "تاريخ بدء الطلب",
+      "created_by": "إنشاء بواسطة",
+      "address": "العنوان",
+      "view_location": "عرض المكان",
+      "subtotal": "المجموع الفرعي",
+      "tax": "الضريبة",
+      "total": "الاجمالي",
+      "category": "التصنيف",
+      "service": "الخدمة",
+      "unit_price": "سعر الوحدة",
+      "quantity": "الكمية"
+    },
+
+    "role": {
+      "Admin": "مدير",
+      "Staff": "موظف"
     }
   }
 }

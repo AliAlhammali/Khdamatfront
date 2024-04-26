@@ -12,6 +12,7 @@ export const useOrdersAdminStore = defineStore("OrdersAdmin", {
     record: {},
     uiFlags: {
       isLoading: false,
+      isUpdating: false,
     },
   }),
   getters: {},
@@ -27,15 +28,27 @@ export const useOrdersAdminStore = defineStore("OrdersAdmin", {
         this.uiFlags.isLoading = false;
       }
     },
-    showOrdersAdmin: async function(id) {
+    showOrdersAdmin: async function(id, params) {
       this.uiFlags.isLoading = true;
       try {
-        const { data } = await OrdersAdmin.show(id);
+        const { data } = await OrdersAdmin.show(id, params);
         this.record = data.data;
       } catch (error) {
         console.error(error);
       } finally {
         this.uiFlags.isLoading = false;
+      }
+    },
+    updateOrdersAdmin: async function(id, params) {
+      this.uiFlags.isUpdating = true;
+      try {
+        await OrdersAdmin.update(id, params);
+        toast.success(i18n.global.t("global.actions.edit_success"));
+        // await this.getOrdersAdmin();
+      } catch (error) {
+        toast.error(i18n.global.t("global.actions.edit_error"));
+      } finally {
+        this.uiFlags.isUpdating = false;
       }
     },
   },
