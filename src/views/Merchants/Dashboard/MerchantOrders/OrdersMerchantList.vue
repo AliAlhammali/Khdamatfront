@@ -5,7 +5,7 @@
       :placeholder="$t('admin_merchant.search_placeholder_orders')"
       :createPage="`/merchant/orders/create`"
       :headers="headers"
-      :slots-items="[]"
+      :slots-items="['actions']"
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
@@ -13,6 +13,18 @@
       @changePerPage="changePerPage"
       @search="search"
     >
+      <template v-slot:actions="{ item }">
+        <router-link
+          :to="`/merchant/orders/${item.item.id}`"
+          class="button button--edit px-2 rounded"
+        >
+          <v-tooltip :text="$t('global.actions.show')">
+            <template v-slot:activator="{ props }">
+              <span v-bind="props" class="mdi mdi-24px mdi-eye-outline"></span>
+            </template>
+          </v-tooltip>
+        </router-link>
+      </template>
     </data-table>
   </div>
 </template>
@@ -75,6 +87,12 @@ export default {
           key: "pick_up_type",
         },
         {
+          title: this.$t("admin_merchant.fields.status"),
+          align: "start",
+          sortable: true,
+          key: "status",
+        },
+        {
           title: this.$t("admin_merchant.fields.total"),
           align: "start",
           sortable: true,
@@ -92,6 +110,9 @@ export default {
       return this.records?.data?.map((item) => {
         return {
           ...item,
+          status: item.status
+            ? this.$t(`global.order_status.${item.status}`)
+            : "---",
           pick_up_type: item.pick_up_type
             ? this.$t(`global.order_type.${item.pick_up_type}`)
             : "---",

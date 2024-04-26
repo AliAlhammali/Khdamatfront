@@ -22,7 +22,8 @@
       "upload_error": "An error occurred while uploading the file",
       "logout": "Logout",
       "view_file": "View File",
-      "no_data": "No data"
+      "no_data": "No data",
+      "back_to_home": "Back to Home"
     },
     "status": {
       "active": "Active",

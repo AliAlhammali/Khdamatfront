@@ -81,6 +81,13 @@ export default {
           key: "pick_up_type",
         },
         {
+          title: this.$t("admin_merchant.fields.status"),
+          align: "start",
+          sortable: true,
+          key: "status",
+        },
+
+        {
           title: this.$t("admin_merchant.fields.total"),
           align: "start",
           sortable: true,
@@ -98,6 +105,9 @@ export default {
       return this.records?.data?.map((item) => {
         return {
           ...item,
+          status: item.status
+            ? this.$t(`global.order_status.${item.status}`)
+            : "---",
           pick_up_type: item.pick_up_type
             ? this.$t(`global.order_type.${item.pick_up_type}`)
             : "---",

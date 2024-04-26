@@ -15,6 +15,11 @@ const router = createRouter({
     ...merchantsRoute.routes,
     ...serviceProviderRoute.routes,
     ...landingRoute.routes,
+    {
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: () => import("@/views/NotFound.vue"),
+    },
   ],
   scrollBehavior() {
     return { top: 0 };
