@@ -86,6 +86,7 @@
     "created_at": "تاريخ الانشاء",
     "main_category": "التصنيف الرئيسي",
     "client_name": "اسم العميل",
+    "order_number": "رقم الطلب",
     "client_phone": "تليفون العميل"
   }
 }

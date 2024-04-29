@@ -55,7 +55,7 @@ export default {
     headers() {
       return [
         {
-          title: "Order Number",
+          title: this.$t("global.order_number"),
           align: "start",
           sortable: true,
           key: "id",
