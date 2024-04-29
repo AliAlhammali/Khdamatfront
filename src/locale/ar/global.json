@@ -27,7 +27,9 @@
     },
     "status": {
       "active": "نشط",
-      "inactive": "غير نشط"
+      "inactive": "غير نشط",
+      "Active": "نشط",
+      "InActive": "غير نشط"
     },
 
     "table": {
@@ -67,12 +69,23 @@
       "category": "التصنيف",
       "service": "الخدمة",
       "unit_price": "سعر الوحدة",
-      "quantity": "الكمية"
+      "quantity": "الكمية",
+      "order_total": "اجمالى الطلب",
+      "sp_total": "إجمالى مزود الخدمة"
+    },
+    "numbers": {
+      "sp_total": "إجمالى مزود الخدمة"
     },
 
     "role": {
       "Admin": "مدير",
-      "Staff": "موظف"
-    }
+      "Staff": "موظف",
+      "admin": "مدير",
+      "staff": "موظف"
+    },
+    "created_at": "تاريخ الانشاء",
+    "main_category": "التصنيف الرئيسي",
+    "client_name": "اسم العميل",
+    "client_phone": "تليفون العميل"
   }
 }

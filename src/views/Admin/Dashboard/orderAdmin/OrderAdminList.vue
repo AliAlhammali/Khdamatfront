@@ -1,21 +1,21 @@
-<template >
+<template>
   <div>
     <data-table
-      :title="$t('admin_navbar_links.orders')"
-      :placeholder="$t('admin_merchant.search_placeholder_orders')"
-      :headers="headers"
-      :slots-items="['actions']"
-      :isLoading="uiFlags?.isLoading"
-      :items="items"
-      :meta="records?.meta"
-      @changePage="changePage"
-      @changePerPage="changePerPage"
-      @search="search"
+        :title="$t('admin_navbar_links.orders')"
+        :placeholder="$t('admin_merchant.search_placeholder_orders')"
+        :headers="headers"
+        :slots-items="['actions']"
+        :isLoading="uiFlags?.isLoading"
+        :items="items"
+        :meta="records?.meta"
+        @changePage="changePage"
+        @changePerPage="changePerPage"
+        @search="search"
     >
       <template v-slot:actions="{ item }">
         <router-link
-          :to="`/admin/orders/${item.item.id}`"
-          class="button button--edit px-2 rounded"
+            :to="`/admin/orders/${item.item.id}`"
+            class="button button--edit px-2 rounded"
         >
           <v-tooltip :text="$t('global.actions.show')">
             <template v-slot:activator="{ props }">
@@ -28,11 +28,12 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState } from "pinia";
+import {mapActions, mapState} from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
-import { useOrdersAdminStore } from "@/stores/admin/orders/orders.admin.store.js";
+import {useOrdersAdminStore} from "@/stores/admin/orders/orders.admin.store.js";
+
 export default {
-  components: { DataTable },
+  components: {DataTable},
   data() {
     return {
       params: {
@@ -40,6 +41,9 @@ export default {
         "filter[merchant_id]": null,
         perPage: 10,
         page: 1,
+        "includeOrderMainCategory": 1,
+        "includeOrderMerchantClient": 1,
+        "includeOrderMerchant": 1
       },
     };
   },
@@ -51,10 +55,28 @@ export default {
     headers() {
       return [
         {
-          title: "#",
+          title: "Order Number",
           align: "start",
           sortable: true,
           key: "id",
+        },
+        {
+          title: this.$t("global.created_at"),
+          align: "start",
+          sortable: true,
+          key: "created_at",
+        },
+        {
+          title: this.$t("global.main_category"),
+          align: "start",
+          sortable: true,
+          key: "main_category",
+        },
+        {
+          title: this.$t("admin_merchant.fields.merchant"),
+          align: "start",
+          sortable: true,
+          key: "merchant_title",
         },
         {
           title: this.$t("admin_merchant.fields.title"),
@@ -69,29 +91,36 @@ export default {
           key: "address[0].phone",
         },
         {
-          title: this.$t("admin_merchant.fields.started_at"),
+          title: this.$t("global.client_name"),
           align: "start",
           sortable: true,
-          key: "started_at",
+          key: "client_name",
         },
         {
-          title: this.$t("admin_merchant.fields.pick_up_type"),
+          title: this.$t("global.client_phone"),
           align: "start",
           sortable: true,
-          key: "pick_up_type",
+          key: "client_phone",
         },
-        {
-          title: this.$t("admin_merchant.fields.status"),
-          align: "start",
-          sortable: true,
-          key: "status",
-        },
+
 
         {
           title: this.$t("admin_merchant.fields.total"),
           align: "start",
           sortable: true,
           key: "totals.total",
+        },
+        {
+          title: this.$t("global.numbers.sp_total"),
+          align: "start",
+          sortable: true,
+          key: "totals.sp_total",
+        },
+        {
+          title: this.$t("admin_merchant.fields.status"),
+          align: "start",
+          sortable: true,
+          key: "status",
         },
         {
           title: "#",
@@ -105,12 +134,16 @@ export default {
       return this.records?.data?.map((item) => {
         return {
           ...item,
+          main_category: item.main_category.title ? item.main_category.title[this.$i18n.locale] : "---",
+          merchant_title: item.merchant ? item.merchant.title : "---",
+          client_name: item.merchant_client ? item.merchant_client.name : "---",
+          client_phone: item.merchant_client ? item.merchant_client.phone : "---",
           status: item.status
-            ? this.$t(`global.order_status.${item.status}`)
-            : "---",
+              ? this.$t(`global.order_status.${item.status}`)
+              : "---",
           pick_up_type: item.pick_up_type
-            ? this.$t(`global.order_type.${item.pick_up_type}`)
-            : "---",
+              ? this.$t(`global.order_type.${item.pick_up_type}`)
+              : "---",
         };
       });
     },

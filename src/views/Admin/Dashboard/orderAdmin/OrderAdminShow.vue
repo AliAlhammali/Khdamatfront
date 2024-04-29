@@ -64,7 +64,7 @@
                   <p>{{ record?.created_at }}</p>
                 </div>
                 <div
-                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 border-t"
                 >
                   <span> {{ $t("global.show_order.order_start_date") }} </span>
                   <p>{{ record?.started_at }}</p>
@@ -93,7 +93,8 @@
                   <!-- <p>{{ record?.address[0]?.location }}</p> -->
                 </div>
               </div>
-              <div class="bg-white">
+              <h2>{{ $t("global.show_order.order_total") }}</h2>
+              <div class="bg-white border-b">
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
@@ -111,6 +112,27 @@
                 >
                   <span>{{ $t("global.show_order.total") }}</span>
                   <h4>{{ record?.totals?.total }}</h4>
+                </div>
+              </div>
+              <h2>{{ $t("global.show_order.sp_total") }}</h2>
+              <div class="bg-white">
+                <div
+                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                >
+                  <span> {{ $t("global.show_order.subtotal") }} </span>
+                  <h4>{{ record?.totals?.sp_sup_total }}</h4>
+                </div>
+                <div
+                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                >
+                  <span>{{ $t("global.show_order.tax") }} </span>
+                  <h4>{{ record?.totals?.sp_vat }}</h4>
+                </div>
+                <div
+                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                >
+                  <span>{{ $t("global.show_order.total") }}</span>
+                  <h4>{{ record?.totals?.sp_total }}</h4>
                 </div>
               </div>
             </div>

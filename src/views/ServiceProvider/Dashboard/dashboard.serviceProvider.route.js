@@ -11,8 +11,8 @@ export default {
       component: () => import("./home/ServiceProviderHome.vue"),
     },
     ...usersServiceProviderRoute.routes,
-    ...categoriesServiceProviderRoute.routes,
-    ...servicesServiceProviderRoute.routes,
+    // ...categoriesServiceProviderRoute.routes,
+    // ...servicesServiceProviderRoute.routes,
     ...ordersServiceProvider.routes,
   ],
 };

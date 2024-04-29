@@ -124,28 +124,28 @@ export default {
             [this.$t("admin_navbar_links.users"), "/service-provider/users"],
           ],
         },
-        {
-          title: this.$t("admin_navbar_links.categories"),
-          icon: "mdi-store-outline",
-          key: "categories",
-          pages: [
-            [
-              this.$t("admin_navbar_links.categories"),
-              "/service-provider/categories",
-            ],
-          ],
-        },
-        {
-          title: this.$t("admin_navbar_links.services"),
-          icon: "mdi-cog-outline",
-          key: "services",
-          pages: [
-            [
-              this.$t("admin_navbar_links.services"),
-              "/service-provider/services",
-            ],
-          ],
-        },
+        // {
+        //   title: this.$t("admin_navbar_links.categories"),
+        //   icon: "mdi-store-outline",
+        //   key: "categories",
+        //   pages: [
+        //     [
+        //       this.$t("admin_navbar_links.categories"),
+        //       "/service-provider/categories",
+        //     ],
+        //   ],
+        // },
+        // {
+        //   title: this.$t("admin_navbar_links.services"),
+        //   icon: "mdi-cog-outline",
+        //   key: "services",
+        //   pages: [
+        //     [
+        //       this.$t("admin_navbar_links.services"),
+        //       "/service-provider/services",
+        //     ],
+        //   ],
+        // },
         {
           title: this.$t("admin_navbar_links.orders"),
           icon: "mdi-list-box-outline",
