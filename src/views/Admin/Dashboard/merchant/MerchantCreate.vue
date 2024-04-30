@@ -19,6 +19,7 @@
           <span class="fa fa-arrow-left"></span>
         </button>
       </div>
+      <h3 class="mb-4">1. {{ $t("global.owner_info") }}</h3>
       <v-row>
         <!--  Owner-->
         <template v-if="!isEditMerchant">
@@ -65,10 +66,18 @@
                 @blur="v$.merchant.owner.password.$touch()"
             />
           </v-col>
-          <v-col cols="12" md="6">
-
-          </v-col>
         </template>
+        <hr>
+      </v-row>
+      <hr style="    margin: 1rem 0;
+    color: #dbdade;
+    border: 0;
+    border-top:  solid;
+    opacity: 1;">
+      <h3 class="mb-4">1. {{ $t("global.company_info") }}</h3>
+      <v-row>
+
+
         <v-col cols="12" md="6">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
             <span> {{ $t("admin_merchant.fields.status") }}</span>

@@ -92,6 +92,8 @@
     "other": "اخرى",
     "avg_profit": "متوسط الربح",
     "completed_at": "تاريخ الانتهاء",
-    "password": "كلمة المرور"
+    "password": "كلمة المرور",
+    "owner_info": "بيانات المالك",
+    "company_info": "بيانات الشركة"
   }
 }
