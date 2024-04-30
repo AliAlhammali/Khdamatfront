@@ -91,6 +91,7 @@
     "order_commission": "نسبة البائع",
     "other": "اخرى",
     "avg_profit": "متوسط الربح",
-    "completed_at": "تاريخ الانتهاء"
+    "completed_at": "تاريخ الانتهاء",
+    "password": "كلمة المرور"
   }
 }

@@ -51,6 +51,23 @@
               @blur="v$.merchant.owner.email.$touch()"
             />
           </v-col>
+          <v-col cols="12" md="6">
+            <filed-input
+                :label="$t('global.password')"
+                v-model="merchant.owner.password"
+                :value="merchant.owner.password"
+                type="password"
+                :error="v$.merchant.owner.password.$error"
+                :error-text="
+                v$.merchant.owner.password.required.$invalid &&
+                $t('errors.required')
+              "
+                @blur="v$.merchant.owner.password.$touch()"
+            />
+          </v-col>
+          <v-col cols="12" md="6">
+
+          </v-col>
         </template>
         <v-col cols="12" md="6">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
@@ -264,6 +281,9 @@ export default {
             required: requiredIf(() => !this.isEditMerchant),
             email,
           },
+          password: {
+            required: requiredIf(() => !this.isEditMerchant),
+          },
         },
       },
       files: {
@@ -294,6 +314,7 @@ export default {
         owner: {
           name: null,
           email: null,
+          password: null,
         },
       },
       files: {
