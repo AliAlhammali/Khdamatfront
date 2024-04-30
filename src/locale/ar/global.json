@@ -87,6 +87,10 @@
     "main_category": "التصنيف الرئيسي",
     "client_name": "اسم العميل",
     "order_number": "رقم الطلب",
-    "client_phone": "تليفون العميل"
+    "client_phone": "تليفون العميل",
+    "order_commission": "نسبة البائع",
+    "other": "اخرى",
+    "avg_profit": "متوسط الربح",
+    "completed_at": "تاريخ الانتهاء"
   }
 }

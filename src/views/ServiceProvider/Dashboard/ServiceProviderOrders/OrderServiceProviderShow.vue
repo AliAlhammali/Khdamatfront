@@ -98,19 +98,19 @@
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span> {{ $t("global.show_order.subtotal") }} </span>
-                  <h4>{{ record?.totals?.sup_total }}</h4>
+                  <h4>{{ record?.totals?.sp_sup_total }}</h4>
                 </div>
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span>{{ $t("global.show_order.tax") }} </span>
-                  <h4>{{ record?.totals?.vat }}</h4>
+                  <h4>{{ record?.totals?.sp_vat }}</h4>
                 </div>
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span>{{ $t("global.show_order.total") }}</span>
-                  <h4>{{ record?.totals?.total }}</h4>
+                  <h4>{{ record?.totals?.sp_total }}</h4>
                 </div>
               </div>
             </div>

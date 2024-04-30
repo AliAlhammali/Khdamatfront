@@ -92,7 +92,7 @@ export default {
     return {
       dataObj: {
         name: { required },
-        email: { required, email },
+        email: { email },
         address: { required },
         phone: { required },
         location: {
@@ -150,8 +150,7 @@ export default {
           label: this.$t("admin_merchant.fields.email"),
           error: "v$.dataObj.email.$error",
           errorText:
-            (this.v$.dataObj.email.required.$invalid &&
-              this.$t("errors.required")) ||
+
             (this.v$.dataObj.email.email.$invalid && this.$t("errors.email")),
           blur: "v$.dataObj.email.$touch()",
         },

@@ -40,12 +40,13 @@ export default {
         "filter[keyword]": null,
         perPage: 10,
         page: 1,
-        includeOrderMerchant: 0,
-        includeOrderMerchantUser: 0,
-        includeOrderMerchantClient: 0,
-        includeOrderMainCategory: 0,
-        includeOrderAddress: 0,
-        includeOrderItems: 0,
+        includeOrderMerchant: 1,
+        includeOrderMerchantUser: 1,
+        includeOrderMerchantClient: 1,
+        includeOrderMainCategory: 1,
+        includeOrderAddress: 1,
+        includeOrderItems: 1,
+        sortAsc:1
       },
     };
   },
@@ -57,10 +58,22 @@ export default {
     headers() {
       return [
         {
-          title: "#",
+          title: this.$t("global.order_number"),
           align: "start",
           sortable: true,
           key: "id",
+        },
+        {
+          title: this.$t("global.created_at"),
+          align: "start",
+          sortable: true,
+          key: "created_at",
+        },
+        {
+          title: this.$t("global.main_category"),
+          align: "start",
+          sortable: true,
+          key: "main_category",
         },
         {
           title: this.$t("admin_merchant.fields.title"),
@@ -75,28 +88,35 @@ export default {
           key: "address[0].phone",
         },
         {
-          title: this.$t("admin_merchant.fields.started_at"),
+          title: this.$t("global.client_name"),
           align: "start",
           sortable: true,
-          key: "started_at",
+          key: "client_name",
         },
         {
-          title: this.$t("admin_merchant.fields.pick_up_type"),
+          title: this.$t("global.client_phone"),
           align: "start",
           sortable: true,
-          key: "pick_up_type",
+          key: "client_phone",
+        },
+        {
+          title: this.$t("global.completed_at"),
+          align: "start",
+          sortable: true,
+          key: "completed_at",
+        },
+
+        {
+          title: this.$t("admin_merchant.fields.total"),
+          align: "start",
+          sortable: true,
+          key: "totals.total",
         },
         {
           title: this.$t("admin_merchant.fields.status"),
           align: "start",
           sortable: true,
           key: "status",
-        },
-        {
-          title: this.$t("admin_merchant.fields.total"),
-          align: "start",
-          sortable: true,
-          key: "totals.total",
         },
         {
           title: "#",
@@ -110,6 +130,11 @@ export default {
       return this.records?.data?.map((item) => {
         return {
           ...item,
+          main_category: item.main_category.title ? item.main_category.title[this.$i18n.locale] : "---",
+          merchant_title: item.merchant ? item.merchant.title : "---",
+          client_name: item.merchant_client ? item.merchant_client.name : "---",
+          client_phone: item.merchant_client ? item.merchant_client.phone : "---",
+          completed_at: item.completed_at ? item.completed_at : "---",
           status: item.status
             ? this.$t(`global.order_status.${item.status}`)
             : "---",
