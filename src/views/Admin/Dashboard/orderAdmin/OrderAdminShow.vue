@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <template v-if="uiFlags.isLoading || uiFlags.isUpdating">
-      <Loader/>
+      <Loader />
     </template>
     <template v-else>
       <v-stepper alt-labels elevation="0">
@@ -9,14 +9,14 @@
           <template v-for="(status, index) in orderStatus" :key="index">
             <v-divider v-if="index !== 0"></v-divider>
             <v-stepper-item
-                :complete="
+              :complete="
                 currentStep?.step > status?.step ||
                 record?.status === 'completed' ||
                 record?.status === 'canceled'
               "
-                :step="index + 1"
-                :editable="false"
-                :class="
+              :step="index + 1"
+              :editable="false"
+              :class="
                 currentStep?.step === status?.step &&
                 record?.status !== 'completed' &&
                 record?.status !== 'canceled'
@@ -37,54 +37,56 @@
                 <div class="d-flex align-center ga-8 mb-2 pb-2">
                   <span> {{ $t("global.show_order.status") }} </span>
                   <v-select
-                      v-model="record.status"
-                      :placeholder="$t('admin_categories.fields.merchant_id')"
-                      :items="orderStatus"
-                      item-title="text"
-                      item-value="value"
-                      menu-icon="mdi mdi-chevron-down"
-                      class="w-100"
-                      outlined
-                      :no-data-text="$t('global.actions.no_data')"
-                      @update:model-value="(item) => updateOrders(item)"
+                    v-model="record.status"
+                    :placeholder="$t('admin_categories.fields.merchant_id')"
+                    :items="orderStatus"
+                    item-title="text"
+                    item-value="value"
+                    menu-icon="mdi mdi-chevron-down"
+                    class="w-100"
+                    outlined
+                    :no-data-text="$t('global.actions.no_data')"
+                    @update:model-value="(item) => updateOrders(item)"
+                    :disabled="
+                      record?.status === 'completed' ||
+                      record?.status === 'canceled'
+                    "
                   />
                 </div>
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span> {{ $t("global.show_order.order_number") }} </span>
                   <p>{{ record?.id }}</p>
                 </div>
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span>
                     {{ $t("global.show_order.order_creation_date") }}
                   </span>
                   <p>{{ record?.created_at }}</p>
                 </div>
-                <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 border-t"
-                >
+                <div class="d-flex align-center ga-2 mb-2 pb-2 border-t">
                   <span> {{ $t("global.show_order.order_start_date") }} </span>
                   <p>{{ record?.started_at }}</p>
                 </div>
               </div>
               <div class="border-b mb-2">
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span> {{ $t("global.show_order.created_by") }}</span>
                   <p>
                     {{
                       record?.merchant_user?.name
-                          ? record?.merchant_user?.name
-                          : "---"
+                        ? record?.merchant_user?.name
+                        : "---"
                     }}
                   </p>
                 </div>
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span>{{ $t("global.show_order.address") }}</span>
                   <p>
@@ -96,19 +98,19 @@
               <h2>{{ $t("global.show_order.order_total") }}</h2>
               <div class="bg-white border-b">
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span> {{ $t("global.show_order.subtotal") }} </span>
                   <h4>{{ record?.totals?.sup_total }}</h4>
                 </div>
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span>{{ $t("global.show_order.tax") }} </span>
                   <h4>{{ record?.totals?.vat }}</h4>
                 </div>
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span>{{ $t("global.show_order.total") }}</span>
                   <h4>{{ record?.totals?.total }}</h4>
@@ -117,19 +119,19 @@
               <h2>{{ $t("global.show_order.sp_total") }}</h2>
               <div class="bg-white">
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span> {{ $t("global.show_order.subtotal") }} </span>
                   <h4>{{ record?.totals?.sp_sup_total }}</h4>
                 </div>
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span>{{ $t("global.show_order.tax") }} </span>
                   <h4>{{ record?.totals?.sp_vat }}</h4>
                 </div>
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span>{{ $t("global.show_order.total") }}</span>
                   <h4>{{ record?.totals?.sp_total }}</h4>
@@ -137,102 +139,98 @@
               </div>
               <h2>{{ $t("global.avg_profit") }}</h2>
 
-
               <div class="bg-white">
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span> {{ $t("global.show_order.subtotal") }} </span>
                   <h4>{{ record?.totals?.profit_sup_total }}</h4>
                 </div>
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span>{{ $t("global.show_order.tax") }} </span>
                   <h4>{{ record?.totals?.profit_vat }}</h4>
                 </div>
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span>{{ $t("global.order_commission") }}</span>
                   <h4>{{ record?.totals?.merchant_user_commission_total }}</h4>
                 </div>
                 <div
-                    class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
                   <span>{{ $t("global.show_order.total") }}</span>
                   <h4>{{ record?.totals?.profit_total }}</h4>
                 </div>
               </div>
-
-
-
             </div>
           </v-col>
           <v-col md="8" cols="12">
             <v-table class="border rounded-lg">
               <thead>
-              <tr>
-                <th class="text-start border-e">
-                  {{ $t("global.show_order.category") }}
-                </th>
-                <th class="text-start border-e">
-                  {{ $t("global.show_order.service") }}
-                </th>
-                <th class="text-start border-e">
-                  {{ $t("global.show_order.unit_price") }}
-                </th>
-                <th class="text-start border-e">
-                  {{ $t("global.show_order.quantity") }}
-                </th>
-                <th class="text-start">
-                  {{ $t("global.show_order.total") }}
-                </th>
-              </tr>
+                <tr>
+                  <th class="text-start border-e">
+                    {{ $t("global.show_order.category") }}
+                  </th>
+                  <th class="text-start border-e">
+                    {{ $t("global.show_order.service") }}
+                  </th>
+                  <th class="text-start border-e">
+                    {{ $t("global.show_order.unit_price") }}
+                  </th>
+                  <th class="text-start border-e">
+                    {{ $t("global.show_order.quantity") }}
+                  </th>
+                  <th class="text-start">
+                    {{ $t("global.show_order.total") }}
+                  </th>
+                </tr>
               </thead>
               <tbody>
-              <tr v-for="(item, index) in record?.items" :key="item.name">
-                <td class="border-e">
-                  {{
-                    item.item?.category?.title
+                <tr v-for="(item, index) in record?.items" :key="item.name">
+                  <td class="border-e">
+                    {{
+                      item.item?.category?.title
                         ? item.item?.category?.title[$i18n.locale]
                         : "---"
-                  }}
-                </td>
-                <td class="border-e">
-                  {{
-                    item.item?.title ? item.item?.title[$i18n.locale] : "---"
-                  }}
-                </td>
-                <td class="border-e">{{ item.item?.price }}</td>
-                <td class="border-e">{{ item?.quantity }}</td>
-                <td class="px-0">
-                  <v-table>
-                    <thead v-if="index == 0">
-                    <tr>
-                      <th class="text-start border-e">
-                        {{ $t("global.show_order.subtotal") }}
-                      </th>
-                      <th class="text-start border-e">
-                        {{ $t("global.show_order.tax") }}
-                      </th>
-                      <th class="text-start border-b">
-                        {{ $t("global.show_order.total") }}
-                      </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td class="border-e" width="84px">
-                        {{ item?.sup_total }}
-                      </td>
-                      <td class="border-e" width="75px">{{ item?.vat }}</td>
-                      <td>{{ item?.total }}</td>
-                    </tr>
-                    </tbody>
-                  </v-table>
-                </td>
-              </tr>
+                    }}
+                  </td>
+                  <td class="border-e">
+                    {{
+                      item.item?.title ? item.item?.title[$i18n.locale] : "---"
+                    }}
+                  </td>
+                  <td class="border-e">{{ item.item?.price }}</td>
+                  <td class="border-e">{{ item?.quantity }}</td>
+                  <td class="px-0">
+                    <v-table>
+                      <thead v-if="index == 0">
+                        <tr>
+                          <th class="text-start border-e">
+                            {{ $t("global.show_order.subtotal") }}
+                          </th>
+                          <th class="text-start border-e">
+                            {{ $t("global.show_order.tax") }}
+                          </th>
+                          <th class="text-start border-b">
+                            {{ $t("global.show_order.total") }}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="border-e" width="84px">
+                            {{ item?.sup_total }}
+                          </td>
+                          <td class="border-e" width="75px">{{ item?.vat }}</td>
+                          <td>{{ item?.total }}</td>
+                        </tr>
+                      </tbody>
+                    </v-table>
+                  </td>
+                </tr>
               </tbody>
             </v-table>
             <!-- {{ record }} -->
@@ -250,11 +248,11 @@
 </template>
 <script>
 import Loader from "@/components/common/Loader.vue";
-import {useOrdersAdminStore} from "@/stores/admin/orders/orders.admin.store.js";
-import {mapActions, mapState} from "pinia";
+import { useOrdersAdminStore } from "@/stores/admin/orders/orders.admin.store.js";
+import { mapActions, mapState } from "pinia";
 
 export default {
-  components: {Loader},
+  components: { Loader },
   async mounted() {
     // includeOrderItemService
     await this.showOrdersAdmin(this.$route.params.id, {
@@ -267,7 +265,7 @@ export default {
     ...mapState(useOrdersAdminStore, ["record", "uiFlags"]),
     orderStatus() {
       let status = [
-        {value: "new", text: this.$t("global.order_status.new"), step: 1},
+        { value: "new", text: this.$t("global.order_status.new"), step: 1 },
         {
           value: "confirmed",
           text: this.$t("global.order_status.confirmed"),
@@ -304,7 +302,7 @@ export default {
     },
     currentStep() {
       return this.orderStatus.find(
-          (status) => status?.value === this.record?.status
+        (status) => status?.value === this.record?.status
       );
     },
   },

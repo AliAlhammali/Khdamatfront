@@ -47,6 +47,10 @@
                     outlined
                     :no-data-text="$t('global.actions.no_data')"
                     @update:model-value="(item) => updateOrders(item)"
+                    :disabled="
+                      record?.status === 'completed' ||
+                      record?.status === 'canceled'
+                    "
                   />
                 </div>
                 <div
@@ -213,7 +217,7 @@ export default {
     ...mapState(useOrdersServiceProviderStore, ["record", "uiFlags"]),
     orderStatus() {
       let status = [
-        { value: "new", text: this.$t("global.order_status.new"), step: 1 },
+        //  { value: "new", text: this.$t("global.order_status.new"), step: 1 },
         {
           value: "confirmed",
           text: this.$t("global.order_status.confirmed"),
@@ -234,18 +238,18 @@ export default {
           text: this.$t("global.order_status.completed"),
           step: 5,
         },
-        {
-          value: "canceled",
-          text: this.$t("global.order_status.canceled"),
-          step: 6,
-        },
+        // {
+        //   value: "canceled",
+        //   text: this.$t("global.order_status.canceled"),
+        //   step: 6,
+        // },
       ];
-      if (this.record?.status === "canceled") {
-        status = status.filter((item) => item.value !== "completed");
-      }
-      if (this.record?.status === "completed") {
-        status = status.filter((item) => item.value !== "canceled");
-      }
+      // if (this.record?.status === "canceled") {
+      //   status = status.filter((item) => item.value !== "completed");
+      // }
+      // if (this.record?.status === "completed") {
+      //   status = status.filter((item) => item.value !== "canceled");
+      // }
       return status;
     },
     currentStep() {

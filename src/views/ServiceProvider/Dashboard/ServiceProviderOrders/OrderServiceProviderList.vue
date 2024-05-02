@@ -13,24 +13,70 @@
       @search="search"
     >
       <template v-slot:actions="{ item }">
-        <router-link
-          :to="`/service-provider/orders/${item.item.id}`"
-          class="button button--edit px-2 rounded"
-        >
-          <v-tooltip :text="$t('global.actions.show')">
-            <template v-slot:activator="{ props }">
-              <span v-bind="props" class="mdi mdi-24px mdi-eye-outline"></span>
-            </template>
-          </v-tooltip>
-        </router-link>
+        <div class="d-flex align-center ga-2">
+          <v-btn
+            class="button button--edit px-2 rounded"
+            @click="showModal(item.item.id)"
+          >
+            <v-tooltip :text="$t('global.actions.edit')">
+              <template v-slot:activator="{ props }">
+                <span
+                  v-bind="props"
+                  class="mdi mdi-24px mdi-account-group-outline"
+                ></span>
+              </template>
+            </v-tooltip>
+          </v-btn>
+          <router-link
+            :to="`/service-provider/orders/${item.item.id}`"
+            class="button button--edit px-2 rounded"
+          >
+            <v-tooltip :text="$t('global.actions.show')">
+              <template v-slot:activator="{ props }">
+                <span
+                  v-bind="props"
+                  class="mdi mdi-24px mdi-eye-outline"
+                ></span>
+              </template>
+            </v-tooltip>
+          </router-link>
+        </div>
       </template>
     </data-table>
+
+    <v-dialog v-model="showUsers" width="auto">
+      <v-card min-width="400" class="pa-4">
+        <h3 class="mb-4">
+          {{ $t("global.role.Staff") }}
+        </h3>
+        <v-select
+          v-model="userSelected"
+          :items="users.data"
+          :item-title="'name'"
+          :item-value="'id'"
+          :label="$t('admin_navbar_links.users')"
+          outlined
+          menu-icon="mdi mdi-chevron-down"
+          class="text-capitalize rounded-xl"
+        />
+        <v-btn
+          class="w-100 mt-4"
+          color="primary"
+          size="large"
+          @click="updateStaff"
+        >
+          {{ $t("global.actions.edit") }}
+        </v-btn>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
 import { useOrdersServiceProviderStore } from "@/stores/serviceProvider/orders/orders.serviceProvider.store";
+import { useUsersServiceProviderStore } from "@/stores/serviceProvider/users/users.serviceProvider.store";
+
 export default {
   components: { DataTable },
   data() {
@@ -46,15 +92,22 @@ export default {
         includeOrderMainCategory: 1,
         includeOrderAddress: 1,
         includeOrderItems: 1,
-        sortAsc:1
+        sortAsc: 1,
       },
+      showUsers: false,
+      userSelected: null,
+      orderSelected: null,
     };
   },
   async mounted() {
     await this.getOrdersServiceProvider(this.params);
+    await this.getUsersServiceProvider();
   },
   computed: {
     ...mapState(useOrdersServiceProviderStore, ["records", "uiFlags"]),
+    ...mapState(useUsersServiceProviderStore, {
+      users: "records",
+    }),
     headers() {
       return [
         {
@@ -130,10 +183,14 @@ export default {
       return this.records?.data?.map((item) => {
         return {
           ...item,
-          main_category: item.main_category.title ? item.main_category.title[this.$i18n.locale] : "---",
+          main_category: item.main_category.title
+            ? item.main_category.title[this.$i18n.locale]
+            : "---",
           merchant_title: item.merchant ? item.merchant.title : "---",
           client_name: item.merchant_client ? item.merchant_client.name : "---",
-          client_phone: item.merchant_client ? item.merchant_client.phone : "---",
+          client_phone: item.merchant_client
+            ? item.merchant_client.phone
+            : "---",
           completed_at: item.completed_at ? item.completed_at : "---",
           status: item.status
             ? this.$t(`global.order_status.${item.status}`)
@@ -146,7 +203,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useOrdersServiceProviderStore, ["getOrdersServiceProvider"]),
+    ...mapActions(useOrdersServiceProviderStore, [
+      "getOrdersServiceProvider",
+      "updateOrdersServiceProvider",
+    ]),
+    ...mapActions(useUsersServiceProviderStore, ["getUsersServiceProvider"]),
     changePage(page) {
       this.params.page = page;
       this.getOrdersServiceProvider(this.params);
@@ -162,6 +223,18 @@ export default {
         "filter[keyword]": text,
       };
       this.getOrdersServiceProvider(key);
+    },
+    async updateStaff() {
+      const data = {
+        service_provider_id: this.userSelected,
+      };
+      await this.updateOrdersServiceProvider(this.orderSelected, data);
+      this.showUsers = false;
+      this.userSelected = null;
+    },
+    showModal(id) {
+      this.orderSelected = id;
+      this.showUsers = true;
     },
   },
 };
