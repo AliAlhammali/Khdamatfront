@@ -49,6 +49,32 @@
                 </template>
               </v-tooltip>
             </router-link>
+            <router-link
+              :to="{
+                path: `/admin/service/create`,
+                query: { merchant_id: item.item.id },
+              }"
+              class="button button--edit px-2 rounded"
+            >
+              <v-tooltip :text="$t('admin_services.add_title_service')">
+                <template v-slot:activator="{ props }">
+                  <span v-bind="props" class="mdi mdi-24px mdi-plus"></span>
+                </template>
+              </v-tooltip>
+            </router-link>
+            <router-link
+              :to="{
+                path: `/admin/categories/create`,
+                query: { merchant_id: item.item.id },
+              }"
+              class="button button--edit px-2 rounded"
+            >
+              <v-tooltip :text="$t('admin_categories.add_title_category')">
+                <template v-slot:activator="{ props }">
+                  <span v-bind="props" class="mdi mdi-24px mdi-plus"></span>
+                </template>
+              </v-tooltip>
+            </router-link>
             <button
               class="button button--delete px-2 rounded"
               @click="deleteRecord(item.item)"

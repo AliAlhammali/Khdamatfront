@@ -217,6 +217,10 @@ export default {
       this.merchant.parent_id = this.record?.parent?.id;
     }
 
+    if (this.$route.query?.merchant_id) {
+      this.merchant.merchant_id = +this.$route.query.merchant_id;
+    }
+
     await this.getCategoriesAdmin({ "filter[isParent]": 1, listing: 1 });
     await this.getMerchantAdmin({
       listing: 1,

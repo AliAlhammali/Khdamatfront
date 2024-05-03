@@ -283,7 +283,9 @@ export default {
       this.merchant.title = { ...this.record.title };
       this.merchant.category_id = this.record.category_id;
     }
-
+    if (this.$route.query?.merchant_id) {
+      this.merchant.merchant_id = +this.$route.query.merchant_id;
+    }
     await this.getMerchantAdmin({
       listing: 1,
     });
