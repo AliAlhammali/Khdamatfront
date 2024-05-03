@@ -14,7 +14,24 @@
           >
             <span class="mdi mdi-plus"></span>
           </v-btn>
-          <v-select
+          <v-search-select
+            @search="(query) => searchInList((search = query))"
+            class="w-100"
+            :options="recordsClients"
+            label="name"
+            v-model="selectClient"
+            :placeholder="$t('admin_navbar_links.clients')"
+            :filterable="false"
+            :loading="uiFlags.isLoading"
+            :class="{ error: errorClient }"
+            :dir="$i18n.locale === 'ar' ? 'rtl' : 'ltr'"
+          >
+            <template #no-options>
+              {{ $t("global.actions.no_data") }}
+            </template>
+          </v-search-select>
+
+          <!-- <v-autocomplete
             v-model="selectClient"
             :placeholder="$t('admin_navbar_links.clients')"
             :items="recordsClients"
@@ -26,7 +43,10 @@
             return-object
             :no-data-text="$t('global.actions.no_data')"
             :error="errorClient"
-          />
+            :loading="uiFlags.isLoading"
+            @update:search="(value) => searchInList(value)"
+            clearable
+          /> -->
         </div>
         <p class="text-error mt-2 d-flex ga-2 align-center" v-if="errorClient">
           <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
@@ -50,6 +70,25 @@
             </span>
           </div>
         </div>
+      </v-col>
+      <v-col md="6" cols="12">
+        <filed-input
+          :label="$t('admin_merchant.fields.merchant_reference')"
+          v-model="orderData.merchant_reference"
+          :value="orderData.merchant_reference"
+          :required="false"
+        />
+      </v-col>
+      <v-col md="6" cols="12">
+        <p class="d-flex align-center ga-2 mb-3 filed__label">
+          {{ $t("admin_merchant.fields.merchant_reference_file") }}
+        </p>
+        <label class="filed__input d-flex align-center ga-2 pa-2 rounded-lg">
+          <input
+            type="file"
+            @input="upload($event, 'merchant_reference_file')"
+          />
+        </label>
       </v-col>
     </v-row>
     <v-dialog v-model="showClient" width="80%">
@@ -119,6 +158,7 @@ import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import FiledInput from "@/components/common/FiledInput.vue";
+import { useGlobalActionsStore } from "@/stores/actions/upload.store";
 export default {
   components: { FiledInput },
   props: {
@@ -164,6 +204,8 @@ export default {
         },
         is_active: null,
       },
+      files: {},
+      timer: null,
     };
   },
   async mounted() {
@@ -226,6 +268,8 @@ export default {
       "getClientsMerchant",
       "createClientsMerchant",
     ]),
+    ...mapActions(useGlobalActionsStore, ["uploadFile"]),
+
     async createClient() {
       this.v$.clientObj.$touch();
       if (this.v$.clientObj.$error) return;
@@ -244,6 +288,27 @@ export default {
             long: position.coords.longitude,
           };
         });
+      }
+    },
+    async upload(event, key) {
+      const file = event.target.files[0];
+      const { data } = await this.uploadFile(file);
+      this.files[key] = file; // Update the file property in Vue.js
+      this.orderData[key] = data.data.path;
+    },
+    async searchInList(val) {
+      if (val.length > 2) {
+        if (this.timer) {
+          clearTimeout(this.timer);
+          this.timer = null;
+        }
+        this.timer = setTimeout(async () => {
+          await this.getClientsMerchant({ "filter[keyword]": val });
+        }, 800);
+      } else {
+        if (val.length === 0) {
+          await this.getClientsMerchant({ "filter[keyword]": val });
+        }
       }
     },
   },

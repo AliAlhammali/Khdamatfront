@@ -192,6 +192,7 @@ export default {
       selected: [],
       sortDesc: false,
       itemsPages: [10, 20, 50, 100],
+      timer: null,
     };
   },
   mounted() {},

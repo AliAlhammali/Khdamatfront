@@ -15,6 +15,9 @@ import "vue-toastification/dist/index.css";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
+import VueSearchSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
+
 export function registerPlugins(app) {
   app
     .use(i18n)
@@ -28,5 +31,7 @@ export function registerPlugins(app) {
       timeout: 5000,
     });
 
-  app.component("VueDatePicker", VueDatePicker);
+  app
+    .component("VueDatePicker", VueDatePicker)
+    .component("v-search-select", VueSearchSelect);
 }

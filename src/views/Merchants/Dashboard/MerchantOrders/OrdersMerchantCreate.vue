@@ -130,6 +130,8 @@ export default {
         started_at: new Date().toISOString().substr(0, 10),
         pick_up_type: "delivered", // from_branch
         merchant_branch_id: null,
+        merchant_reference: null,
+        merchant_reference_file: null,
       },
       pickList: [
         {

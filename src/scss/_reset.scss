@@ -77,3 +77,12 @@ select {
     }
   }
 }
+
+.vs__dropdown-toggle {
+  min-height: 55px;
+  padding: 0 10px;
+}
+
+.error .vs__dropdown-toggle {
+  border-color: red;
+}
