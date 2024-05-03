@@ -116,6 +116,19 @@
                   <span>{{ $t("global.show_order.total") }}</span>
                   <h4>{{ record?.totals?.sp_total }}</h4>
                 </div>
+
+                <ShareNetwork
+                  class="main-btn pa-2 rounded-lg w-100 text-center mt-4"
+                  network="whatsapp"
+                  url=""
+                  title=""
+                  description="`merchant name ${record?.address[0]?.name},branch location ${record?.address[0]?.location},phone number ${record?.address[0]?.phone},pick up location ${record?.address[0]?.pick_up_location},order date ${record?.started_at},`"
+                  @open="openShare = true"
+                  @change="openShare = false"
+                  @close="openShare = false"
+                >
+                  <v-icon size="24">mdi mdi-share-variant-outline</v-icon>
+                </ShareNetwork>
               </div>
             </div>
           </v-col>
@@ -205,6 +218,11 @@ import { mapActions, mapState } from "pinia";
 
 export default {
   components: { Loader },
+  data() {
+    return {
+      openShare: false,
+    };
+  },
   async mounted() {
     // includeOrderItemService
     await this.showOrdersServiceProvider(this.$route.params.id, {

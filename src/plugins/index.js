@@ -17,6 +17,7 @@ import "@vuepic/vue-datepicker/dist/main.css";
 
 import VueSearchSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
+import VueSocialSharing from "vue-social-sharing";
 
 export function registerPlugins(app) {
   app
@@ -26,10 +27,8 @@ export function registerPlugins(app) {
     .use(pinia)
     .use(VueCookies)
     .use(VueSweetalert2)
-    .use(Toast, {
-      position: POSITION.TOP_RIGHT,
-      timeout: 5000,
-    });
+    .use(Toast, { position: POSITION.TOP_RIGHT, timeout: 5000 })
+    .use(VueSocialSharing);
 
   app
     .component("VueDatePicker", VueDatePicker)
