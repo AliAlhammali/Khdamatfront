@@ -23,7 +23,8 @@
       "logout": "Logout",
       "view_file": "View File",
       "no_data": "No data",
-      "back_to_home": "Back to Home"
+      "back_to_home": "Back to Home",
+      "change_password": "Change Password"
     },
     "status": {
       "active": "Active",
@@ -55,7 +56,10 @@
     },
     "role": {
       "Admin": "Admin",
-      "Staff": "Staff"
+      "Staff": "Staff",
+      "admin": "Admin",
+      "staff": "Staff",
+      "service_provider": "Service Provider"
     },
     "show_order": {
       "status": "Status",
@@ -72,6 +76,11 @@
       "service": "Service",
       "unit_price": "Unit Price",
       "quantity": "Quantity"
+    },
+    "change_password": {
+      "password": "Password",
+      "confirm_password": "Confirm Password",
+      "password_changed": "Password changed successfully"
     }
   }
 }

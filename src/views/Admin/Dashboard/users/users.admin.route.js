@@ -1,19 +1,19 @@
 export default {
   routes: [
     {
-      path: "users-admin",
+      path: "users",
       name: "users-admin-dashboard",
-      component: () => import("./UsersAdminList.vue")
+      component: () => import("./UsersAdminList.vue"),
     },
     {
-      path: "users-admin/create",
+      path: "users/create",
       name: "users-admin-create",
-      component: () => import("./UsersAdminCreate.vue")
+      component: () => import("./UsersAdminCreate.vue"),
     },
     {
-      path: "users-admin/:id/edit",
+      path: "users/:id/edit",
       name: "users-admin-edit",
-      component: () => import("./UsersAdminCreate.vue")
-    }
-  ]
+      component: () => import("./UsersAdminCreate.vue"),
+    },
+  ],
 };

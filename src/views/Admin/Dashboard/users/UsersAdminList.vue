@@ -3,7 +3,7 @@
     <data-table
       :title="$t('admin_navbar_links.users')"
       :placeholder="$t('admin_merchant.search_placeholder_users')"
-      :create-page="'/admin/users-admin/create'"
+      :create-page="'/admin/users/create'"
       :headers="headers"
       :slots-items="['actions', 'status', 'role']"
       :isLoading="uiFlags?.isLoading"
@@ -35,7 +35,7 @@
       <template #actions="{ item }">
         <div class="d-flex ga-2 align-center">
           <router-link
-            :to="`/admin/users-admin/${item.item.id}/edit`"
+            :to="`/admin/users/${item.item.id}/edit`"
             class="button button--edit px-2 rounded"
           >
             <v-tooltip :text="$t('global.actions.edit')">

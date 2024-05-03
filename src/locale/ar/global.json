@@ -23,7 +23,8 @@
       "logout": "تسجيل الخروج",
       "view_file": "عرض الملف",
       "no_data": "لا توجد بيانات",
-      "back_to_home": "العودة للرئيسية"
+      "back_to_home": "العودة للرئيسية",
+      "change_password": "تغيير كلمة المرور"
     },
     "status": {
       "active": "نشط",
@@ -81,7 +82,13 @@
       "Admin": "مدير",
       "Staff": "موظف",
       "admin": "مدير",
-      "staff": "موظف"
+      "staff": "موظف",
+      "service_provider": "مقدم الخدمة"
+    },
+    "change_password": {
+      "password": "كلمة المرور",
+      "confirm_password": "تأكيد كلمة المرور",
+      "password_changed": "تم تغيير كلمة المرور بنجاح"
     },
     "created_at": "تاريخ الانشاء",
     "main_category": "التصنيف الرئيسي",

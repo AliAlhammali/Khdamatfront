@@ -146,7 +146,7 @@ export default {
           title: this.$t("admin_navbar_links.users"),
           icon: "mdi-account-group-outline",
           key: "users",
-          pages: [[this.$t("admin_navbar_links.users"), "/admin/users-admin"]],
+          pages: [[this.$t("admin_navbar_links.users"), "/admin/users"]],
         },
         {
           title: this.$t("admin_navbar_links.categories"),

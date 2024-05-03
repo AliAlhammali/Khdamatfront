@@ -115,7 +115,11 @@
             @blur="v$.dataObj.password.$touch()"
           />
         </v-col>
-
+        <v-col md="6" cols="12" v-if="isEditDataObj">
+          <v-btn @click="showModel = true">
+            {{ $t("global.actions.change_password") }}
+          </v-btn>
+        </v-col>
         <v-col cols="12">
           <v-btn
             class="w-100"
@@ -136,13 +140,84 @@
         </v-col>
       </v-row>
     </template>
+
+    <v-dialog v-model="showModel" width="auto" persistent>
+      <v-card min-width="400" class="pa-6 rounded-lg">
+        <div
+          class="d-flex align-center justify-space-between mb-4 border-b pb-4"
+        >
+          <h3>
+            {{ $t("global.actions.change_password") }}
+          </h3>
+          <v-btn @click="closeModel" icon>
+            <v-icon>mdi mdi-close</v-icon>
+          </v-btn>
+        </div>
+        <v-row>
+          <v-col cols="12" md="12">
+            <filed-input
+              :label="$t('global.change_password.password')"
+              v-model="changePassword.password"
+              :value="changePassword.password"
+              type="password"
+              :error="v$.changePassword.password.$error"
+              :error-text="
+                v$.changePassword.password.required.$invalid &&
+                $t('errors.required')
+              "
+              @blur="v$.changePassword.password.$touch()"
+              @show-password="showUpdatePassword = !showUpdatePassword"
+              :show-password="showUpdatePassword"
+            />
+          </v-col>
+          <v-col cols="12" md="12">
+            <filed-input
+              :label="$t('global.change_password.confirm_password')"
+              v-model="changePassword.confirmPassword"
+              :value="changePassword.confirmPassword"
+              type="password"
+              :error="v$.changePassword.confirmPassword.$error"
+              :error-text="
+                (v$.changePassword.confirmPassword.required.$invalid &&
+                  $t('errors.required')) ||
+                (v$.changePassword.confirmPassword.sameAs.$invalid &&
+                  $t('errors.password_mismatch'))
+              "
+              @blur="v$.changePassword.confirmPassword.$touch()"
+              @show-password="showConfirmPassword = !showConfirmPassword"
+              :show-password="showConfirmPassword"
+            />
+          </v-col>
+          <v-col cols="12">
+            <v-btn
+              class="w-100"
+              color="primary"
+              size="large"
+              @click="updatePassword"
+              :loading="uiFlags.isCreating || uiFlags.isUpdated"
+              :disabled="
+                uiFlags.isCreating ||
+                uiFlags.isUpdated ||
+                v$.changePassword.$error
+              "
+            >
+              {{
+                isEditMerchant
+                  ? $t("global.actions.edit")
+                  : $t("global.actions.add")
+              }}
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
 import FiledInput from "@/components/common/FiledInput.vue";
 import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
+import { required, email, sameAs } from "@vuelidate/validators";
 import Loader from "@/components/common/Loader.vue";
 
 import { useUsersServiceProviderStore } from "@/stores/serviceProvider/users/users.serviceProvider.store";
@@ -163,6 +238,13 @@ export default {
         role: { required },
         password: { required },
         status: { required },
+      },
+      changePassword: {
+        password: { required },
+        confirmPassword: {
+          required,
+          sameAs: sameAs(this.changePassword.password),
+        },
       },
     };
   },
@@ -198,6 +280,13 @@ export default {
           value: "Staff",
         },
       ],
+      showModel: false,
+      changePassword: {
+        password: null,
+        confirmPassword: null,
+      },
+      showUpdatePassword: false,
+      showConfirmPassword: false,
     };
   },
   async mounted() {
@@ -265,16 +354,28 @@ export default {
       "updateUsersServiceProvider",
     ]),
 
-    actionBtn() {
+    async actionBtn() {
       this.v$.$touch();
       if (this.v$.$error) return;
       if (this.isEditDataObj) {
         const data = updateToPatchData(this.dataObj, this.record);
-        this.updateUsersServiceProvider(this.record.id, data);
+        await this.updateUsersServiceProvider(this.record.id, data);
         return;
       } else {
-        this.createUsersServiceProvider({ ...this.dataObj });
+        await this.createUsersServiceProvider({ ...this.dataObj });
       }
+    },
+    async updatePassword() {
+      this.v$.changePassword.$touch();
+      if (this.v$.changePassword.$error) return;
+      await this.updateUsersServiceProvider(this.record.id, {
+        ...this.changePassword,
+      });
+      this.closeModel();
+    },
+    closeModel() {
+      this.showModel = false;
+      this.v$.$reset();
     },
   },
 };

@@ -5,6 +5,7 @@
     "maxLength": "Maximum length allowed is {{requiredLength}}",
     "min": "Value is less than the minimum allowed",
     "max": "Value is greater than the maximum allowed",
-    "email": "Invalid email format"
+    "email": "Invalid email format",
+    "password_mismatch": "Passwords do not match"
   }
 }

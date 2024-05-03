@@ -47,14 +47,14 @@
     <v-dialog v-model="showUsers" width="auto">
       <v-card min-width="400" class="pa-4">
         <h3 class="mb-4">
-          {{ $t("global.role.Staff") }}
+          {{ $t("global.role.service_provider") }}
         </h3>
         <v-select
           v-model="userSelected"
-          :items="users.data"
-          :item-title="'name'"
+          :items="SPList.data"
+          :item-title="'title'"
           :item-value="'id'"
-          :label="$t('admin_navbar_links.users')"
+          :label="$t('admin_navbar_links.services_providers')"
           outlined
           menu-icon="mdi mdi-chevron-down"
           class="text-capitalize rounded-xl"
@@ -75,7 +75,7 @@
 import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
 import { useOrdersAdminStore } from "@/stores/admin/orders/orders.admin.store.js";
-import { useUsersAdminStore } from "@/stores/admin/users/users.admin.store";
+import { useServiceProvidersAdminStore } from "@/stores/admin/serviceProviders/serviceProviders.admin.store";
 
 export default {
   components: { DataTable },
@@ -97,12 +97,14 @@ export default {
   },
   async mounted() {
     await this.getOrdersAdmin(this.params);
-    await this.getUsersAdmin();
+    await this.getServiceProvidersAdmin({
+      listing: 1,
+    });
   },
   computed: {
     ...mapState(useOrdersAdminStore, ["records", "uiFlags"]),
-    ...mapState(useUsersAdminStore, {
-      users: "records",
+    ...mapState(useServiceProvidersAdminStore, {
+      SPList: "records",
     }),
 
     headers() {
@@ -206,7 +208,7 @@ export default {
   },
   methods: {
     ...mapActions(useOrdersAdminStore, ["getOrdersAdmin", "updateOrdersAdmin"]),
-    ...mapActions(useUsersAdminStore, ["getUsersAdmin"]),
+    ...mapActions(useServiceProvidersAdminStore, ["getServiceProvidersAdmin"]),
 
     changePage(page) {
       this.params.page = page;
