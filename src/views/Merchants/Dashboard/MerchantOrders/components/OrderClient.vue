@@ -80,13 +80,7 @@
           :isEditMode="true"
           @getLocation="updateClientLocation"
         />
-        <!-- <Maps
-          v-if="selectClient"
-          :editMode="true"
-          :lat="selectClient?.location?.coordinates[0]"
-          :long="selectClient?.location?.coordinates[1]"
-          @getLocation="getLocation"
-        /> -->
+       
       </v-col>
     </v-row>
     <v-dialog v-model="showClient" width="80%">
@@ -297,6 +291,8 @@ export default {
         lat: address.lat,
         long: address.long,
       };
+      console.log(this.orderData.address, "this.orderData.address");
+      console.log(address, "address");
     },
     async upload(event, key) {
       const file = event.target.files[0];
@@ -329,9 +325,7 @@ export default {
         this.orderData.merchant_client_id = val?.id;
         this.orderData.address.name = val?.name;
         this.orderData.address.phone = val?.phone;
-        this.orderData.address.address = val?.address;
-        this.orderData.address.location.lat = val.location.coordinates[0];
-        this.orderData.address.location.long = val.location.coordinates[1];
+
         if (this.orderData.pick_up_type == "delivered") {
           this.orderData.address.pick_up_location.lat =
             val.location.coordinates[0];

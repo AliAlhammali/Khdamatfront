@@ -3,7 +3,7 @@
     <l-map
       ref="map"
       :zoom="zoom"
-      :center="center"
+      :center="points"
       :global-leaflet="false"
       :style="styleMap"
     >
@@ -13,7 +13,7 @@
         name="OpenStreetMap"
       ></l-tile-layer>
       <l-marker
-        :lat-lng="center"
+        :lat-lng="points"
         :update:visible="true"
         :draggable="isEditMode"
         @dragend="updateCenter($event)"
@@ -54,7 +54,7 @@ export default {
   },
   data() {
     return {
-      center: this.center,
+      points: this.center,
       address: {
         title: "",
         lat: "",
@@ -77,13 +77,13 @@ export default {
   },
   methods: {
     updateCenter(event) {
-      this.center = [event.target._latlng.lat, event.target._latlng.lng];
+      this.points = [event.target._latlng.lat, event.target._latlng.lng];
       this.findAddressByCoordinates();
     },
     findAddressByCoordinates() {
       const provider = new OpenStreetMapProvider();
       fetch(
-        `${provider.searchUrl}?q=${this.center[0]},${this.center[1]}&polygon_geojson=1&format=json`
+        `${provider.searchUrl}?q=${this.points[0]},${this.points[1]}&polygon_geojson=1&format=json`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -110,7 +110,7 @@ export default {
       const map = new L.Map("map");
       map.addControl(searchControl);
       map.on("geosearch/showlocation", (e) => {
-        this.center = [e.location.y, e.location.x];
+        this.points = [e.location.y, e.location.x];
         // remove the previous marker
         map.eachLayer((layer) => {
           if (layer instanceof L.Marker) {
