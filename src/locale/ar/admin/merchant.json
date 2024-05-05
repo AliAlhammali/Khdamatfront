@@ -38,8 +38,8 @@
         "name": "اسم المالك",
         "email": "بريد المالك"
       },
-      "merchant_reference": "رقم التاجر",
-      "merchant_reference_file": "ملف رقم التاجر"
+      "merchant_reference": "رقم المرجعي التاجر",
+      "merchant_reference_file": "ملف رقم المرجعي التاجر"
     }
   }
 }

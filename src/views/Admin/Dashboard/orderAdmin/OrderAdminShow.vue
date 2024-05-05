@@ -100,6 +100,7 @@
                       :key="record?.address[0]?.location?.coordinates"
                       :center="record?.address[0]?.location?.coordinates"
                       :style="{ height: '250px' }"
+                      :zoom="11"
                     />
                   </div>
                 </div>
@@ -279,7 +280,7 @@ export default {
   data() {
     return {
       openShare: false,
-      showMap: true,
+      showMap: false,
     };
   },
   async mounted() {

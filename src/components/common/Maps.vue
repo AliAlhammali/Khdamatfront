@@ -126,7 +126,7 @@ export default {
     findAddressByCoordinates() {
       const provider = new OpenStreetMapProvider();
       fetch(
-        `https://nominatim.openstreetmap.org/search.php?q=${this.center[0]},${this.center[1]}&polygon_geojson=1&format=json`
+        `${provider.searchUrl}?q=${this.center[0]},${this.center[1]}&polygon_geojson=1&format=json`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -137,6 +137,15 @@ export default {
           };
           this.$emit("getLocation", this.address);
         });
+    },
+  },
+  watch: {
+    center: {
+      handler() {
+        // if center changed, move the marker
+        this.findAddressByCoordinates();
+      },
+      deep: true,
     },
   },
 };

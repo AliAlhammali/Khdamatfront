@@ -88,13 +88,23 @@
                   </p>
                 </div>
                 <div
-                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between position-relative"
+                  @mouseover="showMap = true"
+                  @mouseleave="showMap = false"
                 >
                   <span>{{ $t("global.show_order.address") }}</span>
-                  <p>
+                  <p class="hover-to-show" @click="showMap = !showMap">
                     {{ $t("global.show_order.view_location") }}
                   </p>
-                  <!-- <p>{{ record?.address[0]?.location }}</p> -->
+                  <div class="show-map" v-if="record?.address && showMap">
+                    <MapsView
+                      v-if="record?.address[0]?.location?.coordinates"
+                      :key="record?.address[0]?.location?.coordinates"
+                      :center="record?.address[0]?.location?.coordinates"
+                      :style="{ height: '250px' }"
+                      :zoom="11"
+                    />
+                  </div>
                 </div>
               </div>
               <div class="bg-white">
@@ -213,14 +223,16 @@
 </template>
 <script>
 import Loader from "@/components/common/Loader.vue";
+import MapsView from "@/components/common/MapsView.vue";
 import { useOrdersServiceProviderStore } from "@/stores/serviceProvider/orders/orders.serviceProvider.store";
 import { mapActions, mapState } from "pinia";
 
 export default {
-  components: { Loader },
+  components: { Loader, MapsView },
   data() {
     return {
       openShare: false,
+      showMap: false,
     };
   },
   async mounted() {
@@ -292,5 +304,13 @@ export default {
 <style lang="scss" scoped>
 .order-info {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.show-map {
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  left: 0;
+  top: 30px;
 }
 </style>
