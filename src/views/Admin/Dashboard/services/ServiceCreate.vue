@@ -193,6 +193,48 @@
           </p>
         </v-col>
 
+        <v-col md="6" cols="12">
+          <filed-input
+              :label="$t('admin_services.fields.cost_price')"
+              v-model="merchant.cost_price"
+              :value="merchant.cost_price"
+              type="text"
+              :error="v$.merchant.cost_price.$error"
+              :error-text="
+              v$.merchant.cost_price.required.$invalid && $t('errors.required')
+            "
+              @blur="v$.merchant.cost_price.$touch()"
+          />
+        </v-col>
+
+        <v-col md="6" cols="12">
+          <filed-input
+              :label="$t('admin_services.fields.sp_price')"
+              v-model="merchant.sp_price"
+              :value="merchant.sp_price"
+              type="text"
+              :error="v$.merchant.sp_price.$error"
+              :error-text="
+              v$.merchant.sp_price.required.$invalid && $t('errors.required')
+            "
+              @blur="v$.merchant.sp_price.$touch()"
+          />
+        </v-col>
+
+        <v-col md="6" cols="12">
+          <filed-input
+              :label="$t('admin_services.fields.price')"
+              v-model="merchant.price"
+              :value="merchant.price"
+              type="text"
+              :error="v$.merchant.price.$error"
+              :error-text="
+              v$.merchant.price.required.$invalid && $t('errors.required')
+            "
+              @blur="v$.merchant.price.$touch()"
+          />
+        </v-col>
+
         <v-col cols="12">
           <v-btn
             class="w-100"
@@ -243,6 +285,9 @@ export default {
         main_category_id: { required },
         category_id: { required },
         status: { required },
+        cost_price: { required },
+        sp_price: { required },
+        price: { required },
       },
     };
   },
@@ -258,6 +303,9 @@ export default {
         merchant_id: null,
         main_category_id: null,
         category_id: null,
+        sp_price: null,
+        cost_price: null,
+        price: null,
       },
       listStatus: [
         {
@@ -282,6 +330,9 @@ export default {
       this.merchant = { ...this.record };
       this.merchant.title = { ...this.record.title };
       this.merchant.category_id = this.record.category_id;
+      this.merchant.sp_price = this.record.sp_price;
+      this.merchant.cost_price = this.record.cost_price;
+      this.merchant.price = this.record.price;
     }
     if (this.$route.query?.merchant_id) {
       this.merchant.merchant_id = +this.$route.query.merchant_id;
