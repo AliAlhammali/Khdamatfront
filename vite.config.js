@@ -24,8 +24,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url))
+      // "@": fileURLToPath(new URL("./src", import.meta.url))
       // "@": path.resolve(__dirname, "src/components"),
+      "@": path.resolve(__dirname, "src"),
     },
   },
   css: {
@@ -48,5 +49,9 @@ export default defineConfig({
         drop_debugger: true,
       },
     },
+  },
+  optimizeDeps: {
+    // set font
+    include: ["leaflet", "leaflet/dist/leaflet.css", "leaflet-geosearch"],
   },
 });

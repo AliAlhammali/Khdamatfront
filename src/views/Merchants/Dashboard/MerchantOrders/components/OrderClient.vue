@@ -122,7 +122,12 @@
             </v-col>
 
             <v-col cols="12">
-              <img src="/map.png" alt="" />
+              <Maps
+                :editMode="false"
+                :lat="clientObj?.location?.lat"
+                :long="clientObj?.location?.long"
+                @getLocation="getLocation"
+              />
             </v-col>
             <v-col cols="12">
               <v-checkbox
@@ -159,8 +164,9 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import FiledInput from "@/components/common/FiledInput.vue";
 import { useGlobalActionsStore } from "@/stores/actions/upload.store";
+import Maps from "@/components/common/Maps.vue";
 export default {
-  components: { FiledInput },
+  components: { FiledInput, Maps },
   props: {
     orderData: {
       type: Object,
@@ -210,7 +216,6 @@ export default {
   },
   async mounted() {
     await this.getClientsMerchant();
-    this.getLocation();
   },
   computed: {
     ...mapState(useClientsMerchantStore, ["records", "uiFlags"]),
@@ -280,15 +285,12 @@ export default {
       this.selectClient = data;
       this.showClient = false;
     },
-    getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          this.clientObj.location = {
-            lat: position.coords.latitude,
-            long: position.coords.longitude,
-          };
-        });
-      }
+    getLocation(address) {
+      this.clientObj.address = address.title;
+      this.clientObj.location = {
+        lat: address.lat,
+        long: address.long,
+      };
     },
     async upload(event, key) {
       const file = event.target.files[0];

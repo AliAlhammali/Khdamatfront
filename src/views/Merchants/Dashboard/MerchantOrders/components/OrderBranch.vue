@@ -37,8 +37,13 @@
         <div class="d-flex w-100 ga-2 align-center">
           <div
             class="border bg-white pa-2 rounded d-flex w-100 ga-2 align-center"
+            v-if="selectBranch"
           >
-            <span>{{ selectBranch?.location }}</span>
+            <MapsView
+              v-if="selectBranch?.location.coordinates"
+              :key="selectBranch?.location.coordinates"
+              :center="selectBranch?.location.coordinates"
+            />
           </div>
         </div>
       </v-col>
@@ -73,7 +78,12 @@
             </v-col>
 
             <v-col cols="12">
-              <img src="/map.png" alt="" />
+              <Maps
+                :editMode="false"
+                :lat="branchesObj?.location?.lat"
+                :long="branchesObj?.location?.long"
+                @getLocation="getLocation"
+              />
             </v-col>
             <v-col cols="12">
               <v-checkbox
@@ -109,9 +119,11 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { useBranchesMerchantStore } from "@/stores/merchant/branches/branches.merchant.store";
 import { mapActions, mapState } from "pinia";
+import Maps from "@/components/common/Maps.vue";
+import MapsView from "@/components/common/MapsView.vue";
 
 export default {
-  components: { FiledInput },
+  components: { FiledInput, Maps, MapsView },
   props: {
     orderData: {
       type: Object,
@@ -155,7 +167,6 @@ export default {
   },
   async mounted() {
     await this.getBranchesMerchant();
-    this.getLocation();
   },
   computed: {
     ...mapState(useBranchesMerchantStore, {
@@ -194,15 +205,12 @@ export default {
       "getBranchesMerchant",
       "createBranchesMerchant",
     ]),
-    getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          this.branchesObj.location = {
-            lat: position.coords.latitude,
-            long: position.coords.longitude,
-          };
-        });
-      }
+    getLocation(address) {
+      this.branchesObj.address = address.title;
+      this.branchesObj.location = {
+        lat: address.lat,
+        long: address.long,
+      };
     },
     async createBranch() {
       this.v$.branchesObj.$touch();
