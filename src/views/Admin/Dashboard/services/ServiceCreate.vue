@@ -68,6 +68,17 @@
             "
             :no-data-text="$t('global.actions.no_data')"
             @blur="v$.merchant.merchant_id.$touch()"
+            @update:model-value="
+              () => {
+                getCategoriesAdmin({
+                  'filter[merchant_id]': merchant.merchant_id,
+                  'filter[isParent]': 1,
+                  listing: 1,
+                });
+                this.merchant.main_category_id = null;
+                this.v$.merchant.main_category_id.$reset();
+              }
+            "
           />
 
           <p
@@ -82,37 +93,7 @@
           </p>
         </v-col>
 
-        <v-col cols="12" md="6">
-          <p class="d-flex align-center ga-2 mb-3 filed__label">
-            <span> {{ $t("admin_merchant.fields.status") }}</span>
-            <span class="text-red">*</span>
-          </p>
-          <v-select
-            v-model="merchant.status"
-            :placeholder="$t('admin_merchant.fields.status')"
-            :items="listStatus"
-            :item-title="'text'"
-            :item-value="'value'"
-            outlined
-            menu-icon="mdi mdi-chevron-down"
-            class="text-capitalize rounded-xl"
-            @blur="v$.merchant.status.$touch()"
-            :error="
-              v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
-            "
-            hide-details
-            :no-data-text="$t('global.actions.no_data')"
-          />
-          <p
-            class="text-error mt-2 d-flex ga-2 align-center"
-            v-if="
-              v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
-            "
-          >
-            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
-            <span>{{ $t("errors.required") }}</span>
-          </p>
-        </v-col>
+
 
         <v-col cols="12" md="6">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
@@ -128,6 +109,7 @@
             outlined
             menu-icon="mdi mdi-chevron-down"
             class="text-capitalize rounded-xl"
+            :disabled="merchant.merchant_id == null"
             @blur="v$.merchant.main_category_id.$touch()"
             :error="
               v$.merchant.main_category_id.$dirty &&
@@ -145,6 +127,7 @@
                 this.v$.merchant.category_id.$reset();
               }
             "
+
           />
           <p
             class="text-error mt-2 d-flex ga-2 align-center"
@@ -193,6 +176,78 @@
           </p>
         </v-col>
 
+        <v-col md="6" cols="12">
+          <filed-input
+              :label="$t('admin_services.fields.cost_price')"
+              v-model="merchant.cost_price"
+              :value="merchant.cost_price"
+              type="text"
+              :error="v$.merchant.cost_price.$error"
+              :error-text="
+              v$.merchant.cost_price.required.$invalid && $t('errors.required')
+            "
+              @blur="v$.merchant.cost_price.$touch()"
+          />
+        </v-col>
+
+        <v-col md="6" cols="12">
+          <filed-input
+              :label="$t('admin_services.fields.sp_price')"
+              v-model="merchant.sp_price"
+              :value="merchant.sp_price"
+              type="text"
+              :error="v$.merchant.sp_price.$error"
+              :error-text="
+              v$.merchant.sp_price.required.$invalid && $t('errors.required')
+            "
+              @blur="v$.merchant.sp_price.$touch()"
+          />
+        </v-col>
+
+        <v-col md="6" cols="12">
+          <filed-input
+              :label="$t('admin_services.fields.price')"
+              v-model="merchant.price"
+              :value="merchant.price"
+              type="text"
+              :error="v$.merchant.price.$error"
+              :error-text="
+              v$.merchant.price.required.$invalid && $t('errors.required')
+            "
+              @blur="v$.merchant.price.$touch()"
+          />
+        </v-col>
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            <span> {{ $t("admin_merchant.fields.status") }}</span>
+            <span class="text-red">*</span>
+          </p>
+          <v-select
+              v-model="merchant.status"
+              :placeholder="$t('admin_merchant.fields.status')"
+              :items="listStatus"
+              :item-title="'text'"
+              :item-value="'value'"
+              outlined
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl"
+              @blur="v$.merchant.status.$touch()"
+              :error="
+              v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
+            "
+              hide-details
+              :no-data-text="$t('global.actions.no_data')"
+          />
+          <p
+              class="text-error mt-2 d-flex ga-2 align-center"
+              v-if="
+              v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
+            "
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
+        </v-col>
         <v-col cols="12">
           <v-btn
             class="w-100"
@@ -243,6 +298,9 @@ export default {
         main_category_id: { required },
         category_id: { required },
         status: { required },
+        cost_price: { required },
+        sp_price: { required },
+        price: { required },
       },
     };
   },
@@ -258,6 +316,9 @@ export default {
         merchant_id: null,
         main_category_id: null,
         category_id: null,
+        sp_price: null,
+        cost_price: null,
+        price: null,
       },
       listStatus: [
         {
@@ -282,6 +343,9 @@ export default {
       this.merchant = { ...this.record };
       this.merchant.title = { ...this.record.title };
       this.merchant.category_id = this.record.category_id;
+      this.merchant.sp_price = this.record.sp_price;
+      this.merchant.cost_price = this.record.cost_price;
+      this.merchant.price = this.record.price;
     }
     if (this.$route.query?.merchant_id) {
       this.merchant.merchant_id = +this.$route.query.merchant_id;
