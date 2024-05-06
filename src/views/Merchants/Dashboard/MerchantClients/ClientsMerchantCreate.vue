@@ -39,7 +39,12 @@
         </v-col>
 
         <v-col cols="12">
-          <img src="/map.png" alt="" />
+          <maps
+            :editMode="isEditDataObj"
+            :lat="dataObj?.location?.lat"
+            :long="dataObj?.location?.long"
+            @getLocation="getLocation"
+          />
         </v-col>
         <v-col cols="12">
           <v-checkbox
@@ -82,9 +87,10 @@ import Loader from "@/components/common/Loader.vue";
 
 import { useClientsMerchantStore } from "@/stores/merchant/clients/clients.merchant.store";
 import { updateToPatchData } from "@/helper/update.inputs.helper";
+import Maps from "@/components/common/Maps.vue";
 
 export default {
-  components: { FiledInput, Loader },
+  components: { FiledInput, Loader, Maps },
   setup() {
     return { v$: useVuelidate() };
   },
@@ -119,8 +125,6 @@ export default {
     };
   },
   async mounted() {
-    this.getLocation();
-
     if (this.isEditDataObj) {
       const id = this.$route.params.id;
       await this.showClientsMerchant(id);
@@ -150,8 +154,7 @@ export default {
           label: this.$t("admin_merchant.fields.email"),
           error: "v$.dataObj.email.$error",
           errorText:
-
-            (this.v$.dataObj.email.email.$invalid && this.$t("errors.email")),
+            this.v$.dataObj.email.email.$invalid && this.$t("errors.email"),
           blur: "v$.dataObj.email.$touch()",
         },
         {
@@ -195,15 +198,12 @@ export default {
         this.createClientsMerchant({ ...this.dataObj });
       }
     },
-    getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          this.dataObj.location = {
-            lat: position.coords.latitude,
-            long: position.coords.longitude,
-          };
-        });
-      }
+    getLocation(address) {
+      this.dataObj.address = address.title;
+      this.dataObj.location = {
+        lat: address.lat,
+        long: address.long,
+      };
     },
   },
 };

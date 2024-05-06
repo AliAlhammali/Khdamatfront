@@ -86,3 +86,43 @@ select {
 .error .vs__dropdown-toggle {
   border-color: red;
 }
+
+.leaflet-bottom.leaflet-right {
+  display: none;
+}
+
+.leaflet-control-geosearch.leaflet-geosearch-bar {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0px;
+  width: 50%;
+  .results {
+    position: absolute;
+    top: 32px;
+    width: 100%;
+    font-size: 16px;
+  }
+  form {
+    all: unset;
+    display: flex !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+  }
+
+  button.reset {
+    position: relative;
+    order: 1;
+  }
+
+  .glass {
+    order: 2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100% !important;
+    background: #fff !important;
+    font-size: 16px;
+  }
+}

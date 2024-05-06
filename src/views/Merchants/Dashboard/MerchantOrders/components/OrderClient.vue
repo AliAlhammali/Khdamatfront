@@ -1,5 +1,26 @@
 <template >
   <div class="border my-4 pa-4">
+    <v-row class="mb-4">
+      <v-col md="6" cols="12">
+        <filed-input
+          :label="$t('admin_merchant.fields.merchant_reference')"
+          v-model="orderData.merchant_reference"
+          :value="orderData.merchant_reference"
+          :required="false"
+        />
+      </v-col>
+      <v-col md="6" cols="12">
+        <p class="d-flex align-center ga-2 mb-3 filed__label">
+          {{ $t("admin_merchant.fields.merchant_reference_file") }}
+        </p>
+        <label class="filed__input d-flex align-center ga-2 pa-2 rounded-lg">
+          <input
+            type="file"
+            @input="upload($event, 'merchant_reference_file')"
+          />
+        </label>
+      </v-col>
+    </v-row>
     <h3 class="mb-3">
       {{ $t("orders.select_client") }}
     </h3>
@@ -30,65 +51,43 @@
               {{ $t("global.actions.no_data") }}
             </template>
           </v-search-select>
-
-          <!-- <v-autocomplete
-            v-model="selectClient"
-            :placeholder="$t('admin_navbar_links.clients')"
-            :items="recordsClients"
-            item-title="name"
-            item-value="id"
-            menu-icon="mdi mdi-chevron-down"
-            class="w-100"
-            outlined
-            return-object
-            :no-data-text="$t('global.actions.no_data')"
-            :error="errorClient"
-            :loading="uiFlags.isLoading"
-            @update:search="(value) => searchInList(value)"
-            clearable
-          /> -->
         </div>
         <p class="text-error mt-2 d-flex ga-2 align-center" v-if="errorClient">
           <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
           <span>{{ $t("errors.required") }}</span>
         </p>
       </v-col>
-      <v-col md="8" cols="12">
-        <div class="d-flex w-100 ga-2 align-center">
-          <div
-            class="border bg-white pa-2 rounded d-flex w-100 ga-2 align-center"
-          >
-            <span class="mdi mdi-24px mdi-account-outline"></span>
-            <span>{{ selectClient?.name }}</span>
-          </div>
-          <div
-            class="border bg-white pa-2 rounded d-flex w-100 ga-2 align-center"
-          >
-            <span class="mdi mdi-24px mdi-phone-outline"></span>
-            <span>
-              {{ selectClient?.phone }}
-            </span>
-          </div>
+      <v-col md="4" cols="12">
+        <div
+          class="border bg-white pa-2 rounded d-flex w-100 ga-2 align-center"
+        >
+          <span class="mdi mdi-24px mdi-account-outline"></span>
+          <span>{{ selectClient?.name }}</span>
         </div>
       </v-col>
-      <v-col md="6" cols="12">
-        <filed-input
-          :label="$t('admin_merchant.fields.merchant_reference')"
-          v-model="orderData.merchant_reference"
-          :value="orderData.merchant_reference"
-          :required="false"
-        />
+      <v-col md="4" cols="12">
+        <div
+          class="border bg-white pa-2 rounded d-flex w-100 ga-2 align-center"
+        >
+          <span class="mdi mdi-24px mdi-phone-outline"></span>
+          <span>
+            {{ selectClient?.phone }}
+          </span>
+        </div>
       </v-col>
-      <v-col md="6" cols="12">
-        <p class="d-flex align-center ga-2 mb-3 filed__label">
-          {{ $t("admin_merchant.fields.merchant_reference_file") }}
-        </p>
-        <label class="filed__input d-flex align-center ga-2 pa-2 rounded-lg">
-          <input
-            type="file"
-            @input="upload($event, 'merchant_reference_file')"
+      <v-col md="12" cols="12">
+        <div
+          class="border rounded-lg pa-2"
+          v-if="selectClient?.location?.coordinates"
+        >
+          <MapsView
+            v-if="selectClient?.location?.coordinates"
+            :key="selectClient?.location?.coordinates"
+            :center="selectClient?.location?.coordinates"
+            :isEditMode="true"
+            @getLocation="updateClientLocation"
           />
-        </label>
+        </div>
       </v-col>
     </v-row>
     <v-dialog v-model="showClient" width="80%">
@@ -122,7 +121,12 @@
             </v-col>
 
             <v-col cols="12">
-              <img src="/map.png" alt="" />
+              <Maps
+                :editMode="false"
+                :lat="clientObj?.location?.lat"
+                :long="clientObj?.location?.long"
+                @getLocation="getLocation"
+              />
             </v-col>
             <v-col cols="12">
               <v-checkbox
@@ -159,8 +163,10 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import FiledInput from "@/components/common/FiledInput.vue";
 import { useGlobalActionsStore } from "@/stores/actions/upload.store";
+import Maps from "@/components/common/Maps.vue";
+import MapsView from "@/components/common/MapsView.vue";
 export default {
-  components: { FiledInput },
+  components: { FiledInput, Maps, MapsView },
   props: {
     orderData: {
       type: Object,
@@ -210,7 +216,6 @@ export default {
   },
   async mounted() {
     await this.getClientsMerchant();
-    this.getLocation();
   },
   computed: {
     ...mapState(useClientsMerchantStore, ["records", "uiFlags"]),
@@ -280,15 +285,21 @@ export default {
       this.selectClient = data;
       this.showClient = false;
     },
-    getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          this.clientObj.location = {
-            lat: position.coords.latitude,
-            long: position.coords.longitude,
-          };
-        });
-      }
+    getLocation(address) {
+      this.clientObj.address = address.title;
+      this.clientObj.location = {
+        lat: address.lat,
+        long: address.long,
+      };
+    },
+    updateClientLocation(address) {
+      this.orderData.address.address = address.title;
+      this.orderData.address.location = {
+        lat: address.lat,
+        long: address.long,
+      };
+      console.log(this.orderData.address, "this.orderData.address");
+      console.log(address, "address");
     },
     async upload(event, key) {
       const file = event.target.files[0];
@@ -321,9 +332,7 @@ export default {
         this.orderData.merchant_client_id = val?.id;
         this.orderData.address.name = val?.name;
         this.orderData.address.phone = val?.phone;
-        this.orderData.address.address = val?.address;
-        this.orderData.address.location.lat = val.location.coordinates[0];
-        this.orderData.address.location.long = val.location.coordinates[1];
+
         if (this.orderData.pick_up_type == "delivered") {
           this.orderData.address.pick_up_location.lat =
             val.location.coordinates[0];

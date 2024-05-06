@@ -87,13 +87,23 @@
                   </p>
                 </div>
                 <div
-                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between position-relative"
+                  @mouseover="showMap = true"
+                  @mouseleave="showMap = false"
                 >
                   <span>{{ $t("global.show_order.address") }}</span>
-                  <p>
+                  <p class="hover-to-show" @click="showMap = !showMap">
                     {{ $t("global.show_order.view_location") }}
                   </p>
-                  <!-- <p>{{ record?.address[0]?.location }}</p> -->
+                  <div class="show-map" v-if="record?.address && showMap">
+                    <MapsView
+                      v-if="record?.address[0]?.location?.coordinates"
+                      :key="record?.address[0]?.location?.coordinates"
+                      :center="record?.address[0]?.location?.coordinates"
+                      :style="{ height: '250px' }"
+                      :zoom="11"
+                    />
+                  </div>
                 </div>
               </div>
               <div class="bg-white">
@@ -215,12 +225,14 @@
 import Loader from "@/components/common/Loader.vue";
 import { useOrdersMerchantStore } from "@/stores/merchant/orders/orders.merchant.store";
 import { mapActions, mapState } from "pinia";
+import MapsView from "@/components/common/MapsView.vue";
 
 export default {
-  components: { Loader },
+  components: { Loader, MapsView },
   data() {
     return {
       openShare: false,
+      showMap: false,
     };
   },
   async mounted() {
@@ -310,5 +322,13 @@ export default {
 .chip--canceled {
   background-color: #f44336;
   color: #fff;
+}
+
+.show-map {
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  left: 0;
+  top: 30px;
 }
 </style>
