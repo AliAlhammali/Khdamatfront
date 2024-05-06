@@ -226,7 +226,7 @@ export default {
     },
     async updateStaff() {
       const data = {
-        service_provider_id: this.userSelected,
+        service_provider_user_id: this.userSelected,
       };
       await this.updateOrdersServiceProvider(this.orderSelected, data);
       this.showUsers = false;
