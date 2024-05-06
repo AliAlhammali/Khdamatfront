@@ -4,7 +4,7 @@
       {{ $t("orders.select_branch") }}
     </h3>
     <v-row>
-      <v-col md="4" cols="12">
+      <v-col md="6" cols="12">
         <div class="w-100 d-flex ga-2">
           <v-btn
             flat
@@ -33,7 +33,7 @@
           <span>{{ $t("errors.required") }}</span>
         </p>
       </v-col>
-      <v-col md="8" cols="12">
+      <v-col md="12" cols="12">
         <div class="d-flex w-100 ga-2 align-center">
           <div
             class="border bg-white pa-2 rounded d-flex w-100 ga-2 align-center"

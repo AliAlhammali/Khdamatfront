@@ -56,13 +56,16 @@
           <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
           <span>{{ $t("errors.required") }}</span>
         </p>
-
+      </v-col>
+      <v-col md="4" cols="12">
         <div
-          class="border my-4 bg-white pa-2 rounded d-flex w-100 ga-2 align-center"
+          class="border bg-white pa-2 rounded d-flex w-100 ga-2 align-center"
         >
           <span class="mdi mdi-24px mdi-account-outline"></span>
           <span>{{ selectClient?.name }}</span>
         </div>
+      </v-col>
+      <v-col md="4" cols="12">
         <div
           class="border bg-white pa-2 rounded d-flex w-100 ga-2 align-center"
         >
@@ -72,15 +75,19 @@
           </span>
         </div>
       </v-col>
-      <v-col md="8" cols="12">
-        <MapsView
+      <v-col md="12" cols="12">
+        <div
+          class="border rounded-lg pa-2"
           v-if="selectClient?.location?.coordinates"
-          :key="selectClient?.location?.coordinates"
-          :center="selectClient?.location?.coordinates"
-          :isEditMode="true"
-          @getLocation="updateClientLocation"
-        />
-       
+        >
+          <MapsView
+            v-if="selectClient?.location?.coordinates"
+            :key="selectClient?.location?.coordinates"
+            :center="selectClient?.location?.coordinates"
+            :isEditMode="true"
+            @getLocation="updateClientLocation"
+          />
+        </div>
       </v-col>
     </v-row>
     <v-dialog v-model="showClient" width="80%">
