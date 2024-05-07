@@ -177,7 +177,7 @@
                       item.item?.title ? item.item?.title[$i18n.locale] : "---"
                     }}
                   </td>
-                  <td class="border-e">{{ item.item?.price }}</td>
+                  <td class="border-e">{{ item.item?.sp_price }}</td>
                   <td class="border-e">{{ item?.quantity }}</td>
                   <td class="px-0">
                     <v-table>
