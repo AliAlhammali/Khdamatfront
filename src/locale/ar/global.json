@@ -101,6 +101,7 @@
     "completed_at": "تاريخ الانتهاء",
     "password": "كلمة المرور",
     "owner_info": "بيانات المالك",
-    "company_info": "بيانات الشركة"
+    "company_info": "بيانات الشركة",
+    "can_collect_vat": "يستطيع تحصيل الضريبه"
   }
 }

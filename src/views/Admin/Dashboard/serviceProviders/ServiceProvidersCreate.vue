@@ -208,7 +208,14 @@
             <span>{{ $t("errors.required") }}</span>
           </p>
         </v-col>
-
+        <v-col cols="12">
+          <v-checkbox
+              v-model="merchant.can_collect_vat"
+              :label="$t('global.can_collect_vat')"
+              @blur="v$.merchant.can_collect_vat.$touch()"
+              hide-details
+          />
+        </v-col>
         <v-col cols="12">
           <v-btn
             class="w-100"
@@ -264,6 +271,7 @@ export default {
             required: requiredIf(() => !this.isEditMerchant),
             email,
           },
+          can_collect_vat: { required },
         },
       },
       files: {
@@ -291,6 +299,7 @@ export default {
         sales_agreement_file: null,
         cr_number: null,
         vat_number: null,
+        can_collect_vat: null,
         owner: {
           name: null,
           email: null,
