@@ -197,10 +197,10 @@
                       <tbody>
                         <tr>
                           <td class="border-e" width="84px">
-                            {{ item?.sup_total }}
+                            {{ item?.sp_sup_total }}
                           </td>
-                          <td class="border-e" width="75px">{{ item?.vat }}</td>
-                          <td>{{ item?.total }}</td>
+                          <td class="border-e" width="75px">{{ item?.sp_vat }}</td>
+                          <td>{{ item?.sp_total }}</td>
                         </tr>
                       </tbody>
                     </v-table>
