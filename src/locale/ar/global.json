@@ -24,7 +24,8 @@
       "view_file": "عرض الملف",
       "no_data": "لا توجد بيانات",
       "back_to_home": "العودة للرئيسية",
-      "change_password": "تغيير كلمة المرور"
+      "change_password": "تغيير كلمة المرور",
+      "add_sp": "إضافة مقدم خدمة"
     },
     "status": {
       "active": "نشط",
@@ -103,5 +104,15 @@
     "owner_info": "بيانات المالك",
     "company_info": "بيانات الشركة",
     "can_collect_vat": "يستطيع تحصيل الضريبه"
+  },
+  "share_order": {
+    "order_number": "رقم الطلب",
+    "client_name": "اسم العميل",
+    "client_phone": "تليفون العميل",
+    "client_address": "عنوان العميل",
+    "created_by": "إنشاء بواسطة",
+    "merchant_phone": "تليفون منشئ الطلب",
+    "start_date": "تاريخ البداية",
+    "main_category": "التصنيف الرئيسي"
   }
 }

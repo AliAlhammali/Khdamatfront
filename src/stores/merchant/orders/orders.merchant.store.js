@@ -25,7 +25,7 @@ export const useOrdersMerchantStore = defineStore("OrdersMerchant", {
         const { data } = await OrdersMerchant.get(params);
         this.records = data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -36,7 +36,7 @@ export const useOrdersMerchantStore = defineStore("OrdersMerchant", {
         const { data } = await OrdersMerchant.show(id);
         this.record = data.data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -49,8 +49,8 @@ export const useOrdersMerchantStore = defineStore("OrdersMerchant", {
         toast.success(i18n.global.t("global.actions.add_success"));
         router.push({ name: "orders-merchant-dashboard" });
       } catch (error) {
-        console.error(error);
         toast.error(i18n.global.t("global.actions.add_error"));
+        return error;
       } finally {
         this.uiFlags.isCreated = false;
       }

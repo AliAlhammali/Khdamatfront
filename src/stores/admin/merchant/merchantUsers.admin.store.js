@@ -25,7 +25,7 @@ export const useMerchantUsersAdminStore = defineStore("MerchantUsersAdmin", {
         const { data } = await MerchantUsersAdminService.get(params);
         this.records = data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -36,7 +36,7 @@ export const useMerchantUsersAdminStore = defineStore("MerchantUsersAdmin", {
         const { data } = await MerchantUsersAdminService.show(id);
         this.record = data.data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -49,6 +49,7 @@ export const useMerchantUsersAdminStore = defineStore("MerchantUsersAdmin", {
         toast.success(i18n.global.t("global.actions.add_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.add_error"));
+        return error;
       } finally {
         this.uiFlags.isCreated = false;
       }
@@ -61,6 +62,7 @@ export const useMerchantUsersAdminStore = defineStore("MerchantUsersAdmin", {
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.edit_error"));
+        return error;
       } finally {
         this.uiFlags.isUpdated = false;
       }
@@ -72,6 +74,7 @@ export const useMerchantUsersAdminStore = defineStore("MerchantUsersAdmin", {
         toast.success(i18n.global.t("global.actions.delete_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.delete_error"));
+        return error;
       } finally {
         this.uiFlags.isDeleted = false;
       }

@@ -25,7 +25,7 @@ export const useOrdersServiceProviderStore = defineStore(
           const { data } = await OrdersServiceProvider.get(params);
           this.records = data;
         } catch (error) {
-          console.error(error);
+          return error;
         } finally {
           this.uiFlags.isLoading = false;
         }
@@ -36,7 +36,7 @@ export const useOrdersServiceProviderStore = defineStore(
           const { data } = await OrdersServiceProvider.show(id, params);
           this.record = data.data;
         } catch (error) {
-          console.error(error);
+          return error;
         } finally {
           this.uiFlags.isLoading = false;
         }
@@ -49,6 +49,7 @@ export const useOrdersServiceProviderStore = defineStore(
           // await this.getOrdersServiceProvider();
         } catch (error) {
           toast.error(i18n.global.t("global.actions.edit_error"));
+          return error;
         } finally {
           this.uiFlags.isUpdating = false;
         }

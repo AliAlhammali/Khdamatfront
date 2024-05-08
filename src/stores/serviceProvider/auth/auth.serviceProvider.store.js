@@ -22,7 +22,7 @@ export const useAuthServiceProviderStore = defineStore("AuthServiceProvider", {
 
         router.push({ name: "service-provider-dashboard" });
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.isLoading = false;
       }
@@ -36,10 +36,11 @@ export const useAuthServiceProviderStore = defineStore("AuthServiceProvider", {
         $cookies.remove("service_provider_khadamat_token");
         $cookies.remove("service_provider_khadamat_user");
 
+        this.record = null;
         router.push({ name: "service-provider-login" });
         window.location.reload();
       } catch (error) {
-        console.error(error);
+        return error;
       }
     },
 

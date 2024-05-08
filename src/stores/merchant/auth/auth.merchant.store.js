@@ -21,7 +21,7 @@ export const useAuthMerchantStore = defineStore("AuthMerchant", {
 
         router.push({ name: "merchant-dashboard" });
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.isLoading = false;
       }
@@ -34,11 +34,12 @@ export const useAuthMerchantStore = defineStore("AuthMerchant", {
         // Remove token from cookies
         $cookies.remove("merchant_khadamat_token");
         $cookies.remove("merchant_khadamat_user");
+        this.record = null;
 
         router.push({ name: "merchant-login" });
         window.location.reload();
       } catch (error) {
-        console.error(error);
+        return error;
       }
     },
 

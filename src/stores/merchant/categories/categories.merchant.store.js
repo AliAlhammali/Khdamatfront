@@ -32,7 +32,7 @@ export const useCategoriesMerchantStore = defineStore("CategoriesMerchant", {
         const { data } = await CategoriesMerchant.get(params);
         this.records = data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -43,7 +43,7 @@ export const useCategoriesMerchantStore = defineStore("CategoriesMerchant", {
         const { data } = await CategoriesMerchant.get(params);
         this.subCategories = data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlagsSub.isLoading = false;
       }
@@ -54,7 +54,7 @@ export const useCategoriesMerchantStore = defineStore("CategoriesMerchant", {
     //     const { data } = await CategoriesMerchant.show(id);
     //     this.record = data.data;
     //   } catch (error) {
-    //     console.error(error);
+    //     return error;
     //   } finally {
     //     this.uiFlags.isLoading = false;
     //   }

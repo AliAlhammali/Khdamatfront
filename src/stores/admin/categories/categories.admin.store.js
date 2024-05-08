@@ -32,7 +32,7 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         const { data } = await CategoriesAdminService.get(params);
         this.records = data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -43,7 +43,7 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         const { data } = await CategoriesAdminService.get(params);
         this.subCategories = data.data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlagsSub.isLoading = false;
       }
@@ -54,7 +54,7 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         const { data } = await CategoriesAdminService.show(id);
         this.record = data.data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -67,6 +67,7 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         toast.success(i18n.global.t("global.actions.add_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.add_error"));
+        return error;
       } finally {
         this.uiFlags.isCreated = false;
       }
@@ -79,6 +80,7 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         toast.success(i18n.global.t("global.actions.edit_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.edit_error"));
+        return error;
       } finally {
         this.uiFlags.isUpdated = false;
       }
@@ -91,6 +93,7 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         toast.success(i18n.global.t("global.actions.delete_success"));
       } catch (error) {
         toast.error(i18n.global.t("global.actions.delete_error"));
+        return error;
       } finally {
         this.uiFlags.isDeleted = false;
       }

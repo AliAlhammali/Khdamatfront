@@ -54,29 +54,51 @@
           </v-col>
           <v-col cols="12" md="6">
             <filed-input
-                :label="$t('global.password')"
-                v-model="merchant.owner.password"
-                :value="merchant.owner.password"
-                type="password"
-                :error="v$.merchant.owner.password.$error"
-                :error-text="
+              :label="$t('global.password')"
+              v-model="merchant.owner.password"
+              :value="merchant.owner.password"
+              type="password"
+              :error="v$.merchant.owner.password.$error"
+              :error-text="
                 v$.merchant.owner.password.required.$invalid &&
                 $t('errors.required')
               "
-                @blur="v$.merchant.owner.password.$touch()"
+              @blur="v$.merchant.owner.password.$touch()"
+              :showPassword="showPassword"
+              @showPassword="showPassword = !showPassword"
             />
           </v-col>
         </template>
-        <hr>
+        <hr />
       </v-row>
-      <hr style="    margin: 1rem 0;
-    color: #dbdade;
-    border: 0;
-    border-top:  solid;
-    opacity: 1;">
-      <h3 class="mb-4">1. {{ $t("global.company_info") }}</h3>
+      <hr
+        style="
+          margin: 1rem 0;
+          color: #dbdade;
+          border: 0;
+          border-top: solid;
+          opacity: 1;
+        "
+      />
+      <h3 class="mb-4">2. {{ $t("global.company_info") }}</h3>
       <v-row>
-
+        <!-- data -->
+        <v-col
+          cols="12"
+          md="6"
+          v-for="(item, index) in merchantData"
+          :key="index"
+        >
+          <filed-input
+            :label="item.label"
+            v-model="merchant[item.name]"
+            :value="merchant[item.name]"
+            :type="item.type"
+            :error="v$.merchant[item.name].$error"
+            :error-text="item.errorText"
+            @blur="v$.merchant[item.name].$touch()"
+          />
+        </v-col>
 
         <v-col cols="12" md="6">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
@@ -85,6 +107,7 @@
           </p>
 
           <v-select
+            :placeholder="$t('admin_merchant.fields.status')"
             v-model="merchant.status"
             :items="listStatus"
             :item-title="'text'"
@@ -108,24 +131,6 @@
             <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
             <span>{{ $t("errors.required") }}</span>
           </p>
-        </v-col>
-
-        <!-- data -->
-        <v-col
-          cols="12"
-          md="6"
-          v-for="(item, index) in merchantData"
-          :key="index"
-        >
-          <filed-input
-            :label="item.label"
-            v-model="merchant[item.name]"
-            :value="merchant[item.name]"
-            :type="item.type"
-            :error="v$.merchant[item.name].$error"
-            :error-text="item.errorText"
-            @blur="v$.merchant[item.name].$touch()"
-          />
         </v-col>
 
         <!--  Files -->
@@ -342,6 +347,7 @@ export default {
           value: "inactive",
         },
       ],
+      showPassword: false,
     };
   },
   async mounted() {

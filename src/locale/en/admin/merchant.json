@@ -32,6 +32,7 @@
       "pick_up_type": "Pick Up Type",
       "total": "Total",
       "started_at": "Date & Time",
+      "avatar": "Avatar",
       "owner": {
         "name": "Owner Name",
         "email": "Owner Email"

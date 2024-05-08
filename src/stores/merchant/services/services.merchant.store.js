@@ -14,18 +14,18 @@ export const useServicesMerchantStore = defineStore("ServicesMerchant", {
       isLoading: false,
       isCreated: false,
       isUpdated: false,
-      isDeleted: false
-    }
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
-    getServicesMerchant: async function (params) {
+    getServicesMerchant: async function(params) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await ServicesMerchant.get(params);
         this.records = data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -36,7 +36,7 @@ export const useServicesMerchantStore = defineStore("ServicesMerchant", {
     //     const { data } = await ServicesMerchant.show(id);
     //     this.record = data.data;
     //   } catch (error) {
-    //     console.error(error);
+    //     return error;
     //   } finally {
     //     this.uiFlags.isLoading = false;
     //   }
@@ -77,5 +77,5 @@ export const useServicesMerchantStore = defineStore("ServicesMerchant", {
     //     this.uiFlags.isDeleted = false;
     //   }
     // }
-  }
+  },
 });

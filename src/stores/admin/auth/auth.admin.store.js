@@ -21,7 +21,7 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
 
         router.push({ name: "admin-dashboard" });
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.isLoading = false;
       }
@@ -29,9 +29,9 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
 
     logoutAdmin: async function() {
       await authAdminService.logout();
-      this.record = null;
       $cookies.remove("admin_khadamat_token");
       $cookies.remove("admin_khadamat_user");
+      this.record = null;
       router.push({ name: "admin-login" });
       window.location.reload();
     },

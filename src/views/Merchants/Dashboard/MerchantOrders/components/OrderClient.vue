@@ -114,14 +114,16 @@
                 v-model="clientObj[item.name]"
                 :value="clientObj[item.name]"
                 :type="item.type"
-                :error="v$.clientObj[item.name].$error"
-                :error-text="item.errorText"
-                @blur="v$.clientObj[item.name].$touch()"
+                :error="item.error.length && v$.clientObj[item.name].$error"
+                :error-text="item.errorText.length && item.errorText"
+                @blur="item.blur.length && v$.clientObj[item.name].$touch()"
+                :required="item.errorText.length"
               />
             </v-col>
 
             <v-col cols="12">
               <Maps
+                :key="clientObj?.location?.lat"
                 :editMode="false"
                 :lat="clientObj?.location?.lat"
                 :long="clientObj?.location?.long"
@@ -184,7 +186,7 @@ export default {
     return {
       clientObj: {
         name: { required },
-        email: { required, email },
+        // email: { required, email },
         address: { required },
         phone: { required },
         location: {
@@ -238,12 +240,9 @@ export default {
           name: "email",
           type: "email",
           label: this.$t("admin_merchant.fields.email"),
-          error: "v$.clientObj.email.$error",
-          errorText:
-            (this.v$.clientObj.email.required.$invalid &&
-              this.$t("errors.required")) ||
-            (this.v$.clientObj.email.email.$invalid && this.$t("errors.email")),
-          blur: "v$.clientObj.email.$touch()",
+          error: "",
+          errorText: "",
+          blur: "",
         },
         {
           name: "address",
@@ -298,8 +297,6 @@ export default {
         lat: address.lat,
         long: address.long,
       };
-      console.log(this.orderData.address, "this.orderData.address");
-      console.log(address, "address");
     },
     async upload(event, key) {
       const file = event.target.files[0];
@@ -332,6 +329,9 @@ export default {
         this.orderData.merchant_client_id = val?.id;
         this.orderData.address.name = val?.name;
         this.orderData.address.phone = val?.phone;
+        this.orderData.address.address = val?.address;
+        this.orderData.address.location.lat = val?.location?.coordinates[0];
+        this.orderData.address.location.long = val?.location?.coordinates[1];
 
         if (this.orderData.pick_up_type == "delivered") {
           this.orderData.address.pick_up_location.lat =

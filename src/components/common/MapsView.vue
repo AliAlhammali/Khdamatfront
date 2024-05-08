@@ -1,5 +1,5 @@
 <template>
-  <div class="position-relative w-100" id="map">
+  <div class="position-relative w-100" id="leafletmap">
     <l-map
       ref="map"
       :zoom="zoom"
@@ -54,7 +54,7 @@ export default {
   },
   data() {
     return {
-      points: this.center,
+      points: [0, 0],
       address: {
         title: "",
         lat: "",
@@ -62,10 +62,15 @@ export default {
       },
     };
   },
+  created() {
+    this.points = this.center;
+  },
   mounted() {
-    if (this.isEditMode) {
-      this.initMapBySearch();
-    }
+    this.$nextTick(() => {
+      if (this.isEditMode) {
+        this.initMapBySearch();
+      }
+    });
   },
   computed: {
     styleMap() {
@@ -107,7 +112,7 @@ export default {
         searchLabel: "البحث",
         style: "bar",
       });
-      const map = new L.Map("map");
+      const map = new L.Map("leafletmap");
       map.addControl(searchControl);
       map.on("geosearch/showlocation", (e) => {
         this.points = [e.location.y, e.location.x];

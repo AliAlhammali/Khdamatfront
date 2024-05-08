@@ -1,5 +1,5 @@
 <template>
-  <div class="position-relative" id="map">
+  <div class="position-relative" id="leafletmap">
     <l-map
       ref="map"
       :zoom="zoom"
@@ -64,7 +64,9 @@ export default {
     };
   },
   mounted() {
-    this.initSearch();
+    this.$nextTick(() => {
+      this.initMap();
+    });
     if (this.editMode) {
       this.center = [this.lat, this.long];
     } else {
@@ -98,7 +100,7 @@ export default {
         this.$emit("getLocation", this.address);
       });
     },
-    initSearch() {
+    initMap() {
       const provider = new OpenStreetMapProvider({
         params: {
           countrycodes: "SA",
@@ -110,7 +112,7 @@ export default {
         searchLabel: "البحث",
         style: "bar",
       });
-      const map = new L.Map("map");
+      const map = new L.Map("leafletmap");
       map.addControl(searchControl);
       map.on("geosearch/showlocation", (e) => {
         this.center = [e.location.y, e.location.x];

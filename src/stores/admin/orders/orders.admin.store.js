@@ -23,7 +23,7 @@ export const useOrdersAdminStore = defineStore("OrdersAdmin", {
         const { data } = await OrdersAdmin.get(params);
         this.records = data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -34,7 +34,7 @@ export const useOrdersAdminStore = defineStore("OrdersAdmin", {
         const { data } = await OrdersAdmin.show(id, params);
         this.record = data.data;
       } catch (error) {
-        console.error(error);
+        return error;
       } finally {
         this.uiFlags.isLoading = false;
       }
@@ -47,6 +47,7 @@ export const useOrdersAdminStore = defineStore("OrdersAdmin", {
         // await this.getOrdersAdmin();
       } catch (error) {
         toast.error(i18n.global.t("global.actions.edit_error"));
+        return error;
       } finally {
         this.uiFlags.isUpdating = false;
       }

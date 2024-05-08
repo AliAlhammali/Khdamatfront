@@ -88,22 +88,11 @@
                 </div>
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between position-relative"
-                  @mouseover="showMap = true"
-                  @mouseleave="showMap = false"
                 >
                   <span>{{ $t("global.show_order.address") }}</span>
-                  <p class="hover-to-show" @click="showMap = !showMap">
+                  <button @click="showMap = !showMap">
                     {{ $t("global.show_order.view_location") }}
-                  </p>
-                  <div class="show-map" v-if="record?.address && showMap">
-                    <MapsView
-                      v-if="record?.address[0]?.location?.coordinates"
-                      :key="record?.address[0]?.location?.coordinates"
-                      :center="record?.address[0]?.location?.coordinates"
-                      :style="{ height: '250px' }"
-                      :zoom="11"
-                    />
-                  </div>
+                  </button>
                 </div>
               </div>
               <div class="bg-white">
@@ -127,13 +116,20 @@
                 </div>
               </div>
 
-              <!-- {{ record?.items }} -->
+              {{ record?.address[0].address }}
+
               <ShareNetwork
                 class="main-btn pa-2 rounded-lg w-100 text-center mt-4"
                 network="whatsapp"
                 url=""
-                title=""
-                description="`merchant name ${record?.address[0]?.name},branch location ${record?.address[0]?.location},phone number ${record?.address[0]?.phone},pick up location ${record?.address[0]?.pick_up_location},order date ${record?.started_at},`"
+                :title="$t('share_order.order_number') + record?.id"
+                :description="`${$t('share_order.client_name')} ${
+                  record?.client?.name
+                } ${$t('share_order.client_phone')} ${
+                  record?.client?.phone
+                } ${$t('share_order.client_address')} ${
+                  record?.address[0]?.address
+                } `"
                 @open="openShare = true"
                 @change="openShare = false"
                 @close="openShare = false"
@@ -219,6 +215,21 @@
 
       <!-- {{ record.items }} -->
     </template>
+
+    <v-dialog v-model="showMap" width="auto">
+      <v-card min-width="400" class="pa-4">
+        <p class="mb-3">
+          {{ record?.address[0]?.address }}
+        </p>
+        <MapsView
+          v-if="record?.address[0]?.location?.coordinates"
+          :key="record?.address[0]?.location?.coordinates[0]"
+          :center="record?.address[0]?.location?.coordinates"
+          :style="{ height: '400px', width: '800px' }"
+          :isEditMode="true"
+        />
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>

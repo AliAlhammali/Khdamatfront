@@ -18,7 +18,7 @@
             class="button button--edit px-2 rounded"
             @click="showModal(item.item.id)"
           >
-            <v-tooltip :text="$t('global.actions.edit')">
+            <v-tooltip :text="$t('global.actions.add_sp')">
               <template v-slot:activator="{ props }">
                 <span
                   v-bind="props"

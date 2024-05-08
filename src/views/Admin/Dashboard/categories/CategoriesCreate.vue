@@ -115,7 +115,7 @@
           </p>
         </v-col>
 
-        <v-col cols="12" md="6" v-if="!isEditMerchant">
+        <v-col cols="12" md="6" v-if="!isEditMerchant && merchant.merchant_id">
           <p class="d-flex align-center ga-2 mb-3 filed__label">
             <span> {{ $t("admin_navbar_links.categories") }}</span>
           </p>

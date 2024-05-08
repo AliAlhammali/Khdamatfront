@@ -59,6 +59,75 @@
           </v-btn>
         </v-col>
 
+        <v-col md="6" cols="12">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            <span> {{ $t("admin_merchant.fields.role") }}</span>
+            <span class="text-red">*</span>
+          </p>
+          <v-select
+            v-model="merchant.role"
+            :items="rolesList"
+            :label="$t('admin_merchant.fields.role')"
+            item-title="text"
+            item-value="value"
+            menu-icon="mdi mdi-chevron-down"
+            :error="v$.merchant.role.$error"
+            :error-text="
+              v$.merchant.role.required.$invalid && $t('errors.required')
+            "
+            @blur="v$.merchant.role.$touch()"
+          />
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="v$.merchant.role.$dirty && v$.merchant.role.required.$invalid"
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
+        </v-col>
+
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            {{ $t("admin_merchant.fields.avatar") }}
+          </p>
+          <label class="filed__input d-flex align-center ga-2 pa-2 rounded-lg">
+            <input type="file" @input="upload($event, 'image')" />
+          </label>
+        </v-col>
+
+        <v-col cols="12" md="6">
+          <p class="d-flex align-center ga-2 mb-3 filed__label">
+            <span> {{ $t("admin_merchant.fields.status") }}</span>
+            <span class="text-red">*</span>
+          </p>
+
+          <v-select
+            v-model="merchant.status"
+            :placeholder="$t('admin_merchant.fields.status')"
+            :items="listStatus"
+            :item-title="'text'"
+            :item-value="'value'"
+            outlined
+            menu-icon="mdi mdi-chevron-down"
+            class="text-capitalize rounded-xl"
+            @blur="v$.merchant.status.$touch()"
+            :error="
+              v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
+            "
+            hide-details
+            :no-data-text="$t('global.actions.no_data')"
+          />
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="
+              v$.merchant.status.$dirty && v$.merchant.status.required.$invalid
+            "
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
+        </v-col>
+        {{ v$.merchant.$error }}
         <v-col cols="12">
           <v-btn
             class="w-100"
@@ -160,6 +229,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs } from "@vuelidate/validators";
 import Loader from "@/components/common/Loader.vue";
 import { updateToPatchData } from "@/helper/update.inputs.helper";
+import { useGlobalActionsStore } from "@/stores/actions/upload.store";
 export default {
   components: { FiledInput, Loader },
   setup() {
@@ -171,6 +241,10 @@ export default {
         name: { required },
         email: { required, email },
         password: { required },
+        role: { required },
+        status: { required },
+        phone: { required },
+        address: { required },
       },
       changePassword: {
         password: { required },
@@ -187,6 +261,11 @@ export default {
         name: null,
         email: null,
         password: null,
+        phone: null,
+        address: null,
+        image: null,
+        role: null,
+        status: null,
       },
       showModel: false,
       changePassword: {
@@ -195,6 +274,26 @@ export default {
       },
       showPassword: false,
       showConfirmPassword: false,
+      rolesList: [
+        {
+          text: this.$t("global.role.admin"),
+          value: "admin",
+        },
+        {
+          text: this.$t("global.role.staff"),
+          value: "staff",
+        },
+      ],
+      listStatus: [
+        {
+          text: this.$t("global.status.active"),
+          value: "active",
+        },
+        {
+          text: this.$t("global.status.inactive"),
+          value: "inactive",
+        },
+      ],
     };
   },
   async mounted() {
@@ -232,6 +331,26 @@ export default {
             (this.v$.merchant.email.email.$invalid && this.$t("errors.email")),
           blur: "v$.merchant.email.$touch()",
         },
+        {
+          name: "phone",
+          type: "text",
+          label: this.$t("admin_merchant.fields.phone"),
+          error: "v$.merchant.phone.$error",
+          errorText:
+            this.v$.merchant.phone.required.$invalid &&
+            this.$t("errors.required"),
+          blur: "v$.merchant.phone.$touch()",
+        },
+        {
+          name: "address",
+          type: "text",
+          label: this.$t("admin_merchant.fields.address"),
+          error: "v$.merchant.address.$error",
+          errorText:
+            this.v$.merchant.address.required.$invalid &&
+            this.$t("errors.required"),
+          blur: "v$.merchant.address.$touch()",
+        },
       ];
     },
   },
@@ -241,10 +360,11 @@ export default {
       "showUsersAdmin",
       "updateUsersAdmin",
     ]),
+    ...mapActions(useGlobalActionsStore, ["uploadFile"]),
 
     async actionBtn() {
       this.v$.$touch();
-      if (this.v$.$error) return;
+      if (this.v$.merchant.$error) return;
       if (this.isEditMerchant) {
         const data = updateToPatchData(this.merchant, this.record);
         await this.updateUsersAdmin(this.record.id, data);
@@ -265,6 +385,12 @@ export default {
     closeModel() {
       this.showModel = false;
       this.v$.$reset();
+    },
+    async upload(event, key) {
+      const file = event.target.files[0];
+      const { data } = await this.uploadFile(file);
+      this.files[key] = file; // Update the file property in Vue.js
+      this.merchant[key] = data.data.path;
     },
   },
 };

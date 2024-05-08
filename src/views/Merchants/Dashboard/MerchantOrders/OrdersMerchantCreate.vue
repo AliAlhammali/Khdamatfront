@@ -120,7 +120,7 @@ export default {
           address: null,
           location: {
             lat: null,
-            lng: null,
+            long: null,
           },
           pick_up_location: {
             lat: null,

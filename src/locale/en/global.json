@@ -24,7 +24,8 @@
       "view_file": "View File",
       "no_data": "No data",
       "back_to_home": "Back to Home",
-      "change_password": "Change Password"
+      "change_password": "Change Password",
+      "add_sp": "Add Service Provider"
     },
     "status": {
       "active": "Active",

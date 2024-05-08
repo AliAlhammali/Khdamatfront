@@ -67,7 +67,9 @@
                   </span>
                   <p>{{ record?.created_at }}</p>
                 </div>
-                <div class="d-flex align-center ga-2 mb-2 pb-2 border-t">
+                <div
+                  class="d-flex align-center ga-2 mb-2 pb-2 border-t justify-space-between"
+                >
                   <span> {{ $t("global.show_order.order_start_date") }} </span>
                   <p>{{ record?.started_at }}</p>
                 </div>
@@ -87,22 +89,11 @@
                 </div>
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between position-relative"
-                  @mouseover="showMap = true"
-                  @mouseleave="showMap = false"
                 >
                   <span>{{ $t("global.show_order.address") }}</span>
-                  <p class="hover-to-show" @click="showMap = !showMap">
+                  <button class="hover-to-show" @click="showMap = !showMap">
                     {{ $t("global.show_order.view_location") }}
-                  </p>
-                  <div class="show-map" v-if="record?.address && showMap">
-                    <MapsView
-                      v-if="record?.address[0]?.location?.coordinates"
-                      :key="record?.address[0]?.location?.coordinates"
-                      :center="record?.address[0]?.location?.coordinates"
-                      :style="{ height: '250px' }"
-                      :zoom="11"
-                    />
-                  </div>
+                  </button>
                 </div>
               </div>
               <h2>{{ $t("global.show_order.order_total") }}</h2>
@@ -267,6 +258,21 @@
 
       <!-- {{ record.items }} -->
     </template>
+
+    <v-dialog v-model="showMap" width="auto">
+      <v-card min-width="400" class="pa-4">
+        <p class="mb-3">
+          {{ record?.address[0]?.address }}
+        </p>
+        <MapsView
+          v-if="record?.address[0]?.location?.coordinates"
+          :key="record?.address[0]?.location?.coordinates[0]"
+          :center="record?.address[0]?.location?.coordinates"
+          :zoom="16"
+          :style="{ height: '400px', width: '500px' }"
+        />
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -352,12 +358,5 @@ export default {
 <style lang="scss" scoped>
 .order-info {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-}
-.show-map {
-  width: 250px;
-  height: 250px;
-  position: absolute;
-  left: 0;
-  top: 30px;
 }
 </style>
