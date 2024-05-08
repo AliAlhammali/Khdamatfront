@@ -116,20 +116,19 @@
                 </div>
               </div>
 
-              {{ record?.address[0].address }}
-
-              <ShareNetwork
-                class="main-btn pa-2 rounded-lg w-100 text-center mt-4"
-                network="whatsapp"
-                url=""
-                :title="$t('share_order.order_number') + record?.id"
-                :description="`${$t('share_order.client_name')} ${
+              <!-- `${$t('share_order.client_name')} ${
                   record?.client?.name
                 } ${$t('share_order.client_phone')} ${
                   record?.client?.phone
                 } ${$t('share_order.client_address')} ${
                   record?.address[0]?.address
-                } `"
+                } ` -->
+              <ShareNetwork
+                class="main-btn pa-2 rounded-lg w-100 text-center mt-4"
+                network="whatsapp"
+                url=""
+                :title="$t('share_order.order_number') + record?.id"
+                description="test"
                 @open="openShare = true"
                 @change="openShare = false"
                 @close="openShare = false"
@@ -217,6 +216,7 @@
     </template>
 
     <v-dialog v-model="showMap" width="auto">
+      <!-- {{ record }} -->
       <v-card min-width="400" class="pa-4">
         <p class="mb-3">
           {{ record?.address[0]?.address }}
@@ -226,7 +226,7 @@
           :key="record?.address[0]?.location?.coordinates[0]"
           :center="record?.address[0]?.location?.coordinates"
           :style="{ height: '400px', width: '800px' }"
-          :isEditMode="true"
+          :isEditMode="false"
         />
       </v-card>
     </v-dialog>

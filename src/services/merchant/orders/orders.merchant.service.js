@@ -8,6 +8,9 @@ class OrdersMerchant extends ApiClient {
   get(params) {
     return axios.get(this.url, { params });
   }
+  show(id, params) {
+    return axios.get(`${this.url}/${id}`, { params });
+  }
 }
 
 export default new OrdersMerchant();

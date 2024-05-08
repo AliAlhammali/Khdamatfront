@@ -234,7 +234,7 @@ export default {
           val.location.coordinates[1];
         this.orderData.merchant_branch_id = val.id;
       },
-      immediate: true,
+      deep: true,
     },
   },
 };

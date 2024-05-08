@@ -33,12 +33,27 @@
         <v-row>
           <v-col md="4" cols="12">
             <div class="border pa-4 order-info rounded-lg">
+              <span> {{ $t("admin_navbar_links.services_providers") }} </span>
+              <div class="d-flex align-center ga-8 mb-2 pb-2">
+                <v-select
+                  v-model="service_provider_id"
+                  :placeholder="$t('admin_navbar_links.services_providers')"
+                  :items="SPList?.data"
+                  item-title="title"
+                  item-value="id"
+                  menu-icon="mdi mdi-chevron-down"
+                  class="w-100 mt-2"
+                  outlined
+                  :no-data-text="$t('global.actions.no_data')"
+                  @update:model-value="(item) => updateOrdersSp(item)"
+                />
+              </div>
               <div class="border-b mb-2">
                 <div class="d-flex align-center ga-8 mb-2 pb-2">
                   <span> {{ $t("global.show_order.status") }} </span>
                   <v-select
                     v-model="record.status"
-                    :placeholder="$t('admin_categories.fields.merchant_id')"
+                    :placeholder="$t('global.show_order.status')"
                     :items="orderStatus"
                     item-title="text"
                     item-value="value"
@@ -279,6 +294,7 @@
 import Loader from "@/components/common/Loader.vue";
 import MapsView from "@/components/common/MapsView.vue";
 import { useOrdersAdminStore } from "@/stores/admin/orders/orders.admin.store.js";
+import { useServiceProvidersAdminStore } from "@/stores/admin/serviceProviders/serviceProviders.admin.store";
 import { mapActions, mapState } from "pinia";
 
 export default {
@@ -287,6 +303,7 @@ export default {
     return {
       openShare: false,
       showMap: false,
+      service_provider_id: null,
     };
   },
   async mounted() {
@@ -296,9 +313,18 @@ export default {
       includeOrderMerchantUser: 1,
       includeOrderMerchantClient: 1,
     });
+
+    await this.getServiceProvidersAdmin({
+      listing: 1,
+    });
   },
   computed: {
     ...mapState(useOrdersAdminStore, ["record", "uiFlags"]),
+    ...mapState(useServiceProvidersAdminStore, {
+      SPList: "records",
+      SPUiFlags: "uiFlags",
+    }),
+
     orderStatus() {
       let status = [
         { value: "new", text: this.$t("global.order_status.new"), step: 1 },
@@ -347,9 +373,15 @@ export default {
       "showOrdersAdmin",
       "updateOrdersAdmin",
     ]),
+    ...mapActions(useServiceProvidersAdminStore, ["getServiceProvidersAdmin"]),
     async updateOrders(item) {
       await this.updateOrdersAdmin(this.$route.params.id, {
         status: item,
+      });
+    },
+    async updateOrdersSp(item) {
+      await this.updateOrdersAdmin(this.$route.params.id, {
+        service_provider_id: item,
       });
     },
   },

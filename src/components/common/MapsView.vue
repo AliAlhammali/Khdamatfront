@@ -1,5 +1,9 @@
 <template>
-  <div class="position-relative w-100" id="leafletmap">
+  <div
+    class="position-relative w-100"
+    id="leafletmap"
+    :key="`${points[0]}-${points[1]}`"
+  >
     <l-map
       ref="map"
       :zoom="zoom"

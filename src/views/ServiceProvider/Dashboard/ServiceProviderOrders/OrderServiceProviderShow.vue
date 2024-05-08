@@ -30,15 +30,32 @@
         </v-stepper-header>
       </v-stepper>
       <div class="border-t mt-4 pt-4">
+        <!-- {{ shareText }} -->
+
         <v-row>
           <v-col md="4" cols="12">
             <div class="border pa-4 order-info rounded-lg">
+              <div class="border-b mb-2">
+                <span> {{ $t("admin_navbar_links.services_providers") }} </span>
+                <v-select
+                  v-model="service_provider_id"
+                  :placeholder="$t('admin_navbar_links.services_providers')"
+                  :items="SPUser.data"
+                  item-title="name"
+                  item-value="id"
+                  menu-icon="mdi mdi-chevron-down"
+                  class="w-100 mt-2"
+                  outlined
+                  :no-data-text="$t('global.actions.no_data')"
+                  @update:model-value="(item) => updateOrdersSp(item)"
+                />
+              </div>
               <div class="border-b mb-2">
                 <div class="d-flex align-center ga-8 mb-2 pb-2">
                   <span> {{ $t("global.show_order.status") }} </span>
                   <v-select
                     v-model="record.status"
-                    :placeholder="$t('admin_categories.fields.merchant_id')"
+                    :placeholder="$t('global.show_order.status')"
                     :items="orderStatus"
                     item-title="text"
                     item-value="value"
@@ -89,22 +106,11 @@
                 </div>
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between position-relative"
-                  @mouseover="showMap = true"
-                  @mouseleave="showMap = false"
                 >
                   <span>{{ $t("global.show_order.address") }}</span>
-                  <p class="hover-to-show" @click="showMap = !showMap">
+                  <button @click="showMap = !showMap">
                     {{ $t("global.show_order.view_location") }}
-                  </p>
-                  <div class="show-map" v-if="record?.address && showMap">
-                    <MapsView
-                      v-if="record?.address[0]?.location?.coordinates"
-                      :key="record?.address[0]?.location?.coordinates"
-                      :center="record?.address[0]?.location?.coordinates"
-                      :style="{ height: '250px' }"
-                      :zoom="11"
-                    />
-                  </div>
+                  </button>
                 </div>
               </div>
               <div class="bg-white">
@@ -199,7 +205,9 @@
                           <td class="border-e" width="84px">
                             {{ item?.sp_sup_total }}
                           </td>
-                          <td class="border-e" width="75px">{{ item?.sp_vat }}</td>
+                          <td class="border-e" width="75px">
+                            {{ item?.sp_vat }}
+                          </td>
                           <td>{{ item?.sp_total }}</td>
                         </tr>
                       </tbody>
@@ -216,15 +224,29 @@
           </v-col>
         </v-row>
       </div>
-
-      <!-- {{ record.items }} -->
     </template>
+    <v-dialog v-model="showMap" width="auto">
+      <!-- {{ record }} -->
+      <v-card min-width="400" class="pa-4">
+        <p class="mb-3">
+          {{ record?.address[0]?.address }}
+        </p>
+        <MapsView
+          v-if="record?.address[0]?.location?.coordinates"
+          :key="record?.address[0]?.location?.coordinates[0]"
+          :center="record?.address[0]?.location?.coordinates"
+          :style="{ height: '400px', width: '800px' }"
+          :isEditMode="false"
+        />
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
 import Loader from "@/components/common/Loader.vue";
 import MapsView from "@/components/common/MapsView.vue";
 import { useOrdersServiceProviderStore } from "@/stores/serviceProvider/orders/orders.serviceProvider.store";
+import { useUsersServiceProviderStore } from "@/stores/serviceProvider/users/users.serviceProvider.store";
 import { mapActions, mapState } from "pinia";
 
 export default {
@@ -233,6 +255,7 @@ export default {
     return {
       openShare: false,
       showMap: false,
+      service_provider_id: null,
     };
   },
   async mounted() {
@@ -242,9 +265,18 @@ export default {
       includeOrderMerchantUser: 1,
       includeOrderMerchantClient: 1,
     });
+    await this.getUsersServiceProvider({
+      listing: 1,
+      "filter[role]": "staff",
+    });
   },
   computed: {
     ...mapState(useOrdersServiceProviderStore, ["record", "uiFlags"]),
+    ...mapState(useUsersServiceProviderStore, {
+      SPUser: "records",
+      SPUserUIFlags: "uiFlags",
+    }),
+
     orderStatus() {
       let status = [
         //  { value: "new", text: this.$t("global.order_status.new"), step: 1 },
@@ -287,15 +319,39 @@ export default {
         (status) => status?.value === this.record?.status
       );
     },
+    shareText() {
+      return `${this.$t("share_order.client_name")} : ${
+        this.record?.merchant_client?.name
+      }, ${this.$t("share_order.client_phone")} : ${
+        this.record?.merchant_client?.phone
+      }, 
+        ${this.$t("share_order.client_address")} : 
+      ,
+       ${this.$t("share_order.created_by")} : ${
+        this.record?.merchant_user?.name
+      },
+      
+       ${this.$t("share_order.merchant_phone")} : ${
+        this.record?.merchant_user?.phone
+      } ,
+       ${this.$t("share_order.main_category")} : ,
+      ${this.$t("share_order.start_date")} : ${this.record?.started_at}`;
+    },
   },
   methods: {
     ...mapActions(useOrdersServiceProviderStore, [
       "showOrdersServiceProvider",
       "updateOrdersServiceProvider",
     ]),
+    ...mapActions(useUsersServiceProviderStore, ["getUsersServiceProvider"]),
     async updateOrders(item) {
       await this.updateOrdersServiceProvider(this.$route.params.id, {
         status: item,
+      });
+    },
+    async updateOrdersSp(item) {
+      await this.updateOrdersServiceProvider(this.$route.params.id, {
+        service_provider_id: item,
       });
     },
   },
