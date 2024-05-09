@@ -5,7 +5,7 @@
       :title="$t('admin_navbar_links.merchant_users')"
       :placeholder="$t('admin_merchant.search_placeholder_users')"
       :headers="headers"
-      :slots-items="['actions', 'status', 'role']"
+      :slots-items="['', 'status', 'role']"
       :isLoading="uiFlags?.isLoading"
       :items="items"
       :meta="records?.meta"
@@ -46,9 +46,9 @@
           {{ $t(`global.status.${item.item.status}`) }}
         </span>
       </template>
-      <template #actions="{ item }">
+      <!-- <template #actions="{ item }">
         <div class="d-flex ga-2 align-center">
-          <!-- <router-link
+          <router-link
             :to="`/admin/merchant-users/${item.item.id}/edit`"
             class="button button--edit px-2 rounded"
           >
@@ -57,7 +57,7 @@
                 <span v-bind="props" class="mdi mdi-24px mdi-pencil"></span>
               </template>
             </v-tooltip>
-          </router-link> -->
+          </router-link>
           <button
             class="button button--delete px-2 rounded"
             @click="deleteRecord(item.item)"
@@ -69,7 +69,7 @@
             </v-tooltip>
           </button>
         </div>
-      </template>
+      </template> -->
     </data-table>
   </div>
 </template>
@@ -154,12 +154,12 @@ export default {
           sortable: true,
           key: "status",
         },
-        {
-          title: "#",
-          align: "start",
-          sortable: false,
-          key: "actions",
-        },
+        // {
+        //   title: "#",
+        //   align: "start",
+        //   sortable: false,
+        //   key: "actions",
+        // },
       ];
     },
     items() {
