@@ -1,3 +1,5 @@
+import { SPRolesGuard } from "@/helper/serviceProvider.router.helper";
+
 export default {
   routes: [
     {
