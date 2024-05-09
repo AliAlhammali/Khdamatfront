@@ -4,6 +4,9 @@ export default {
       path: "branches",
       name: "branches-merchant-dashboard",
       component: () => import("./BranchesMerchantList.vue"),
+      meta: {
+        roles: ["admin"],
+      },
     },
     {
       path: "branches/create",
@@ -11,6 +14,7 @@ export default {
       component: () => import("./BranchesMerchantCreate.vue"),
       meta: {
         edit: false,
+        roles: ["admin"],
       },
     },
     {
@@ -19,6 +23,7 @@ export default {
       component: () => import("./BranchesMerchantCreate.vue"),
       meta: {
         edit: true,
+        roles: ["admin"],
       },
     },
   ],

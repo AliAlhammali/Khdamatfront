@@ -4,6 +4,9 @@ export default {
       path: "orders",
       name: "orders-merchant-dashboard",
       component: () => import("./OrdersMerchantList.vue"),
+      meta: {
+        roles: ["admin", "staff"],
+      },
     },
     {
       path: "orders/create",
@@ -11,6 +14,7 @@ export default {
       component: () => import("./OrdersMerchantCreate.vue"),
       meta: {
         edit: false,
+        roles: ["admin", "staff"],
       },
     },
     {
@@ -19,6 +23,7 @@ export default {
       component: () => import("./OrdersMerchantShow.vue"),
       meta: {
         edit: true,
+        roles: ["admin", "staff"],
       },
     },
   ],

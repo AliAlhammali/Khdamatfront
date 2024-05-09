@@ -4,6 +4,9 @@ export default {
       path: "clients",
       name: "clients-merchant-dashboard",
       component: () => import("./ClientsMerchantList.vue"),
+      meta: {
+        roles: ["admin"],
+      },
     },
     {
       path: "clients/create",
@@ -11,6 +14,7 @@ export default {
       component: () => import("./ClientsMerchantCreate.vue"),
       meta: {
         edit: false,
+        roles: ["admin"],
       },
     },
     {
@@ -19,6 +23,7 @@ export default {
       component: () => import("./ClientsMerchantCreate.vue"),
       meta: {
         edit: true,
+        roles: ["admin"],
       },
     },
   ],

@@ -4,6 +4,9 @@ export default {
       path: "categories",
       name: "categories-merchant-dashboard",
       component: () => import("./CategoriesMerchantList.vue"),
+      meta: {
+        roles: ["admin"],
+      },
     },
   ],
 };

@@ -4,6 +4,9 @@ export default {
       path: "services",
       name: "services-merchant-dashboard",
       component: () => import("./ServicesMerchantList.vue"),
+      meta: {
+        roles: ["admin"],
+      },
     },
   ],
 };
