@@ -15,6 +15,7 @@
       <template v-slot:actions="{ item }">
         <div class="d-flex align-center ga-2">
           <v-btn
+            v-if="isAdmin"
             class="button button--edit px-2 rounded"
             @click="showModal(item.item.id)"
           >
@@ -203,6 +204,13 @@ export default {
             : "---",
         };
       });
+    },
+    isAdmin() {
+      return (
+        this.$cookies
+          .get("service_provider_khadamat_user")
+          .role.toLowerCase() === "admin"
+      );
     },
   },
   methods: {

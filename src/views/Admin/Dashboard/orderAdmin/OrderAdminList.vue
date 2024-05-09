@@ -14,19 +14,6 @@
     >
       <template v-slot:actions="{ item }">
         <div class="d-flex align-center ga-2">
-          <v-btn
-            class="button button--edit px-2 rounded"
-            @click="showModal(item.item.id)"
-          >
-            <v-tooltip :text="$t('global.actions.add_sp')">
-              <template v-slot:activator="{ props }">
-                <span
-                  v-bind="props"
-                  class="mdi mdi-24px mdi-account-group-outline"
-                ></span>
-              </template>
-            </v-tooltip>
-          </v-btn>
           <router-link
             :to="`/admin/orders/${item.item.id}`"
             class="button button--edit px-2 rounded"
@@ -40,6 +27,23 @@
               </template>
             </v-tooltip>
           </router-link>
+          <v-btn
+            class="button button--edit px-2 rounded"
+            @click="showModal(item.item.id)"
+            v-if="
+              item?.item?.status_key === 'completed' ||
+              item?.item?.status_key === 'canceled'
+            "
+          >
+            <v-tooltip :text="$t('global.actions.add_sp')">
+              <template v-slot:activator="{ props }">
+                <span
+                  v-bind="props"
+                  class="mdi mdi-24px mdi-account-group-outline"
+                ></span>
+              </template>
+            </v-tooltip>
+          </v-btn>
         </div>
       </template>
     </data-table>
@@ -89,6 +93,7 @@ export default {
         includeOrderMainCategory: 1,
         includeOrderMerchantClient: 1,
         includeOrderMerchant: 1,
+        includeOrderSP: 1,
       },
       showUsers: false,
       userSelected: null,
@@ -151,11 +156,18 @@ export default {
           sortable: true,
           key: "client_name",
         },
+
         {
           title: this.$t("global.client_phone"),
           align: "start",
           sortable: true,
           key: "client_phone",
+        },
+        {
+          title: this.$t("admin_merchant.fields.service_provider"),
+          align: "start",
+          sortable: true,
+          key: "service_provider",
         },
 
         {
@@ -201,6 +213,10 @@ export default {
             : "---",
           pick_up_type: item.pick_up_type
             ? this.$t(`global.order_type.${item.pick_up_type}`)
+            : "---",
+          status_key: item.status,
+          service_provider: item.service_provider
+            ? item.service_provider.title
             : "---",
         };
       });

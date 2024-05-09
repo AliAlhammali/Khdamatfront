@@ -33,10 +33,13 @@
         <v-row>
           <v-col md="4" cols="12">
             <div class="border pa-4 order-info rounded-lg">
-              <div class="border-b mb-2" v-if="isAdmin">
+              <div
+                class="border-b mb-2"
+                v-if="isAdmin && record.service_provider_user"
+              >
                 <span> {{ $t("admin_navbar_links.users") }} </span>
                 <v-select
-                  v-model="service_provider_id"
+                  v-model="record.service_provider_user.id"
                   :placeholder="$t('admin_navbar_links.users')"
                   :items="SPUser.data"
                   item-title="name"
@@ -263,6 +266,8 @@ export default {
       includeOrderItemService: 1,
       includeOrderMerchantUser: 1,
       includeOrderMerchantClient: 1,
+      includeOrderSPUser: 1,
+      includeOrderSP: 1,
     });
     await this.getUsersServiceProvider({
       listing: 1,
@@ -364,7 +369,7 @@ export default {
     },
     async updateOrdersSp(item) {
       await this.updateOrdersServiceProvider(this.$route.params.id, {
-        service_provider_id: item,
+        service_provider_user_id: item,
       });
     },
   },

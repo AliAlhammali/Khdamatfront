@@ -7,6 +7,9 @@ export default {
       name: "users-merchant-dashboard",
       component: () => import("./UsersMerchantList.vue"),
       beforeEnter: merchantRolesGuard,
+      meta: {
+        roles: ["admin"],
+      },
     },
     {
       path: "users/create",

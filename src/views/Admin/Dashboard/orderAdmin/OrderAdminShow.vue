@@ -36,7 +36,7 @@
               <span> {{ $t("admin_navbar_links.services_providers") }} </span>
               <div class="d-flex align-center ga-8 mb-2 pb-2">
                 <v-select
-                  v-model="service_provider_id"
+                  v-model="record.service_provider.id"
                   :placeholder="$t('admin_navbar_links.services_providers')"
                   :items="SPList?.data"
                   item-title="title"
@@ -46,6 +46,10 @@
                   outlined
                   :no-data-text="$t('global.actions.no_data')"
                   @update:model-value="(item) => updateOrdersSp(item)"
+                  :disabled="
+                    record?.status === 'completed' ||
+                    record?.status === 'canceled'
+                  "
                 />
               </div>
               <div class="border-b mb-2">
@@ -310,6 +314,7 @@ export default {
     // includeOrderItemService
     await this.showOrdersAdmin(this.$route.params.id, {
       includeOrderItemService: 1,
+      includeOrderSP: 1,
       includeOrderMerchantUser: 1,
       includeOrderMerchantClient: 1,
     });

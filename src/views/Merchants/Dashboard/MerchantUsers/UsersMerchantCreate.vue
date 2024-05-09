@@ -355,8 +355,8 @@ export default {
     ]),
 
     actionBtn() {
-      this.v$.$touch();
-      if (this.v$.$error) return;
+      this.v$.dataObj.$touch();
+      if (this.v$.dataObj.$error) return;
       if (this.isEditDataObj) {
         const data = updateToPatchData(this.dataObj, this.record);
         this.updateUsersMerchant(this.record.id, data);
