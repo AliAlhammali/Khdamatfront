@@ -37,19 +37,21 @@
                 class="border-b mb-2"
                 v-if="isAdmin && record.service_provider_user"
               >
-                <span> {{ $t("admin_navbar_links.users") }} </span>
-                <v-select
-                  v-model="record.service_provider_user.id"
-                  :placeholder="$t('admin_navbar_links.users')"
-                  :items="SPUser.data"
-                  item-title="name"
-                  item-value="id"
-                  menu-icon="mdi mdi-chevron-down"
-                  class="w-100 mt-2"
-                  outlined
-                  :no-data-text="$t('global.actions.no_data')"
-                  @update:model-value="(item) => updateOrdersSp(item)"
-                />
+                <div class="d-flex align-center ga-8 mb-2 pb-2">
+                  <span> {{ $t("global.actions.sp_user") }} </span>
+                  <v-select
+                    v-model="record.service_provider_user.id"
+                    :placeholder="$t('global.actions.sp_user')"
+                    :items="SPUser.data"
+                    item-title="name"
+                    item-value="id"
+                    menu-icon="mdi mdi-chevron-down"
+                    class="w-100 mt-2"
+                    outlined
+                    :no-data-text="$t('global.actions.no_data')"
+                    @update:model-value="(item) => updateOrdersSp(item)"
+                  />
+                </div>
               </div>
               <div class="border-b mb-2">
                 <div class="d-flex align-center ga-8 mb-2 pb-2">
