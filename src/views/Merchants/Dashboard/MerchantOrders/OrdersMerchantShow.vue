@@ -128,7 +128,7 @@
                 network="whatsapp"
                 url=""
                 :title="$t('share_order.order_number') + record?.id"
-                description="test"
+                :description="shareText"
                 @open="openShare = true"
                 @change="openShare = false"
                 @close="openShare = false"
@@ -292,6 +292,30 @@ export default {
         status = status.filter((item) => item.value !== "canceled");
       }
       return status;
+    },
+    shareText() {
+      return `${this.$t("share_order.client_name")} : ${
+        this.record?.merchant_client?.name
+      }, ${this.$t("share_order.client_phone")} : ${
+        this.record?.merchant_client?.phone
+      }, 
+        ${this.$t("share_order.client_address")} : ${
+        this.record?.merchant_client?.address
+      }
+
+      , 
+        ${this.$t("share_order.merchant_address")} : ${
+        this.record?.merchant_user?.address
+      }
+      ,
+       ${this.$t("share_order.created_by")} : ${
+        this.record?.merchant_user?.name
+      },
+      
+       ${this.$t("share_order.merchant_phone")} : ${
+        this.record?.merchant_user?.phone
+      } ,
+      ${this.$t("share_order.start_date")} : ${this.record?.started_at}`;
     },
     currentStep() {
       return this.orderStatus.find(

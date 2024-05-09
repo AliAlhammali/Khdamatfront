@@ -69,6 +69,20 @@
             />
           </v-col>
         </template>
+
+        <v-col cols="12" md="6">
+          <filed-input
+            :label="$t('admin_merchant.fields.phone')"
+            v-model="merchant.phone"
+            :value="merchant.phone"
+            type="tel"
+            :error="v$.merchant.phone.$error"
+            :error-text="
+              v$.merchant.phone.required.$invalid && $t('errors.required')
+            "
+            @blur="v$.merchant.phone.$touch()"
+          />
+        </v-col>
         <hr />
       </v-row>
       <hr
@@ -405,16 +419,16 @@ export default {
             (this.v$.merchant.email.email.$invalid && this.$t("errors.email")),
           blur: "v$.merchant.email.$touch()",
         },
-        {
-          name: "phone",
-          type: "text",
-          label: this.$t("admin_merchant.fields.phone"),
-          error: "v$.merchant.phone.$error",
-          errorText:
-            this.v$.merchant.phone.required.$invalid &&
-            this.$t("errors.required"),
-          blur: "v$.merchant.phone.$touch()",
-        },
+        // {
+        //   name: "phone",
+        //   type: "text",
+        //   label: this.$t("admin_merchant.fields.phone"),
+        //   error: "v$.merchant.phone.$error",
+        //   errorText:
+        //     this.v$.merchant.phone.required.$invalid &&
+        //     this.$t("errors.required"),
+        //   blur: "v$.merchant.phone.$touch()",
+        // },
         {
           name: "cr_number",
           type: "text",

@@ -127,7 +127,6 @@
             <span>{{ $t("errors.required") }}</span>
           </p>
         </v-col>
-        {{ v$.merchant.$error }}
         <v-col cols="12">
           <v-btn
             class="w-100"

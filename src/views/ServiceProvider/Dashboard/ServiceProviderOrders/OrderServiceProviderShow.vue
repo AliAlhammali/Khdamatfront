@@ -30,16 +30,14 @@
         </v-stepper-header>
       </v-stepper>
       <div class="border-t mt-4 pt-4">
-        <!-- {{ shareText }} -->
-
         <v-row>
           <v-col md="4" cols="12">
             <div class="border pa-4 order-info rounded-lg">
               <div class="border-b mb-2">
-                <span> {{ $t("admin_navbar_links.services_providers") }} </span>
+                <span> {{ $t("admin_navbar_links.users") }} </span>
                 <v-select
                   v-model="service_provider_id"
-                  :placeholder="$t('admin_navbar_links.services_providers')"
+                  :placeholder="$t('admin_navbar_links.users')"
                   :items="SPUser.data"
                   item-title="name"
                   item-value="id"
@@ -113,6 +111,7 @@
                   </button>
                 </div>
               </div>
+
               <div class="bg-white">
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
@@ -137,8 +136,8 @@
                   class="main-btn pa-2 rounded-lg w-100 text-center mt-4"
                   network="whatsapp"
                   url=""
-                  title=""
-                  description="`merchant name ${record?.address[0]?.name},branch location ${record?.address[0]?.location},phone number ${record?.address[0]?.phone},pick up location ${record?.address[0]?.pick_up_location},order date ${record?.started_at},`"
+                  :title="$t('share_order.order_number') + record?.id"
+                  :description="shareText"
                   @open="openShare = true"
                   @change="openShare = false"
                   @close="openShare = false"
@@ -325,7 +324,14 @@ export default {
       }, ${this.$t("share_order.client_phone")} : ${
         this.record?.merchant_client?.phone
       }, 
-        ${this.$t("share_order.client_address")} : 
+        ${this.$t("share_order.client_address")} : ${
+        this.record?.merchant_client?.address
+      }
+
+      , 
+        ${this.$t("share_order.merchant_address")} : ${
+        this.record?.merchant_user?.address
+      }
       ,
        ${this.$t("share_order.created_by")} : ${
         this.record?.merchant_user?.name
@@ -334,7 +340,6 @@ export default {
        ${this.$t("share_order.merchant_phone")} : ${
         this.record?.merchant_user?.phone
       } ,
-       ${this.$t("share_order.main_category")} : ,
       ${this.$t("share_order.start_date")} : ${this.record?.started_at}`;
     },
   },

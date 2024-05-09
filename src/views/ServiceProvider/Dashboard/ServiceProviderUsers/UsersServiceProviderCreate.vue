@@ -21,6 +21,7 @@
       </div>
       <v-row>
         <!-- data -->
+
         <v-col
           cols="12"
           md="6"
@@ -355,8 +356,8 @@ export default {
     ]),
 
     async actionBtn() {
-      this.v$.$touch();
-      if (this.v$.$error) return;
+      this.v$.dataObj.$touch();
+      if (this.v$.dataObj.$error) return;
       if (this.isEditDataObj) {
         const data = updateToPatchData(this.dataObj, this.record);
         await this.updateUsersServiceProvider(this.record.id, data);

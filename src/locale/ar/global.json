@@ -112,6 +112,7 @@
     "client_address": "عنوان العميل",
     "created_by": "إنشاء بواسطة",
     "merchant_phone": "تليفون منشئ الطلب",
+    "merchant_address": "عنوان الفرع",
     "start_date": "تاريخ البداية",
     "main_category": "التصنيف الرئيسي"
   }
