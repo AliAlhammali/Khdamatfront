@@ -33,7 +33,7 @@
         <v-row>
           <v-col md="4" cols="12">
             <div class="border pa-4 order-info rounded-lg">
-              <div class="border-b mb-2">
+              <div class="border-b mb-2" v-if="isAdmin">
                 <span> {{ $t("admin_navbar_links.users") }} </span>
                 <v-select
                   v-model="service_provider_id"
@@ -275,6 +275,14 @@ export default {
       SPUser: "records",
       SPUserUIFlags: "uiFlags",
     }),
+
+    isAdmin() {
+      return (
+        this.$cookies
+          .get("service_provider_khadamat_user")
+          .role.toLowerCase() === "admin"
+      );
+    },
 
     orderStatus() {
       let status = [

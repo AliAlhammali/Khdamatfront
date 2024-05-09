@@ -73,14 +73,14 @@
         <v-col cols="12" md="6">
           <filed-input
             :label="$t('admin_merchant.fields.phone')"
-            v-model="merchant.phone"
-            :value="merchant.phone"
-            type="tel"
-            :error="v$.merchant.phone.$error"
+            v-model="merchant.owner.phone"
+            :value="merchant.owner.phone"
+            type="text"
+            :error="v$.merchant.owner.phone.$error"
             :error-text="
-              v$.merchant.phone.required.$invalid && $t('errors.required')
+              v$.merchant.owner.phone.required.$invalid && $t('errors.required')
             "
-            @blur="v$.merchant.phone.$touch()"
+            @blur="v$.merchant.owner.phone.$touch()"
           />
         </v-col>
         <hr />
@@ -305,6 +305,9 @@ export default {
           name: {
             required: requiredIf(() => !this.isEditMerchant),
           },
+          phone: {
+            required: requiredIf(() => !this.isEditMerchant),
+          },
           email: {
             required: requiredIf(() => !this.isEditMerchant),
             email,
@@ -343,6 +346,7 @@ export default {
           name: null,
           email: null,
           password: null,
+          phone: null,
         },
       },
       files: {
@@ -419,16 +423,16 @@ export default {
             (this.v$.merchant.email.email.$invalid && this.$t("errors.email")),
           blur: "v$.merchant.email.$touch()",
         },
-        // {
-        //   name: "phone",
-        //   type: "text",
-        //   label: this.$t("admin_merchant.fields.phone"),
-        //   error: "v$.merchant.phone.$error",
-        //   errorText:
-        //     this.v$.merchant.phone.required.$invalid &&
-        //     this.$t("errors.required"),
-        //   blur: "v$.merchant.phone.$touch()",
-        // },
+        {
+          name: "phone",
+          type: "text",
+          label: this.$t("admin_merchant.fields.phone"),
+          error: "v$.merchant.phone.$error",
+          errorText:
+            this.v$.merchant.phone.required.$invalid &&
+            this.$t("errors.required"),
+          blur: "v$.merchant.phone.$touch()",
+        },
         {
           name: "cr_number",
           type: "text",

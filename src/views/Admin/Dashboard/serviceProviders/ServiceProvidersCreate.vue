@@ -69,6 +69,19 @@
             />
           </v-col>
         </template>
+        <v-col cols="12" md="6">
+          <filed-input
+            :label="$t('admin_merchant.fields.phone')"
+            v-model="merchant.owner.phone"
+            :value="merchant.owner.phone"
+            type="text"
+            :error="v$.merchant.owner.phone.$error"
+            :error-text="
+              v$.merchant.owner.phone.required.$invalid && $t('errors.required')
+            "
+            @blur="v$.merchant.owner.phone.$touch()"
+          />
+        </v-col>
       </v-row>
       <hr
         style="
@@ -302,6 +315,7 @@ export default {
           name: {
             required: requiredIf(() => !this.isEditMerchant),
           },
+          phone: { required: requiredIf(() => !this.isEditMerchant) },
           email: {
             required: requiredIf(() => !this.isEditMerchant),
             email,
@@ -339,6 +353,7 @@ export default {
         can_collect_vat: null,
         owner: {
           name: null,
+          phone: null,
           email: null,
           password: null,
         },

@@ -11,6 +11,7 @@ export default {
       component: () => import("./UsersServiceProviderCreate.vue"),
       meta: {
         edit: false,
+        roles: ["admin"],
       },
     },
     {
@@ -19,6 +20,7 @@ export default {
       component: () => import("./UsersServiceProviderCreate.vue"),
       meta: {
         edit: true,
+        roles: ["admin", "staff"],
       },
     },
   ],

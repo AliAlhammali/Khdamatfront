@@ -115,11 +115,12 @@ export default {
   computed: {
     ...mapState(useAuthServiceProviderStore, ["isLoading", "record"]),
     pagesList() {
-      return [
+      let pages = [
         {
           title: this.$t("admin_navbar_links.users"),
           icon: "mdi-account-group-outline",
           key: "service_provider_users",
+          roles: ["admin"],
           pages: [
             [this.$t("admin_navbar_links.users"), "/service-provider/users"],
           ],
@@ -150,11 +151,16 @@ export default {
           title: this.$t("admin_navbar_links.orders"),
           icon: "mdi-list-box-outline",
           key: "service_provider_orders",
+          roles: ["admin", "staff"],
           pages: [
             [this.$t("admin_navbar_links.orders"), "/service-provider/orders"],
           ],
         },
       ];
+      pages = pages.filter((page) => {
+        return page.roles.includes(this.record?.role.toLowerCase());
+      });
+      return pages;
     },
   },
   methods: {

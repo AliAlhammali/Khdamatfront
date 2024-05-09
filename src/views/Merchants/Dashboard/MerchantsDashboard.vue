@@ -114,12 +114,13 @@ export default {
   computed: {
     ...mapState(useAuthMerchantStore, ["isLoading", "record"]),
     pagesList() {
-      return [
+      let pages = [
         {
           title: this.$t("admin_navbar_links.users"),
           icon: "mdi-account-group-outline",
           key: "users_merchant",
           pages: [[this.$t("admin_navbar_links.users"), "/merchant/users"]],
+          roles: ["admin"],
         },
 
         {
@@ -129,6 +130,7 @@ export default {
           pages: [
             [this.$t("admin_navbar_links.categories"), "/merchant/categories"],
           ],
+          roles: ["admin"],
         },
         {
           title: this.$t("admin_navbar_links.services"),
@@ -137,6 +139,7 @@ export default {
           pages: [
             [this.$t("admin_navbar_links.services"), "/merchant/services"],
           ],
+          roles: ["admin"],
         },
 
         {
@@ -146,20 +149,27 @@ export default {
           pages: [
             [this.$t("admin_navbar_links.branches"), "/merchant/branches"],
           ],
+          roles: ["admin"],
         },
         {
           title: this.$t("admin_navbar_links.clients"),
           icon: "mdi-account-multiple-outline",
           key: "merchant_clients",
           pages: [[this.$t("admin_navbar_links.clients"), "/merchant/clients"]],
+          roles: ["admin"],
         },
         {
           title: this.$t("admin_navbar_links.orders"),
           icon: "mdi-list-box-outline",
           key: "merchant_orders",
           pages: [[this.$t("admin_navbar_links.orders"), "/merchant/orders"]],
+          roles: ["admin", "staff"],
         },
       ];
+      pages = pages.filter((page) => {
+        return page.roles.includes(this.record?.role.toLowerCase());
+      });
+      return pages;
     },
   },
   methods: {

@@ -1,10 +1,10 @@
 <template>
   <div class="">
     <div>
+      <!-- :create-page="'/admin/merchant/create'" -->
       <data-table
         :title="$t('admin_merchant.title')"
         :placeholder="$t('admin_merchant.search_placeholder')"
-        :create-page="'/admin/merchant/create'"
         :headers="headers"
         :slots-items="['actions', 'status']"
         :isLoading="uiFlags?.isLoading"
@@ -39,7 +39,7 @@
                 </template>
               </v-tooltip>
             </router-link>
-            <router-link
+            <!-- <router-link
               :to="`/admin/merchant/${item.item.id}/edit`"
               class="button button--edit px-2 rounded"
             >
@@ -48,7 +48,7 @@
                   <span v-bind="props" class="mdi mdi-24px mdi-pencil"></span>
                 </template>
               </v-tooltip>
-            </router-link>
+            </router-link> -->
             <router-link
               :to="{
                 path: `/admin/service/create`,
