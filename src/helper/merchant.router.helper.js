@@ -17,3 +17,14 @@ export const merchantGuestGuard = (to, from, next) => {
     next();
   }
 };
+
+export const merchantRolesGuard = async (to, from, next) => {
+  const userRoles = $cookies.get("merchant_khadamat_user").role.toLowerCase();
+  const requiredRoles = to.meta.roles;
+  const hasRole = requiredRoles.includes(userRoles);
+  if (hasRole) {
+    next();
+  } else {
+    next({ name: "merchant-dashboard" });
+  }
+};

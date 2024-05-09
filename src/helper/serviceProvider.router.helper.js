@@ -17,3 +17,16 @@ export const serviceProviderGuestGuard = (to, from, next) => {
     next();
   }
 };
+
+export const SPRolesGuard = async (to, from, next) => {
+  const userRoles = $cookies
+    .get("service_provider_khadamat_user")
+    .role.toLowerCase();
+  const requiredRoles = to.meta.roles;
+  const hasRole = requiredRoles.includes(userRoles);
+  if (hasRole) {
+    next();
+  } else {
+    next({ name: "service-provider-dashboard" });
+  }
+};

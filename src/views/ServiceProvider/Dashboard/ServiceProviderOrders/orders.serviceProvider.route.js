@@ -1,3 +1,5 @@
+import { SPRolesGuard } from "@/helper/serviceProvider.router.helper";
+
 export default {
   routes: [
     {
@@ -7,6 +9,7 @@ export default {
       meta: {
         roles: ["admin", "staff"],
       },
+      beforeEnter: SPRolesGuard,
     },
     {
       path: "orders/:id",
@@ -15,6 +18,7 @@ export default {
       meta: {
         roles: ["admin", "staff"],
       },
+      beforeEnter: SPRolesGuard,
     },
   ],
 };

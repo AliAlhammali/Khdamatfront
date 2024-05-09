@@ -1,9 +1,12 @@
+import { merchantRolesGuard } from "@/helper/merchant.router.helper";
+
 export default {
   routes: [
     {
       path: "users",
       name: "users-merchant-dashboard",
       component: () => import("./UsersMerchantList.vue"),
+      beforeEnter: merchantRolesGuard,
     },
     {
       path: "users/create",
@@ -13,6 +16,7 @@ export default {
         edit: false,
         roles: ["admin"],
       },
+      beforeEnter: merchantRolesGuard,
     },
     {
       path: "users/:id/edit",
@@ -22,6 +26,7 @@ export default {
         edit: true,
         roles: ["admin"],
       },
+      beforeEnter: merchantRolesGuard,
     },
   ],
 };

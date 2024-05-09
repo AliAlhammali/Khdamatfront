@@ -1,9 +1,15 @@
+import { SPRolesGuard } from "@/helper/serviceProvider.router.helper";
+
 export default {
   routes: [
     {
       path: "users",
       name: "users-service-provider-dashboard",
       component: () => import("./UsersServiceProviderList.vue"),
+      beforeEnter: SPRolesGuard,
+      meta: {
+        roles: ["admin"],
+      },
     },
     {
       path: "users/create",
@@ -13,6 +19,7 @@ export default {
         edit: false,
         roles: ["admin"],
       },
+      beforeEnter: SPRolesGuard,
     },
     {
       path: "users/:id/edit",
@@ -22,6 +29,7 @@ export default {
         edit: true,
         roles: ["admin", "staff"],
       },
+      beforeEnter: SPRolesGuard,
     },
   ],
 };
