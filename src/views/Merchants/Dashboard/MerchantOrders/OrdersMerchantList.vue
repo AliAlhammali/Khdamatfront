@@ -41,12 +41,13 @@ export default {
         perPage: 10,
         page: 1,
         includeOrderMerchant: 1,
+        includeOrderSP: 1,
         includeOrderMerchantUser: 1,
         includeOrderMerchantClient: 1,
         includeOrderMainCategory: 1,
         includeOrderAddress: 1,
         includeOrderItems: 1,
-        sortAsc:1
+        sortAsc: 1,
       },
     };
   },
@@ -100,6 +101,12 @@ export default {
           key: "client_phone",
         },
         {
+          title: this.$t("admin_merchant.fields.service_provider"),
+          align: "start",
+          sortable: true,
+          key: "service_provider",
+        },
+        {
           title: this.$t("global.completed_at"),
           align: "start",
           sortable: true,
@@ -112,6 +119,7 @@ export default {
           sortable: true,
           key: "totals.total",
         },
+
         {
           title: this.$t("admin_merchant.fields.status"),
           align: "start",
@@ -130,16 +138,23 @@ export default {
       return this.records?.data?.map((item) => {
         return {
           ...item,
-          main_category: item.main_category.title ? item.main_category.title[this.$i18n.locale] : "---",
+          main_category: item.main_category.title
+            ? item.main_category.title[this.$i18n.locale]
+            : "---",
           merchant_title: item.merchant ? item.merchant.title : "---",
           client_name: item.merchant_client ? item.merchant_client.name : "---",
-          client_phone: item.merchant_client ? item.merchant_client.phone : "---",
+          client_phone: item.merchant_client
+            ? item.merchant_client.phone
+            : "---",
           completed_at: item.completed_at ? item.completed_at : "---",
           status: item.status
             ? this.$t(`global.order_status.${item.status}`)
             : "---",
           pick_up_type: item.pick_up_type
             ? this.$t(`global.order_type.${item.pick_up_type}`)
+            : "---",
+          service_provider: item.service_provider
+            ? item.service_provider.title
             : "---",
         };
       });

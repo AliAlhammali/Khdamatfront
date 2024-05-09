@@ -25,7 +25,8 @@
       "no_data": "No data",
       "back_to_home": "Back to Home",
       "change_password": "Change Password",
-      "add_sp": "Add Service Provider"
+      "add_sp": "Add Service Provider",
+      "add_sp_user": "Add Service Provider User"
     },
     "status": {
       "active": "Active",

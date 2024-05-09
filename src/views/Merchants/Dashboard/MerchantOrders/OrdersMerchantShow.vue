@@ -66,6 +66,22 @@
                   </span>
                   <p>{{ record?.created_at ? record?.created_at : "---" }}</p>
                 </div>
+
+                <div
+                  class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
+                >
+                  <span>
+                    {{ $t("admin_merchant.fields.service_provider") }}
+                  </span>
+                  <p class="text-end">
+                    {{
+                      record?.service_provider
+                        ? record?.service_provider?.title
+                        : "---"
+                    }}
+                  </p>
+                </div>
+
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
@@ -252,6 +268,7 @@ export default {
       includeOrderItemService: 1,
       includeOrderMerchantUser: 1,
       includeOrderMerchantClient: 1,
+      includeOrderSP: 1,
     });
   },
   computed: {

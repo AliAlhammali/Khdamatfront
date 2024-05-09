@@ -18,7 +18,7 @@
             class="button button--edit px-2 rounded"
             @click="showModal(item.item.id)"
           >
-            <v-tooltip :text="$t('global.actions.add_sp')">
+            <v-tooltip :text="$t('global.actions.add_sp_user')">
               <template v-slot:activator="{ props }">
                 <span
                   v-bind="props"
@@ -101,7 +101,10 @@ export default {
   },
   async mounted() {
     await this.getOrdersServiceProvider(this.params);
-    await this.getUsersServiceProvider();
+    await this.getUsersServiceProvider({
+      listing: 1,
+      "filter[role]": "Staff",
+    });
   },
   computed: {
     ...mapState(useOrdersServiceProviderStore, ["records", "uiFlags"]),

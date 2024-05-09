@@ -1,9 +1,9 @@
 <template>
   <div class="">
+    <!-- :create-page="'/admin/merchant-users/create'" -->
     <data-table
       :title="$t('admin_navbar_links.merchant_users')"
       :placeholder="$t('admin_merchant.search_placeholder_users')"
-      :create-page="'/admin/merchant-users/create'"
       :headers="headers"
       :slots-items="['actions', 'status', 'role']"
       :isLoading="uiFlags?.isLoading"
@@ -48,7 +48,7 @@
       </template>
       <template #actions="{ item }">
         <div class="d-flex ga-2 align-center">
-          <router-link
+          <!-- <router-link
             :to="`/admin/merchant-users/${item.item.id}/edit`"
             class="button button--edit px-2 rounded"
           >
@@ -57,7 +57,7 @@
                 <span v-bind="props" class="mdi mdi-24px mdi-pencil"></span>
               </template>
             </v-tooltip>
-          </router-link>
+          </router-link> -->
           <button
             class="button button--delete px-2 rounded"
             @click="deleteRecord(item.item)"

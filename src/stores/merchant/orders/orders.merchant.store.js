@@ -30,10 +30,10 @@ export const useOrdersMerchantStore = defineStore("OrdersMerchant", {
         this.uiFlags.isLoading = false;
       }
     },
-    showOrdersMerchant: async function(id) {
+    showOrdersMerchant: async function(id, params) {
       this.uiFlags.isLoading = true;
       try {
-        const { data } = await OrdersMerchant.show(id);
+        const { data } = await OrdersMerchant.show(id, params);
         this.record = data.data;
       } catch (error) {
         return error;

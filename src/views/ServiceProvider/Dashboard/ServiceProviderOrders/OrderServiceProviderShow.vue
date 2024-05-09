@@ -266,7 +266,7 @@ export default {
     });
     await this.getUsersServiceProvider({
       listing: 1,
-      "filter[role]": "staff",
+      "filter[role]": "Staff",
     });
   },
   computed: {
