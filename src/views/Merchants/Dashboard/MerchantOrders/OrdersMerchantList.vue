@@ -88,18 +88,18 @@ export default {
           sortable: true,
           key: "address[0].phone",
         },
-        {
-          title: this.$t("global.client_name"),
-          align: "start",
-          sortable: true,
-          key: "client_name",
-        },
-        {
-          title: this.$t("global.client_phone"),
-          align: "start",
-          sortable: true,
-          key: "client_phone",
-        },
+        // {
+        //   title: this.$t("global.client_name"),
+        //   align: "start",
+        //   sortable: true,
+        //   key: "client_name",
+        // },
+        // {
+        //   title: this.$t("global.client_phone"),
+        //   align: "start",
+        //   sortable: true,
+        //   key: "client_phone",
+        // },
         {
           title: this.$t("admin_merchant.fields.service_provider"),
           align: "start",
