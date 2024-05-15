@@ -138,18 +138,18 @@ export default {
           sortable: true,
           key: "main_category",
         },
-        {
-          title: this.$t("admin_merchant.fields.title"),
-          align: "start",
-          sortable: true,
-          key: "address[0].name",
-        },
-        {
-          title: this.$t("admin_merchant.fields.phone"),
-          align: "start",
-          sortable: true,
-          key: "address[0].phone",
-        },
+        // {
+        //   title: this.$t("admin_merchant.fields.title"),
+        //   align: "start",
+        //   sortable: true,
+        //   key: "address[0].name",
+        // },
+        // {
+        //   title: this.$t("admin_merchant.fields.phone"),
+        //   align: "start",
+        //   sortable: true,
+        //   key: "address[0].phone",
+        // },
         {
           title: this.$t("global.client_name"),
           align: "start",
