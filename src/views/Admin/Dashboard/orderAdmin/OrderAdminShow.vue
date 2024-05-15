@@ -36,6 +36,7 @@
               <span> {{ $t("admin_navbar_links.services_providers") }} </span>
               <div class="d-flex align-center ga-8 mb-2 pb-2">
                 <v-select
+                  v-if="record?.service_provider?.id"
                   v-model="record.service_provider.id"
                   :placeholder="$t('admin_navbar_links.services_providers')"
                   :items="SPList?.data"

@@ -18,6 +18,10 @@ import "@vuepic/vue-datepicker/dist/main.css";
 import VueSearchSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import VueSocialSharing from "vue-social-sharing";
+import VueApexCharts from "vue3-apexcharts";
+
+import DatePicker from "vue-datepicker-next";
+import "vue-datepicker-next/index.css";
 
 export function registerPlugins(app) {
   app
@@ -32,5 +36,7 @@ export function registerPlugins(app) {
 
   app
     .component("VueDatePicker", VueDatePicker)
-    .component("v-search-select", VueSearchSelect);
+    .component("DatePicker", DatePicker)
+    .component("v-search-select", VueSearchSelect)
+    .component("apexchart", VueApexCharts);
 }

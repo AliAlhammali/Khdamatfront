@@ -68,6 +68,9 @@ export default {
   padding-right: 10px;
   border-radius: 4px;
 }
+.dp__pointer {
+  height: 48px;
+}
 
 .dp__clear_icon {
   display: none !important;
@@ -94,11 +97,5 @@ export default {
 
 .dp__calendar_header_item {
   min-width: max-content;
-}
-
-::v-deep {
-  .--dp-menu-width {
-    min-width: 320px;
-  }
 }
 </style>
