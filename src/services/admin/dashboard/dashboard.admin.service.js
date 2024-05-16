@@ -2,7 +2,7 @@ import ApiClient from "@/helper/api.helper";
 
 class DashboardMerchant extends ApiClient {
   constructor() {
-    super("merchant/dashboard");
+    super("admin/dashboard");
   }
 
   get_figures(params) {

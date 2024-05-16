@@ -1,8 +1,8 @@
 import ApiClient from "@/helper/api.helper";
 
-class DashboardMerchant extends ApiClient {
+class ClientsMerchant extends ApiClient {
   constructor() {
-    super("merchant/dashboard");
+    super("service-provider/dashboard");
   }
 
   get_figures(params) {
@@ -21,4 +21,4 @@ class DashboardMerchant extends ApiClient {
   }
 }
 
-export default new DashboardMerchant();
+export default new ClientsMerchant();

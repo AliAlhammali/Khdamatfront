@@ -12,9 +12,14 @@ import interactionPlugin from "@fullcalendar/interaction";
 import arLocale from "@fullcalendar/core/locales/ar";
 import enLocale from "@fullcalendar/core/locales/en-gb";
 import momentPlugin from "@fullcalendar/moment";
-import moment from "moment";
 
 export default {
+  props: {
+    items: {
+      type: Array,
+      required: true,
+    },
+  },
   components: {
     FullCalendar, // make the <FullCalendar> tag available
   },
@@ -34,16 +39,7 @@ export default {
           center: "title",
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         },
-        events: [
-          {
-            title: "Meeting",
-            start: new Date(),
-          },
-          { title: "Vacation", start: new Date() },
-          { title: "Vacation", start: new Date() },
-          { title: "Vacation", start: new Date() },
-          { title: "Vacation", start: new Date() },
-        ],
+        events: [],
         titleFormat: "YYYY-MM-DD",
 
         views: {
@@ -62,6 +58,17 @@ export default {
         locale: "ar",
       },
     };
+  },
+  mounted() {
+    this.calendarOptions.events = this.items;
+  },
+  watch: {
+    items: {
+      handler: function (newVal) {
+        this.calendarOptions.events = this.items;
+      },
+      deep: true,
+    },
   },
 };
 </script>

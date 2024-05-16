@@ -212,7 +212,7 @@
     </v-row>
     <v-row class="mt-4" v-if="userIsAdmin">
       <v-col cols="12">
-        <calendar />
+        <calendar :items="calenderOrders.records" />
       </v-col>
     </v-row>
     <!-- <v-table class="border mt-4">
