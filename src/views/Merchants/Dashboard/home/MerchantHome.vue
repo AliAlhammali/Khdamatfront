@@ -5,7 +5,10 @@
       v-if="!figures?.isLoading"
     >
       <div class="figures d-flex align-center ga-4">
-        <div class="figure w-100 pa-2 rounded-lg border merchants">
+        <div
+          class="figure w-100 pa-2 rounded-lg border merchants"
+          v-if="userIsAdmin"
+        >
           <div class="d-flex align-center ga-4">
             <div class="figure-icon">
               <v-icon size="32">mdi mdi-account-tie-outline</v-icon>
@@ -65,7 +68,7 @@
       </div>
     </div>
 
-    <v-row class="mt-4">
+    <v-row class="mt-4" v-if="userIsAdmin">
       <v-col md="6" cols="12">
         <div class="bg-white border rounded-lg">
           <div
@@ -207,11 +210,34 @@
         </div>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row class="mt-4" v-if="userIsAdmin">
       <v-col cols="12">
         <calendar />
       </v-col>
     </v-row>
+    <!-- <v-table class="border mt-4">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Calories</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="item in [
+            { name: 'Frozen Yogurt', calories: 159 },
+            { name: 'Ice cream sandwich', calories: 237 },
+            { name: 'Eclair', calories: 262 },
+            { name: 'Cupcake', calories: 305 },
+            { name: 'Gingerbread', calories: 356 },
+          ]"
+          :key="item.name"
+        >
+          <td>{{ item.name }}</td>
+          <td>{{ item.calories }}</td>
+        </tr>
+      </tbody>
+    </v-table> -->
   </div>
 </template>
 <script>
@@ -222,6 +248,7 @@ import Calendar from "@/components/common/Calendar.vue";
 import { useDashboardMerchantStore } from "@/stores/merchant/dashboard/dashboard.merchant.store";
 import { mapActions, mapState } from "pinia";
 import { mappingToChart } from "@/helper/apexCharts.helper";
+import { useAuthMerchantStore } from "@/stores/merchant/auth/auth.merchant.store";
 export default {
   components: { ChartBar, Calendar },
   data() {
@@ -260,6 +287,10 @@ export default {
     },
     mapTopStaffCompletedOrders() {
       return mappingToChart(this.topStaffCompletedOrders?.records);
+    },
+    ...mapState(useAuthMerchantStore, ["record"]),
+    userIsAdmin() {
+      return this.record?.role?.toLowerCase() === "admin";
     },
   },
   methods: {
