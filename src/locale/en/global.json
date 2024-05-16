@@ -22,32 +22,28 @@
       "upload_error": "An error occurred while uploading the file",
       "logout": "Logout",
       "view_file": "View File",
-      "no_data": "No data",
+      "no_data": "No data available",
       "back_to_home": "Back to Home",
       "change_password": "Change Password",
       "add_sp": "Add Service Provider",
-      "add_sp_user": "Add Service Provider User",
+      "add_sp_user": "Add Technician",
       "sp_user": "Technician"
     },
     "status": {
       "active": "Active",
-      "inactive": "Inactive"
+      "inactive": "Inactive",
+      "Active": "Active",
+      "InActive": "Inactive"
     },
-
     "table": {
-      "noData": "No data",
-      "noResults": "No results",
+      "noData": "No data available",
+      "noResults": "No results found",
       "loading": "Loading...",
       "show": "Show",
-      "from": "From",
+      "from": "from",
       "entries": "entries",
       "next": "Next",
       "previous": "Previous"
-    },
-    "order_type": {
-      "label": "Order Type",
-      "delivered": "Delivered",
-      "from_branch": "From Branch"
     },
     "order_status": {
       "new": "New",
@@ -57,12 +53,10 @@
       "completed": "Completed",
       "canceled": "Canceled"
     },
-    "role": {
-      "Admin": "Admin",
-      "Staff": "Staff",
-      "admin": "Admin",
-      "staff": "Staff",
-      "service_provider": "Service Provider"
+    "order_type": {
+      "label": "Order Type",
+      "delivered": "Delivered",
+      "from_branch": "From Branch"
     },
     "show_order": {
       "status": "Status",
@@ -78,12 +72,54 @@
       "category": "Category",
       "service": "Service",
       "unit_price": "Unit Price",
-      "quantity": "Quantity"
+      "quantity": "Quantity",
+      "order_total": "Order Total",
+      "sp_total": "Service Provider Total"
+    },
+    "numbers": {
+      "sp_total": "Service Provider Total"
+    },
+    "role": {
+      "Admin": "Admin",
+      "Staff": "Staff",
+      "admin": "Admin",
+      "staff": "Staff",
+      "service_provider": "Service Provider"
     },
     "change_password": {
       "password": "Password",
       "confirm_password": "Confirm Password",
       "password_changed": "Password changed successfully"
-    }
+    },
+    "created_at": "Creation Date",
+    "main_category": "Main Category",
+    "client_name": "Client Name",
+    "order_number": "Order Number",
+    "client_phone": "Client Phone",
+    "order_commission": "Seller Commission",
+    "other": "Other",
+    "avg_profit": "Average Profit",
+    "completed_at": "Completion Date",
+    "password": "Password",
+    "owner_info": "Owner Information",
+    "company_info": "Company Information",
+    "can_collect_vat": "Can Collect VAT"
+  },
+  "share_order": {
+    "order_number": "Order Number",
+    "client_name": "Client Name",
+    "client_phone": "Client Phone",
+    "client_address": "Client Address",
+    "created_by": "Created By",
+    "merchant_phone": "Merchant Phone",
+    "merchant_address": "Branch Address",
+    "start_date": "Start Date",
+    "main_category": "Main Category"
+  },
+  "dashboard": {
+    "count_of_active_staff": "Count of Active Staff",
+    "count_of_new_orders": "Count of New Orders",
+    "count_of_in_progress_orders": "Count of In Progress Orders",
+    "count_of_completed_orders": "Count of Completed Orders"
   }
 }
