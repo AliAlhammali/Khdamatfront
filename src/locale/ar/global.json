@@ -117,5 +117,11 @@
     "merchant_address": "عنوان الفرع",
     "start_date": "تاريخ البداية",
     "main_category": "التصنيف الرئيسي"
+  },
+  "dashboard": {
+    "count_of_active_staff": " الموظفين النشطين",
+    "count_of_new_orders": " الطلبات الجديدة",
+    "count_of_in_progress_orders": " الطلبات قيد التنفيذ",
+    "count_of_completed_orders": " الطلبات المكتملة"
   }
 }

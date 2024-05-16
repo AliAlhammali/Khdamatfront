@@ -130,3 +130,7 @@ select {
 .dp__instance_calendar {
   min-width: 320px;
 }
+
+.mx-datepicker-main {
+  z-index: 999999;
+}

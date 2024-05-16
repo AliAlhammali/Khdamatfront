@@ -1,43 +1,23 @@
 <template >
   <div>
-    <div class="pa-4 bg-white shadow-lg rounded-lg border">
-      <div class="d-flex align-center ga-2 mb-4">
-        <v-menu>
-          <template v-slot:activator="{ props }">
-            <button v-bind="props" class="py-2">
-              <v-icon size="24">mdi mdi-calendar-month-outline</v-icon>
-            </button>
-          </template>
-          <v-list>
-            <v-list-item>
-              <date-picker
-                v-model="figuresStart"
-                v-model:value="figuresStart"
-                type="date"
-                :default-value="new Date()"
-              ></date-picker>
-            </v-list-item>
-            <v-list-item>
-              <date-picker
-                v-model="figuresEnd"
-                v-model:value="figuresEnd"
-                type="date"
-                :default-value="new Date()"
-              ></date-picker>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </div>
+    <div
+      class="pa-4 bg-white shadow-lg rounded-lg border"
+      v-if="!figures?.isLoading"
+    >
       <div class="figures d-flex align-center ga-4">
         <div class="figure w-100 pa-2 rounded-lg border merchants">
           <div class="d-flex align-center ga-4">
             <div class="figure-icon">
               <v-icon size="32">mdi mdi-account-tie-outline</v-icon>
             </div>
-            <div class="figure-value">0</div>
+            <div class="figure-value">
+              {{ figures?.records?.count_of_active_staff }}
+            </div>
           </div>
 
-          <div class="figure-title mb-2">عدد الموظفين النشطين</div>
+          <div class="figure-title mb-2">
+            {{ $t(`dashboard.count_of_active_staff`) }}
+          </div>
         </div>
 
         <div class="figure w-100 pa-2 rounded-lg border new-order">
@@ -45,30 +25,42 @@
             <div class="figure-icon">
               <v-icon size="32">mdi mdi-storefront-plus-outline</v-icon>
             </div>
-            <div class="figure-value">0</div>
+            <div class="figure-value">
+              {{ figures?.records?.count_of_new_orders }}
+            </div>
           </div>
 
-          <div class="figure-title mb-2">الطلبات الجديدة</div>
+          <div class="figure-title mb-2">
+            {{ $t(`dashboard.count_of_new_orders`) }}
+          </div>
         </div>
         <div class="figure w-100 pa-2 rounded-lg border progress-order">
           <div class="d-flex align-center ga-4">
             <div class="figure-icon">
               <v-icon size="32">mdi mdi-timer-sand-complete</v-icon>
             </div>
-            <div class="figure-value">0</div>
+            <div class="figure-value">
+              {{ figures?.records?.count_of_in_progress_orders }}
+            </div>
           </div>
 
-          <div class="figure-title mb-2">الطلبات قيد التنفيذ</div>
+          <div class="figure-title mb-2">
+            {{ $t(`dashboard.count_of_in_progress_orders`) }}
+          </div>
         </div>
         <div class="figure w-100 pa-2 rounded-lg border completed-order">
           <div class="d-flex align-center ga-4">
             <div class="figure-icon">
               <v-icon size="32">mdi mdi-storefront-check-outline</v-icon>
             </div>
-            <div class="figure-value">0</div>
+            <div class="figure-value">
+              {{ figures?.records?.count_of_completed_orders }}
+            </div>
           </div>
 
-          <div class="figure-title mb-2">الطلبات المكتملة</div>
+          <div class="figure-title mb-2">
+            {{ $t(`dashboard.count_of_completed_orders`) }}
+          </div>
         </div>
       </div>
     </div>
@@ -80,7 +72,12 @@
             class="d-flex align-center ga-2 border-b justify-space-between pa-4"
           >
             <h3 class="">أفضل الموظفين حسب الطلبات</h3>
-            <v-menu>
+            <v-menu
+              v-model="toggleTopStaffByOrders"
+              :close-on-content-click="false"
+              :close-on-back="false"
+              persistent
+            >
               <template v-slot:activator="{ props }">
                 <button v-bind="props" class="py-2">
                   <v-icon size="24">mdi mdi-calendar-month-outline</v-icon>
@@ -88,25 +85,50 @@
               </template>
               <v-list>
                 <v-list-item>
+                  <button
+                    @click="toggleTopStaffByOrders = false"
+                    class="mb-2 text-error"
+                  >
+                    <v-icon size="24">mdi mdi-close</v-icon>
+                  </button>
+                </v-list-item>
+                <v-list-item>
                   <date-picker
-                    v-model="figuresStart"
-                    v-model:value="figuresStart"
+                    v-model="paramsTopStaffByOrders['filter[date_from]']"
+                    v-model:value="paramsTopStaffByOrders['filter[date_from]']"
+                    :default-value="paramsTopStaffByOrders['filter[date_from]']"
                     type="date"
-                    :default-value="new Date()"
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
                 </v-list-item>
                 <v-list-item>
                   <date-picker
-                    v-model="figuresEnd"
-                    v-model:value="figuresEnd"
+                    v-model="paramsTopStaffByOrders['filter[date_to]']"
+                    v-model:value="paramsTopStaffByOrders['filter[date_to]']"
+                    :default-value="paramsTopStaffByOrders['filter[date_to]']"
                     type="date"
-                    :default-value="new Date()"
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn
+                    @click="getTopStaffByOrders(paramsTopStaffByOrders)"
+                    class="main-btn w-100"
+                  >
+                    <v-icon size="24">mdi mdi-filter</v-icon>
+                  </v-btn>
                 </v-list-item>
               </v-list>
             </v-menu>
           </div>
-          <chart-bar></chart-bar>
+          <chart-bar
+            :chart="mapTopStaffByOrders"
+            :isLoading="topStaffByOrders?.isLoading"
+          />
         </div>
       </v-col>
       <v-col md="6" cols="12">
@@ -115,7 +137,12 @@
             class="d-flex align-center ga-2 border-b justify-space-between pa-4"
           >
             <h3 class="">أفضل الموظفين حسب الطلبات المكتملة</h3>
-            <v-menu>
+            <v-menu
+              v-model="toggleTopStaffCompletedOrders"
+              :close-on-content-click="false"
+              :close-on-back="false"
+              persistent
+            >
               <template v-slot:activator="{ props }">
                 <button v-bind="props" class="py-2">
                   <v-icon size="24">mdi mdi-calendar-month-outline</v-icon>
@@ -123,25 +150,60 @@
               </template>
               <v-list>
                 <v-list-item>
+                  <button
+                    @click="toggleTopStaffCompletedOrders = false"
+                    class="mb-2 text-error"
+                  >
+                    <v-icon size="24">mdi mdi-close</v-icon>
+                  </button>
+                </v-list-item>
+                <v-list-item>
                   <date-picker
-                    v-model="figuresStart"
-                    v-model:value="figuresStart"
                     type="date"
-                    :default-value="new Date()"
+                    v-model="paramsTopStaffCompletedOrders['filter[date_from]']"
+                    v-model:value="
+                      paramsTopStaffCompletedOrders['filter[date_from]']
+                    "
+                    :default-value="
+                      paramsTopStaffCompletedOrders['filter[date_from]']
+                    "
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
                 </v-list-item>
                 <v-list-item>
                   <date-picker
-                    v-model="figuresEnd"
-                    v-model:value="figuresEnd"
                     type="date"
-                    :default-value="new Date()"
+                    v-model="paramsTopStaffCompletedOrders['filter[date_to]']"
+                    v-model:value="
+                      paramsTopStaffCompletedOrders['filter[date_to]']
+                    "
+                    :default-value="
+                      paramsTopStaffCompletedOrders['filter[date_to]']
+                    "
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn
+                    @click="
+                      getTopStaffCompletedOrders(paramsTopStaffCompletedOrders)
+                    "
+                    class="main-btn w-100"
+                  >
+                    <v-icon size="24">mdi mdi-filter</v-icon>
+                  </v-btn>
                 </v-list-item>
               </v-list>
             </v-menu>
           </div>
-          <chart-bar></chart-bar>
+          <chart-bar
+            :chart="mapTopStaffCompletedOrders"
+            :isLoading="topStaffCompletedOrders?.isLoading"
+          />
         </div>
       </v-col>
     </v-row>
@@ -157,7 +219,9 @@ import ChartBar from "@/components/common/ChartBar.vue";
 import { arSA, enUS } from "date-fns/locale";
 import moment from "moment";
 import Calendar from "@/components/common/Calendar.vue";
-
+import { useDashboardMerchantStore } from "@/stores/merchant/dashboard/dashboard.merchant.store";
+import { mapActions, mapState } from "pinia";
+import { mappingToChart } from "@/helper/apexCharts.helper";
 export default {
   components: { ChartBar, Calendar },
   data() {
@@ -165,12 +229,46 @@ export default {
       // date range picker last month and current date
       arSA,
       enUS,
-      figuresToggle: false,
-      figuresStart: new Date(),
-      figuresEnd: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+      toggleTopStaffByOrders: false,
+      toggleTopStaffCompletedOrders: false,
+      paramsTopStaffByOrders: {
+        "filter[date_from]": moment().subtract(1, "month").format("YYYY-MM-DD"),
+        "filter[date_to]": moment().format("YYYY-MM-DD"),
+      },
+      paramsTopStaffCompletedOrders: {
+        "filter[date_from]": moment().subtract(1, "month").format("YYYY-MM-DD"),
+        "filter[date_to]": moment().format("YYYY-MM-DD"),
+      },
     };
   },
+  async mounted() {
+    await this.getFigures();
+    await this.getCalenderOrders();
+    // params
+    await this.getTopStaffByOrders(this.paramsTopStaffByOrders);
+    await this.getTopStaffCompletedOrders(this.paramsTopStaffCompletedOrders);
+  },
+  computed: {
+    ...mapState(useDashboardMerchantStore, [
+      "figures",
+      "calenderOrders",
+      "topStaffByOrders",
+      "topStaffCompletedOrders",
+    ]),
+    mapTopStaffByOrders() {
+      return mappingToChart(this.topStaffByOrders?.records);
+    },
+    mapTopStaffCompletedOrders() {
+      return mappingToChart(this.topStaffCompletedOrders?.records);
+    },
+  },
   methods: {
+    ...mapActions(useDashboardMerchantStore, [
+      "getFigures",
+      "getCalenderOrders",
+      "getTopStaffByOrders",
+      "getTopStaffCompletedOrders",
+    ]),
     moment,
     disabledBeforeTodayAndAfterAMonth(date) {
       return (
@@ -264,5 +362,15 @@ export default {
       }
     }
   }
+}
+
+.list-filter-style {
+  position: absolute;
+  top: 40px;
+  z-index: 999;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  min-width: 245px;
 }
 </style>
