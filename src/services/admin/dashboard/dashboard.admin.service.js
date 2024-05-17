@@ -9,15 +9,19 @@ class DashboardMerchant extends ApiClient {
     return axios.get(`${this.url}/figures`, { params });
   }
 
-  get_top_staff_by_orders(params) {
-    return axios.get(`${this.url}/top_staff_by_orders`, { params });
+  get_top_merchants_by_orders(params) {
+    return axios.get(`${this.url}/top_merchants_by_orders`, { params });
   }
-  get_top_staff_completed_orders(params) {
-    return axios.get(`${this.url}/top_staff_completed_orders`, { params });
+  get_top_sp_completed_by_orders(params) {
+    return axios.get(`${this.url}/top_sp_completed_by_orders`, { params });
   }
 
-  get_calender_orders(params) {
-    return axios.get(`${this.url}/calender_orders`, { params });
+  get_top_services(params) {
+    return axios.get(`${this.url}/top_services`, { params });
+  }
+
+  get_top_categories(params) {
+    return axios.get(`${this.url}/top_categories`, { params });
   }
 }
 

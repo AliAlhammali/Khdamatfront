@@ -212,7 +212,10 @@
     </v-row>
     <v-row class="mt-4" v-if="userIsAdmin">
       <v-col cols="12">
-        <calendar :items="calenderOrders.records" />
+        <calendar
+          :items="calenderOrders.records"
+          @handleEventClick="handleEventClick"
+        />
       </v-col>
     </v-row>
     <!-- <v-table class="border mt-4">
@@ -301,11 +304,8 @@ export default {
       "getTopStaffCompletedOrders",
     ]),
     moment,
-    disabledBeforeTodayAndAfterAMonth(date) {
-      return (
-        date < new Date() ||
-        date > new Date(new Date().setMonth(new Date().getMonth() + 1))
-      );
+    handleEventClick(id) {
+      this.$router.push(`/merchant/orders/${id}`);
     },
   },
 };

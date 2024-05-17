@@ -23,7 +23,7 @@ export default {
   components: {
     FullCalendar, // make the <FullCalendar> tag available
   },
-  data: function () {
+  data() {
     return {
       calendarOptions: {
         plugins: [
@@ -39,9 +39,8 @@ export default {
           center: "title",
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         },
-        events: [],
         titleFormat: "YYYY-MM-DD",
-
+        events: [],
         views: {
           dayGridMonth: {
             titleFormat: { year: "numeric", month: "long" },
@@ -55,17 +54,38 @@ export default {
         },
 
         locales: [enLocale, arLocale],
-        locale: "ar",
+        locale: this.$i18n.locale,
+        eventClick: (info) => {
+          this.handleEventClick(info.event);
+        },
       },
     };
   },
   mounted() {
-    this.calendarOptions.events = this.items;
+    this.calendarOptions.events = this.eventsMapping;
+  },
+  computed: {
+    eventsMapping() {
+      // id - start - end - title
+      return (
+        this.items.map((item) => {
+          return {
+            ...item,
+            display: "list-item",
+          };
+        }) || []
+      );
+    },
+  },
+  methods: {
+    handleEventClick(event) {
+      this.$emit("handleEventClick", +event._def.publicId);
+    },
   },
   watch: {
     items: {
       handler: function (newVal) {
-        this.calendarOptions.events = this.items;
+        this.calendarOptions.events = this.eventsMapping;
       },
       deep: true,
     },
@@ -89,6 +109,10 @@ export default {
 
 .fc .fc-button .fc-icon {
   vertical-align: unset !important;
+}
+
+.fc-event {
+  cursor: pointer !important;
 }
 </style>
 

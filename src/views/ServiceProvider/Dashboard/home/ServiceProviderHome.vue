@@ -212,7 +212,10 @@
     </v-row>
     <v-row class="mt-4" v-if="userIsAdmin">
       <v-col cols="12">
-        <calendar :items="calenderOrders.records" />
+        <calendar
+          :items="calenderOrders.records"
+          @handleEventClick="handleEventClick"
+        />
       </v-col>
     </v-row>
     <!-- <v-table class="border mt-4">
@@ -301,6 +304,9 @@ export default {
       "getTopStaffCompletedOrders",
     ]),
     moment,
+    handleEventClick(id) {
+      this.$router.push(`/service-provider/orders/${id}`);
+    },
   },
 };
 </script>
