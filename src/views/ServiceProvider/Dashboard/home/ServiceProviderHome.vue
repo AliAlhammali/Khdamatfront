@@ -215,6 +215,7 @@
         <calendar
           :items="calenderOrders.records"
           @handleEventClick="handleEventClick"
+          @changeDate="changeDate"
         />
       </v-col>
     </v-row>
@@ -273,7 +274,10 @@ export default {
   },
   async mounted() {
     await this.getFigures();
-    await this.getCalenderOrders();
+    await this.getCalenderOrders({
+      "filter[date_from]": moment().subtract(1, "month").format("YYYY-MM-DD"),
+      "filter[date_to]": moment().format("YYYY-MM-DD"),
+    });
     // params
     await this.getTopStaffByOrders(this.paramsTopStaffByOrders);
     await this.getTopStaffCompletedOrders(this.paramsTopStaffCompletedOrders);
@@ -306,6 +310,12 @@ export default {
     moment,
     handleEventClick(id) {
       this.$router.push(`/service-provider/orders/${id}`);
+    },
+    changeDate({ start, end }) {
+      this.getCalenderOrders({
+        "filter[date_from]": start,
+        "filter[date_to]": end,
+      });
     },
   },
 };

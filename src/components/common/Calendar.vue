@@ -12,7 +12,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import arLocale from "@fullcalendar/core/locales/ar";
 import enLocale from "@fullcalendar/core/locales/en-gb";
 import momentPlugin from "@fullcalendar/moment";
-
+import moment from "moment";
 export default {
   props: {
     items: {
@@ -39,6 +39,8 @@ export default {
           center: "title",
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         },
+        datesSet: this.handleDatesSet,
+
         titleFormat: "YYYY-MM-DD",
         events: [],
         views: {
@@ -80,6 +82,12 @@ export default {
   methods: {
     handleEventClick(event) {
       this.$emit("handleEventClick", +event._def.publicId);
+    },
+    handleDatesSet(date) {
+      this.$emit("changeDate", {
+        start: moment(date.startStr).format("YYYY-MM-DD"),
+        end: moment(date.endStr).format("YYYY-MM-DD"),
+      });
     },
   },
   watch: {

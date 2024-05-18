@@ -9,9 +9,8 @@ export const mappingToChart = function(
 
   data.forEach(item => {
     series.push(item[keys[0]]);
-
-    if (typeof item[keys[1]] === "object") {
-      console.log(item[keys[1]]["ar"]);
+    if (typeof item.name === "object") {
+      categories.push(item.name[lang]);
     } else {
       categories.push(item[keys[1]]);
     }
@@ -20,33 +19,21 @@ export const mappingToChart = function(
   return {
     series: [{ name: "", data: series }],
     options: {
-      chart: { height: 350, type: "bar", width: "100%" },
+      chart: {
+        type: "bar",
+        height: 350,
+        stacked: true,
+      },
+      stroke: { width: 1, colors: ["#fff"] },
+      xaxis: { categories: categories, labels: { show: false } },
+      legend: { position: "top" },
       plotOptions: {
-        bar: { endingShape: "rounded", columnWidth: "55%", distributed: true },
-      },
-      legend: { show: true, showForSingleSeries: true, position: "top" },
-      fill: {
-        type: "gradient",
-        gradient: { type: "vertical", inverseColors: true, stops: [0, 100] },
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: function(val) {
-          return val.toFixed(0);
+        bar: {
+          endingShape: "rounded",
+          columnWidth: "55%",
+          distributed: true,
         },
-        offsetY: -20,
       },
-      stroke: {
-        curve: "smooth",
-        show: true,
-        colors: ["transparent"],
-        width: 2,
-      },
-      xaxis: {
-        categories: categories,
-        labels: { show: true, rotateAlways: false, offsetY: 0 },
-      },
-      fill: { opacity: 1 },
     },
-  };
+  }; // 'around', 'end' // 'all', 'last'
 };

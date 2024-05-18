@@ -71,7 +71,12 @@
             class="d-flex align-center ga-2 border-b justify-space-between pa-4"
           >
             <h3 class="">أفضل الطلبات من التجار</h3>
-            <v-menu>
+            <v-menu
+              v-model="toggleTopMerchantsByOrders"
+              :close-on-content-click="false"
+              :close-on-back="false"
+              persistent
+            >
               <template v-slot:activator="{ props }">
                 <button v-bind="props" class="py-2">
                   <v-icon size="24">mdi mdi-calendar-month-outline</v-icon>
@@ -79,20 +84,50 @@
               </template>
               <v-list>
                 <v-list-item>
+                  <button
+                    @click="toggleTopMerchantsByOrders = false"
+                    class="mb-2 text-error"
+                  >
+                    <v-icon size="24">mdi mdi-close</v-icon>
+                  </button>
+                </v-list-item>
+                <v-list-item>
                   <date-picker
-                    v-model="figuresStart"
-                    v-model:value="figuresStart"
+                    v-model="paramsTopMerchantsByOrders['filter[date_from]']"
+                    v-model:value="
+                      paramsTopMerchantsByOrders['filter[date_from]']
+                    "
+                    :default-value="
+                      paramsTopMerchantsByOrders['filter[date_from]']
+                    "
                     type="date"
-                    :default-value="new Date()"
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
                 </v-list-item>
                 <v-list-item>
                   <date-picker
-                    v-model="figuresEnd"
-                    v-model:value="figuresEnd"
+                    v-model="paramsTopMerchantsByOrders['filter[date_to]']"
+                    v-model:value="
+                      paramsTopMerchantsByOrders['filter[date_to]']
+                    "
+                    :default-value="
+                      paramsTopMerchantsByOrders['filter[date_to]']
+                    "
                     type="date"
-                    :default-value="new Date()"
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn
+                    @click="getTopMerchantsByOrders(paramsTopMerchantsByOrders)"
+                    class="main-btn w-100"
+                  >
+                    <v-icon size="24">mdi mdi-filter</v-icon>
+                  </v-btn>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -109,7 +144,12 @@
             class="d-flex align-center ga-2 border-b justify-space-between pa-4"
           >
             <h3 class="">أعلى الطلبات المكتملة من مزودي الخدمة</h3>
-            <v-menu>
+            <v-menu
+              v-model="toggleTopSPCompletedByOrders"
+              :close-on-content-click="false"
+              :close-on-back="false"
+              persistent
+            >
               <template v-slot:activator="{ props }">
                 <button v-bind="props" class="py-2">
                   <v-icon size="24">mdi mdi-calendar-month-outline</v-icon>
@@ -117,20 +157,52 @@
               </template>
               <v-list>
                 <v-list-item>
+                  <button
+                    @click="toggleTopSPCompletedByOrders = false"
+                    class="mb-2 text-error"
+                  >
+                    <v-icon size="24">mdi mdi-close</v-icon>
+                  </button>
+                </v-list-item>
+                <v-list-item>
                   <date-picker
-                    v-model="figuresStart"
-                    v-model:value="figuresStart"
+                    v-model="paramsTopSPCompletedByOrders['filter[date_from]']"
+                    v-model:value="
+                      paramsTopSPCompletedByOrders['filter[date_from]']
+                    "
+                    :default-value="
+                      paramsTopSPCompletedByOrders['filter[date_from]']
+                    "
                     type="date"
-                    :default-value="new Date()"
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
                 </v-list-item>
                 <v-list-item>
                   <date-picker
-                    v-model="figuresEnd"
-                    v-model:value="figuresEnd"
+                    v-model="paramsTopSPCompletedByOrders['filter[date_to]']"
+                    v-model:value="
+                      paramsTopSPCompletedByOrders['filter[date_to]']
+                    "
+                    :default-value="
+                      paramsTopSPCompletedByOrders['filter[date_to]']
+                    "
                     type="date"
-                    :default-value="new Date()"
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn
+                    @click="
+                      getTopSPCompletedByOrders(paramsTopSPCompletedByOrders)
+                    "
+                    class="main-btn w-100"
+                  >
+                    <v-icon size="24">mdi mdi-filter</v-icon>
+                  </v-btn>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -156,19 +228,33 @@
               <v-list>
                 <v-list-item>
                   <date-picker
-                    v-model="figuresStart"
-                    v-model:value="figuresStart"
+                    v-model="paramsTopServices['filter[date_from]']"
+                    v-model:value="paramsTopServices['filter[date_from]']"
+                    :default-value="paramsTopServices['filter[date_from]']"
                     type="date"
-                    :default-value="new Date()"
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
                 </v-list-item>
                 <v-list-item>
                   <date-picker
-                    v-model="figuresEnd"
-                    v-model:value="figuresEnd"
+                    v-model="paramsTopServices['filter[date_to]']"
+                    v-model:value="paramsTopServices['filter[date_to]']"
+                    :default-value="paramsTopServices['filter[date_to]']"
                     type="date"
-                    :default-value="new Date()"
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn
+                    @click="getTopServices(paramsTopServices)"
+                    class="main-btn w-100"
+                  >
+                    <v-icon size="24">mdi mdi-filter</v-icon>
+                  </v-btn>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -194,19 +280,33 @@
               <v-list>
                 <v-list-item>
                   <date-picker
-                    v-model="figuresStart"
-                    v-model:value="figuresStart"
+                    v-model="paramsTopCategories['filter[date_from]']"
+                    v-model:value="paramsTopCategories['filter[date_from]']"
+                    :default-value="paramsTopCategories['filter[date_from]']"
                     type="date"
-                    :default-value="new Date()"
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
                 </v-list-item>
                 <v-list-item>
                   <date-picker
-                    v-model="figuresEnd"
-                    v-model:value="figuresEnd"
+                    v-model="paramsTopCategories['filter[date_to]']"
+                    v-model:value="paramsTopCategories['filter[date_to]']"
+                    :default-value="paramsTopCategories['filter[date_to]']"
                     type="date"
-                    :default-value="new Date()"
+                    class="mb-2 w-100"
+                    value-type="format"
+                    format="YYYY-MM-DD"
                   ></date-picker>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn
+                    @click="getTopCategories(paramsTopCategories)"
+                    class="main-btn w-100"
+                  >
+                    <v-icon size="24">mdi mdi-filter</v-icon>
+                  </v-btn>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -238,10 +338,7 @@ export default {
       figuresToggle: false,
       figuresStart: new Date(),
       figuresEnd: new Date(new Date().setMonth(new Date().getMonth() - 1)),
-      paramsTopCategories: {
-        "filter[date_from]": moment().subtract(1, "month").format("YYYY-MM-DD"),
-        "filter[date_to]": moment().format("YYYY-MM-DD"),
-      },
+
       paramsTopMerchantsByOrders: {
         "filter[date_from]": moment().subtract(1, "month").format("YYYY-MM-DD"),
         "filter[date_to]": moment().format("YYYY-MM-DD"),
@@ -254,6 +351,15 @@ export default {
         "filter[date_from]": moment().subtract(1, "month").format("YYYY-MM-DD"),
         "filter[date_to]": moment().format("YYYY-MM-DD"),
       },
+      paramsTopCategories: {
+        "filter[date_from]": moment().subtract(1, "month").format("YYYY-MM-DD"),
+        "filter[date_to]": moment().format("YYYY-MM-DD"),
+      },
+
+      toggleTopMerchantsByOrders: false,
+      toggleTopSPCompletedByOrders: false,
+      toggleTopServices: false,
+      toggleTopCategories: false,
     };
   },
   async mounted() {
@@ -271,12 +377,7 @@ export default {
       "topSPCompletedByOrders",
       "topServices",
     ]),
-    chartTopCategories() {
-      return mappingToChart(this.topCategories?.records, [
-        "total_orders",
-        "category_name",
-      ]);
-    },
+
     chartTopMerchantsByOrders() {
       return mappingToChart(this.topMerchantsByOrders?.records, [
         "order_count",
@@ -290,10 +391,18 @@ export default {
       ]);
     },
     chartTopServices() {
-      return mappingToChart(this.topServices?.records, [
-        "total_orders",
-        "services_name",
-      ]);
+      return mappingToChart(
+        this.topServices?.records,
+        ["order_count", "name"],
+        this.$i18n?.locale
+      );
+    },
+    chartTopCategories() {
+      return mappingToChart(
+        this.topCategories?.records,
+        ["order_count", "name"],
+        this.$i18n?.locale
+      );
     },
   },
   methods: {
