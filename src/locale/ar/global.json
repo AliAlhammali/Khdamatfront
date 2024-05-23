@@ -94,6 +94,7 @@
       "password_changed": "تم تغيير كلمة المرور بنجاح"
     },
     "created_at": "تاريخ الانشاء",
+    "start_at": "تاريخ البداية",
     "main_category": "التصنيف الرئيسي",
     "client_name": "اسم العميل",
     "order_number": "رقم الطلب",

@@ -134,3 +134,9 @@ select {
 .mx-datepicker-main {
   z-index: 999999;
 }
+
+.mx-input-wrapper {
+  input {
+    height: 48px;
+  }
+}

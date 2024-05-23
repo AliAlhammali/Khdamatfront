@@ -23,6 +23,13 @@ export const useCategoriesMerchantStore = defineStore("CategoriesMerchant", {
       isUpdated: false,
       isDeleted: false,
     },
+    mainCategories: [],
+    uiFlagsMain: {
+      isLoading: false,
+      isCreated: false,
+      isUpdated: false,
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
@@ -35,6 +42,17 @@ export const useCategoriesMerchantStore = defineStore("CategoriesMerchant", {
         return error;
       } finally {
         this.uiFlags.isLoading = false;
+      }
+    },
+    getMainCategoriesMerchant: async function(params) {
+      this.uiFlagsMain.isLoading = true;
+      try {
+        const { data } = await CategoriesMerchant.get(params);
+        this.mainCategories = data;
+      } catch (error) {
+        return error;
+      } finally {
+        this.uiFlagsMain.isLoading = false;
       }
     },
     getSubCategoriesMerchant: async function(params) {

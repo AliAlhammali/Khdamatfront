@@ -14,21 +14,68 @@
       @search="search"
     >
       <template #filter>
-        <v-select
-          :placeholder="$t('admin_navbar_links.categories')"
-          :label="$t('admin_navbar_links.categories')"
-          v-model="params['filter[category_id]']"
-          :items="listCategories"
-          item-value="id"
-          menu-icon="mdi mdi-chevron-down"
-          class="w-100"
-          outlined
-          :loader="uiFlagsCategories?.isLoading"
-          @update:modelValue="getServicesMerchant(params)"
-          :no-data-text="$t('global.actions.no_data')"
-          hide-details
-        >
-        </v-select>
+        <v-row>
+          <v-col md="4" cols="12">
+            <v-autocomplete
+              v-model="filterMainCategory"
+              :placeholder="$t('admin_categories.fields.main_category')"
+              :items="mainCategoriesList"
+              :item-title="'text'"
+              :item-value="'value'"
+              outlined
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              @update:modelValue="(val) => filterByMainCategory(val)"
+            />
+          </v-col>
+          <v-col md="4" cols="12">
+            <v-autocomplete
+              :placeholder="$t('admin_navbar_links.categories')"
+              :label="$t('admin_navbar_links.categories')"
+              v-model="filterCategory"
+              :items="listCategories"
+              item-value="id"
+              menu-icon="mdi mdi-chevron-down"
+              class="w-100"
+              outlined
+              :loader="uiFlagsCategories?.isLoading"
+              @update:modelValue="(val) => filterByCategory(val)"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+            />
+          </v-col>
+
+          <v-col md="4" cols="12">
+            <div class="d-flex align-center ga-3">
+              <v-select
+                v-model="filterStatus"
+                :placeholder="$t('admin_merchant.fields.status')"
+                :items="listStatus"
+                :item-title="'text'"
+                :item-value="'value'"
+                outlined
+                menu-icon="mdi mdi-chevron-down"
+                class="text-capitalize rounded-xl"
+                :no-data-text="$t('global.actions.no_data')"
+                hide-details
+                @update:modelValue="(val) => filterByStatus(val)"
+              />
+              <button
+                class="pa-2 rounded border text-error"
+                @click="clearFilter"
+                :disabled="
+                  !filterStatus &&
+                  !filterMainCategory &&
+                  !params['filter[category_id]']
+                "
+              >
+                <v-icon size="30">mdi mdi-filter-variant-remove</v-icon>
+              </button>
+            </div>
+          </v-col>
+        </v-row>
       </template>
       <template #status="{ item }">
         <span
@@ -63,6 +110,20 @@ export default {
       paramsCategories: {
         listing: 1,
       },
+
+      listStatus: [
+        {
+          text: this.$t("global.status.active"),
+          value: "active",
+        },
+        {
+          text: this.$t("global.status.inactive"),
+          value: "inactive",
+        },
+      ],
+      filterStatus: null,
+      filterMainCategory: null,
+      filterCategory: null,
     };
   },
   async mounted() {
@@ -72,6 +133,8 @@ export default {
       ).id;
     }
     await this.getCategoriesMerchant(this.paramsCategories);
+    await this.getMainCategoriesMerchant({ "filter[isParent]": 1, listing: 1 });
+
     await this.getServicesMerchant(this.params);
   },
   computed: {
@@ -79,6 +142,8 @@ export default {
     ...mapState(useCategoriesMerchantStore, {
       categories: "records",
       uiFlagsCategories: "uiFlags",
+      mainCategories: "mainCategories",
+      uiFlagsMainCategories: "uiFlags",
     }),
     headers() {
       return [
@@ -135,25 +200,62 @@ export default {
         };
       });
     },
+    mainCategoriesList() {
+      return this.mainCategories?.data?.map((item) => {
+        return {
+          text: item.title[this.$i18n.locale],
+          value: item.id,
+        };
+      });
+    },
   },
   methods: {
     ...mapActions(useServicesMerchantStore, ["getServicesMerchant"]),
-    ...mapActions(useCategoriesMerchantStore, ["getCategoriesMerchant"]),
-    changePage(page) {
-      this.params.page = page;
-      this.getServicesMerchant(this.params);
+    ...mapActions(useCategoriesMerchantStore, [
+      "getCategoriesMerchant",
+      "getMainCategoriesMerchant",
+    ]),
+
+    async filterByStatus(status) {
+      this.params["filter[status]"] = status;
+      await this.getServicesMerchant(this.params);
     },
-    changePerPage(perPage) {
+
+    async filterByMainCategory(categoryId) {
+      this.params["filter[main_category_id]"] = categoryId;
+      await this.getServicesMerchant(this.params);
+    },
+
+    async filterByCategory(categoryId) {
+      this.params["filter[category_id]"] = categoryId;
+      await this.getServicesMerchant(this.params);
+    },
+
+    async clearFilter() {
+      this.filterStatus = null;
+      this.filterMainCategory = null;
+      this.filterCategory = null;
+      this.params["filter[category_id]"] = null;
+      this.params["filter[status]"] = null;
+      this.params["filter[main_category_id]"] = null;
+      await this.getServicesMerchant(this.params);
+    },
+
+    async changePage(page) {
+      this.params.page = page;
+      await this.getServicesMerchant(this.params);
+    },
+    async changePerPage(perPage) {
       this.params.perPage = perPage;
       this.params.page = 1;
-      this.getServicesMerchant(this.params);
+      await this.getServicesMerchant(this.params);
     },
-    search(text) {
+    async search(text) {
       this.params["filter[keyword]"] = text;
       const key = {
         "filter[keyword]": text,
       };
-      this.getServicesMerchant(key);
+      await this.getServicesMerchant(key);
     },
   },
   watch: {

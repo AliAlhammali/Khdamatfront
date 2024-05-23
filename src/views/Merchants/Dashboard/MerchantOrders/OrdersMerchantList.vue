@@ -12,7 +12,160 @@
       @changePage="changePage"
       @changePerPage="changePerPage"
       @search="search"
+      :hasFilter="true"
     >
+      <template #filter>
+        <v-row>
+          <v-col md="3" cols="12">
+            <!-- start at  -->
+            <date-picker
+              :editable="false"
+              :placeholder="$t('global.start_at')"
+              v-model="filtersParams['filter[started_at]']"
+              v-model:value="filtersParams['filter[started_at]']"
+              :default-value="filtersParams['filter[started_at]']"
+              type="date"
+              class="mb-2 w-100"
+              value-type="format"
+              format="YYYY-MM-DD"
+              @change="(val) => filterOrderBy(val, 'filter[started_at]')"
+            ></date-picker>
+            <!-- :disabled-date="beforeToday" -->
+          </v-col>
+
+          <v-col md="3" cols="12">
+            <!-- Service Provider -->
+            <v-autocomplete
+              :placeholder="$t('admin_merchant.fields.service_provider')"
+              :label="$t('admin_merchant.fields.service_provider')"
+              v-model="filtersParams['filter[service_provider_id]']"
+              v-model:value="filtersParams['filter[service_provider_id]']"
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl mb-2 w-100"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              outlined
+              :items="SPList"
+              item-title="title"
+              item-value="value"
+              @update:model-value="
+                (val) => filterOrderBy(val, 'filter[service_provider_id]')
+              "
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col md="3" cols="12">
+            <!-- Main Category -->
+            <v-autocomplete
+              :placeholder="$t('global.main_category')"
+              :label="$t('global.main_category')"
+              v-model="filtersParams['filter[main_category_id]']"
+              v-model:value="filtersParams['filter[main_category_id]']"
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl mb-2 w-100"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              outlined
+              :items="mainCategoriesList"
+              item-title="title"
+              item-value="value"
+              @update:model-value="
+                (val) => filterOrderBy(val, 'filter[main_category_id]')
+              "
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col md="3" cols="12">
+            <!-- Category -->
+            <v-autocomplete
+              :placeholder="$t('admin_navbar_links.categories')"
+              :label="$t('admin_navbar_links.categories')"
+              v-model="filtersParams['filter[category_id]']"
+              v-model:value="filtersParams['filter[category_id]']"
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl mb-2 w-100"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              outlined
+              :items="categoriesList"
+              item-title="title"
+              item-value="value"
+              @update:model-value="
+                (val) => filterOrderBy(val, 'filter[category_id]')
+              "
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col md="3" cols="12">
+            <!-- Client -->
+            <v-autocomplete
+              :placeholder="$t('global.client_name')"
+              :label="$t('global.client_name')"
+              v-model="filtersParams['filter[merchant_client_id]']"
+              v-model:value="filtersParams['filter[merchant_client_id]']"
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl mb-2 w-100"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              outlined
+              :items="clientsList"
+              item-title="title"
+              item-value="value"
+              @update:model-value="
+                (val) => filterOrderBy(val, 'filter[merchant_client_id]')
+              "
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col md="3" cols="12">
+            <!-- Branch -->
+            <v-autocomplete
+              :placeholder="$t('admin_navbar_links.branches')"
+              :label="$t('admin_navbar_links.branches')"
+              v-model="filtersParams['filter[merchant_branch_id]']"
+              v-model:value="filtersParams['filter[merchant_branch_id]']"
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl mb-2 w-100"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              outlined
+              :items="branchesList"
+              item-title="title"
+              item-value="value"
+              @update:model-value="
+                (val) => filterOrderBy(val, 'filter[merchant_branch_id]')
+              "
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col md="3" cols="12">
+            <!-- Status -->
+            <v-autocomplete
+              :placeholder="$t('admin_merchant.fields.status')"
+              :label="$t('admin_merchant.fields.status')"
+              v-model="filtersParams['filter[status]']"
+              v-model:value="filtersParams['filter[status]']"
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl mb-2 w-100"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              outlined
+              :items="orderStatus"
+              item-title="text"
+              item-value="value"
+              @update:model-value="
+                (val) => filterOrderBy(val, 'filter[status]')
+              "
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="2">
+            <button class="pa-3 rounded border text-error" @click="clearFilter">
+              <v-icon size="24">mdi mdi-filter-variant-remove</v-icon>
+            </button>
+          </v-col>
+        </v-row>
+      </template>
+
       <template v-slot:actions="{ item }">
         <router-link
           :to="`/merchant/orders/${item.item.id}`"
@@ -32,6 +185,12 @@
 import { useOrdersMerchantStore } from "@/stores/merchant/orders/orders.merchant.store";
 import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
+
+import { useServicesMerchantStore } from "@/stores/merchant/services/services.merchant.store";
+import { useCategoriesMerchantStore } from "@/stores/merchant/categories/categories.merchant.store";
+import { useClientsMerchantStore } from "@/stores/merchant/clients/clients.merchant.store";
+import { useBranchesMerchantStore } from "@/stores/merchant/branches/branches.merchant.store";
+
 export default {
   components: { DataTable },
   data() {
@@ -49,13 +208,44 @@ export default {
         includeOrderItems: 1,
         sortAsc: 1,
       },
+      filtersParams: {
+        "filter[started_at]": null,
+        "filter[service_provider_id]": null,
+        "filter[status]": null,
+        "filter[merchant_client_id]": null,
+        "filter[main_category_id]": null,
+        "filter[category_id]": null,
+        "filter[merchant_branch_id]": null,
+      },
     };
   },
   async mounted() {
     await this.getOrdersMerchant(this.params);
+    await this.getServicesMerchant();
+    await this.getMainCategoriesMerchant({ "filter[isParent]": 1, listing: 1 });
+    await this.getCategoriesMerchant({ listing: 1 });
+    await this.getClientsMerchant();
+    await this.getBranchesMerchant();
   },
   computed: {
     ...mapState(useOrdersMerchantStore, ["records", "uiFlags"]),
+    ...mapState(useServicesMerchantStore, {
+      servicesMerchant: "records",
+      uiFlagsServices: "uiFlags",
+    }),
+    ...mapState(useCategoriesMerchantStore, {
+      categoriesMerchant: "records",
+      mainCategoriesMerchant: "mainCategories",
+    }),
+    ...mapState(useClientsMerchantStore, {
+      clientsMerchant: "records",
+      uiFlagsClients: "uiFlags",
+    }),
+    ...mapState(useBranchesMerchantStore, {
+      branchesMerchant: "records",
+      uiFlagsBranches: "uiFlags",
+    }),
+
     headers() {
       return [
         {
@@ -159,24 +349,146 @@ export default {
         };
       });
     },
+    orderStatus() {
+      return [
+        { value: "new", text: this.$t("global.order_status.new") },
+        {
+          value: "confirmed",
+          text: this.$t("global.order_status.confirmed"),
+        },
+        {
+          value: "on_the_way",
+          text: this.$t("global.order_status.on_the_way"),
+        },
+        {
+          value: "in_progress",
+          text: this.$t("global.order_status.in_progress"),
+        },
+        {
+          value: "completed",
+          text: this.$t("global.order_status.completed"),
+        },
+        {
+          value: "canceled",
+          text: this.$t("global.order_status.canceled"),
+        },
+      ];
+    },
+    SPList() {
+      return (
+        this.servicesMerchant?.data?.map((item) => {
+          return {
+            value: item.id,
+            title: item.title ? item.title[this.$i18n.locale] : "---",
+          };
+        }) || []
+      );
+    },
+    categoriesList() {
+      return (
+        this.categoriesMerchant?.data?.map((item) => {
+          return {
+            value: item.id,
+            title: item.title ? item.title[this.$i18n.locale] : "---",
+          };
+        }) || []
+      );
+    },
+    mainCategoriesList() {
+      return (
+        this.mainCategoriesMerchant?.data?.map((item) => {
+          return {
+            value: item.id,
+            title: item.title ? item.title[this.$i18n.locale] : "---",
+          };
+        }) || []
+      );
+    },
+    clientsList() {
+      return (
+        this.clientsMerchant?.data?.map((item) => {
+          return {
+            value: item.id,
+            title: item.name,
+          };
+        }) || []
+      );
+    },
+    branchesList() {
+      return (
+        this.branchesMerchant?.data?.map((item) => {
+          return {
+            value: item.id,
+            title: item.name,
+          };
+        }) || []
+      );
+    },
   },
   methods: {
     ...mapActions(useOrdersMerchantStore, ["getOrdersMerchant"]),
-    changePage(page) {
-      this.params.page = page;
-      this.getOrdersMerchant(this.params);
+    ...mapActions(useServicesMerchantStore, ["getServicesMerchant"]),
+    ...mapActions(useCategoriesMerchantStore, [
+      "getCategoriesMerchant",
+      "getMainCategoriesMerchant",
+    ]),
+    ...mapActions(useClientsMerchantStore, ["getClientsMerchant"]),
+    ...mapActions(useBranchesMerchantStore, ["getBranchesMerchant"]),
+
+    async filterOrderBy(value, key) {
+      this.params[key] = value;
+      await this.getOrdersMerchant(this.params);
     },
-    changePerPage(perPage) {
+
+    async clearFilter() {
+      this.filtersParams = {
+        "filter[started_at]": null,
+        "filter[service_provider_id]": null,
+        "filter[status]": null,
+        "filter[merchant_client_id]": null,
+        "filter[main_category_id]": null,
+        "filter[category_id]": null,
+        "filter[merchant_branch_id]": null,
+        "filter[merchant_client_id]": null,
+      };
+      this.params = {
+        "filter[keyword]": null,
+        perPage: 10,
+        page: 1,
+        includeOrderMerchant: 1,
+        includeOrderSP: 1,
+        includeOrderMerchantUser: 1,
+        includeOrderMerchantClient: 1,
+        includeOrderMainCategory: 1,
+        includeOrderAddress: 1,
+        includeOrderItems: 1,
+        sortAsc: 1,
+      };
+      await this.getOrdersMerchant(this.params);
+    },
+
+    async changePage(page) {
+      this.params.page = page;
+      await this.getOrdersMerchant(this.params);
+    },
+    async changePerPage(perPage) {
       this.params.perPage = perPage;
       this.params.page = 1;
-      this.getOrdersMerchant(this.params);
+      await this.getOrdersMerchant(this.params);
     },
-    search(text) {
+    async search(text) {
       this.params["filter[keyword]"] = text;
       const key = {
         "filter[keyword]": text,
       };
-      this.getOrdersMerchant(key);
+      await this.getOrdersMerchant(key);
+    },
+
+    beforeToday(date) {
+      return date && date > new Date();
+    },
+    afterToday(date) {
+      return date && date < new Date();
     },
   },
 };

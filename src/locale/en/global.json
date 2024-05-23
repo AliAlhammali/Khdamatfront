@@ -92,6 +92,7 @@
       "password_changed": "Password changed successfully"
     },
     "created_at": "Creation Date",
+    "start_at": "Start Date",
     "main_category": "Main Category",
     "client_name": "Client Name",
     "order_number": "Order Number",

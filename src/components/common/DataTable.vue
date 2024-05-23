@@ -11,18 +11,26 @@
         <v-col md="8">
           <v-row class="align-center justify-end">
             <v-col md="8" cols="6">
-              <label class="border d-flex align-center ga-2 pa-3 rounded w-100">
-                <input
-                  type="text"
-                  :placeholder="placeholder"
-                  v-model="search"
-                  @input="searchItems"
-                  class="w-100"
-                />
-                <span>
-                  <span class="fa fa-search"></span>
-                </span>
-              </label>
+              <div class="d-flex align-center ga-2">
+                <!-- filter -->
+                <button @click="showFilter = !showFilter" v-if="hasFilter">
+                  <v-icon size="32"> mdi mdi-tune </v-icon>
+                </button>
+                <label
+                  class="border d-flex align-center ga-2 pa-3 rounded w-100"
+                >
+                  <input
+                    type="text"
+                    :placeholder="placeholder"
+                    v-model="search"
+                    @input="searchItems"
+                    class="w-100"
+                  />
+                  <span>
+                    <span class="fa fa-search"></span>
+                  </span>
+                </label>
+              </div>
             </v-col>
             <v-col md="4" cols="6" v-if="createPage.length">
               <router-link
@@ -39,11 +47,9 @@
         </v-col>
       </v-row>
 
-      <v-row class="justify-end align-center border-t" v-if="hasFilter">
-        <v-col md="12" cols="6">
-          <slot name="filter"></slot>
-        </v-col>
-      </v-row>
+      <div class="border-t mt-4 pt-4" v-if="showFilter">
+        <slot name="filter"></slot>
+      </div>
     </div>
     <v-data-table
       :items-per-page="meta.perPage"
@@ -193,6 +199,7 @@ export default {
       sortDesc: false,
       itemsPages: [10, 20, 50, 100],
       timer: null,
+      showFilter: false,
     };
   },
   mounted() {},
