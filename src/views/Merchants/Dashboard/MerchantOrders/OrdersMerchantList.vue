@@ -59,8 +59,7 @@
             <v-autocomplete
               :placeholder="$t('global.main_category')"
               :label="$t('global.main_category')"
-              v-model="filtersParams['filter[main_category_id]']"
-              v-model:value="filtersParams['filter[main_category_id]']"
+              v-model="main_category_id"
               menu-icon="mdi mdi-chevron-down"
               class="text-capitalize rounded-xl mb-2 w-100"
               :no-data-text="$t('global.actions.no_data')"
@@ -70,7 +69,11 @@
               item-title="title"
               item-value="value"
               @update:model-value="
-                (val) => filterOrderBy(val, 'filter[main_category_id]')
+                (val) =>
+                  getCategoriesMerchant({
+                    'filter[parent_id]': val,
+                    listing: 1,
+                  })
               "
             ></v-autocomplete>
           </v-col>
@@ -81,7 +84,6 @@
               :placeholder="$t('admin_navbar_links.categories')"
               :label="$t('admin_navbar_links.categories')"
               v-model="filtersParams['filter[category_id]']"
-              v-model:value="filtersParams['filter[category_id]']"
               menu-icon="mdi mdi-chevron-down"
               class="text-capitalize rounded-xl mb-2 w-100"
               :no-data-text="$t('global.actions.no_data')"
@@ -93,6 +95,7 @@
               @update:model-value="
                 (val) => filterOrderBy(val, 'filter[category_id]')
               "
+              :disabled="!main_category_id"
             ></v-autocomplete>
           </v-col>
 
@@ -102,7 +105,6 @@
               :placeholder="$t('global.client_name')"
               :label="$t('global.client_name')"
               v-model="filtersParams['filter[merchant_client_id]']"
-              v-model:value="filtersParams['filter[merchant_client_id]']"
               menu-icon="mdi mdi-chevron-down"
               class="text-capitalize rounded-xl mb-2 w-100"
               :no-data-text="$t('global.actions.no_data')"
@@ -123,7 +125,6 @@
               :placeholder="$t('admin_navbar_links.branches')"
               :label="$t('admin_navbar_links.branches')"
               v-model="filtersParams['filter[merchant_branch_id]']"
-              v-model:value="filtersParams['filter[merchant_branch_id]']"
               menu-icon="mdi mdi-chevron-down"
               class="text-capitalize rounded-xl mb-2 w-100"
               :no-data-text="$t('global.actions.no_data')"
@@ -140,11 +141,10 @@
 
           <v-col md="3" cols="12">
             <!-- Status -->
-            <v-autocomplete
+            <v-select
               :placeholder="$t('admin_merchant.fields.status')"
               :label="$t('admin_merchant.fields.status')"
               v-model="filtersParams['filter[status]']"
-              v-model:value="filtersParams['filter[status]']"
               menu-icon="mdi mdi-chevron-down"
               class="text-capitalize rounded-xl mb-2 w-100"
               :no-data-text="$t('global.actions.no_data')"
@@ -156,7 +156,7 @@
               @update:model-value="
                 (val) => filterOrderBy(val, 'filter[status]')
               "
-            ></v-autocomplete>
+            ></v-select>
           </v-col>
           <v-col cols="2">
             <button class="pa-3 rounded border text-error" @click="clearFilter">
@@ -213,17 +213,16 @@ export default {
         "filter[service_provider_id]": null,
         "filter[status]": null,
         "filter[merchant_client_id]": null,
-        "filter[main_category_id]": null,
         "filter[category_id]": null,
         "filter[merchant_branch_id]": null,
       },
+      main_category_id: null,
     };
   },
   async mounted() {
     await this.getOrdersMerchant(this.params);
     await this.getServicesMerchant();
     await this.getMainCategoriesMerchant({ "filter[isParent]": 1, listing: 1 });
-    await this.getCategoriesMerchant({ listing: 1 });
     await this.getClientsMerchant();
     await this.getBranchesMerchant();
   },
@@ -446,25 +445,13 @@ export default {
         "filter[service_provider_id]": null,
         "filter[status]": null,
         "filter[merchant_client_id]": null,
-        "filter[main_category_id]": null,
         "filter[category_id]": null,
         "filter[merchant_branch_id]": null,
         "filter[merchant_client_id]": null,
       };
-      this.params = {
-        "filter[keyword]": null,
-        perPage: 10,
-        page: 1,
-        includeOrderMerchant: 1,
-        includeOrderSP: 1,
-        includeOrderMerchantUser: 1,
-        includeOrderMerchantClient: 1,
-        includeOrderMainCategory: 1,
-        includeOrderAddress: 1,
-        includeOrderItems: 1,
-        sortAsc: 1,
-      };
-      await this.getOrdersMerchant(this.params);
+      this.main_category_id = null;
+
+      await this.getOrdersMerchant({ ...this.params });
     },
 
     async changePage(page) {

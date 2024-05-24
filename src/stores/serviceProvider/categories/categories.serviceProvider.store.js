@@ -19,6 +19,13 @@ export const useCategoriesServiceProviderStore = defineStore(
         isUpdated: false,
         isDeleted: false,
       },
+      subCategories: [],
+      uiFlagsSubCategories: {
+        isLoading: false,
+        isCreated: false,
+        isUpdated: false,
+        isDeleted: false,
+      },
     }),
     getters: {},
     actions: {
@@ -31,6 +38,17 @@ export const useCategoriesServiceProviderStore = defineStore(
           return error;
         } finally {
           this.uiFlags.isLoading = false;
+        }
+      },
+      getSubCategoriesServiceProvider: async function(params) {
+        this.uiFlagsSubCategories.isLoading = true;
+        try {
+          const { data } = await CategoriesServiceProvider.get(params);
+          this.subCategories = data;
+        } catch (error) {
+          return error;
+        } finally {
+          this.uiFlagsSubCategories.isLoading = false;
         }
       },
       // showCategoriesServiceProvider: async function (id) {
