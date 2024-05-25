@@ -48,8 +48,7 @@
               />
             </div>
           </v-col>
-          <v-col md="3" cols="12">
-            <!-- Service Provider -->
+          <!-- <v-col md="3" cols="12">
             <v-autocomplete
               :placeholder="$t('admin_merchant.fields.service_provider')"
               :label="$t('admin_merchant.fields.service_provider')"
@@ -66,7 +65,7 @@
                 (val) => filterOrderBy(val, 'filter[service_provider_id]')
               "
             ></v-autocomplete>
-          </v-col>
+          </v-col> -->
 
           <v-col md="3" cols="12">
             <!-- Main Category -->

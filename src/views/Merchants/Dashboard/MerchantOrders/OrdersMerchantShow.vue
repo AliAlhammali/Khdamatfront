@@ -66,7 +66,7 @@
                   </span>
                   <p>{{ record?.created_at ? record?.created_at : "---" }}</p>
                 </div>
-
+                <!-- 
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
                 >
@@ -80,7 +80,7 @@
                         : "---"
                     }}
                   </p>
-                </div>
+                </div> -->
 
                 <div
                   class="d-flex align-center ga-2 mb-2 pb-2 justify-space-between"
