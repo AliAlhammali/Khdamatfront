@@ -10,7 +10,20 @@
       />
       <v-row>
         <v-col md="6" cols="12">
-          <date-picker @handleDate="getDate" />
+          <date-picker
+            :editable="false"
+            :placeholder="$t('global.started_from')"
+            v-model="objData.started_at"
+            v-model:value="objData.started_at"
+            type="datetime"
+            class="mb-2 w-100"
+            value-type="format"
+            format="YYYY-MM-DD HH:mm:ss"
+            @change="getDate"
+            confirm
+            :confirm-text="$t('global.actions.save')"
+          >
+          </date-picker>
         </v-col>
         <v-col md="6" cols="12">
           <v-select
@@ -54,7 +67,6 @@
 <script>
 import { useOrdersMerchantStore } from "@/stores/merchant/orders/orders.merchant.store";
 import { mapActions, mapState } from "pinia";
-import DatePicker from "@/components/common/DatePicker.vue";
 import OrderClient from "./components/OrderClient.vue";
 import OrderBranch from "./components/OrderBranch.vue";
 import OrderItems from "./components/OrderItems.vue";
@@ -67,7 +79,7 @@ import {
 } from "@vuelidate/validators";
 
 export default {
-  components: { DatePicker, OrderClient, OrderBranch, OrderItems },
+  components: { OrderClient, OrderBranch, OrderItems },
   setup() {
     return { v$: useVuelidate() };
   },
@@ -132,6 +144,7 @@ export default {
         merchant_branch_id: null,
         merchant_reference: null,
         merchant_reference_file: null,
+        openTime: false,
       },
       pickList: [
         {
@@ -153,6 +166,10 @@ export default {
     ...mapActions(useOrdersMerchantStore, ["createOrdersMerchant"]),
     getDate(date) {
       this.objData.started_at = date;
+    },
+
+    closeTime() {
+      this.openTime = false;
     },
 
     createOrder() {

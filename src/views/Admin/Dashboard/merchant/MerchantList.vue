@@ -13,7 +13,39 @@
         @changePage="changePage"
         @changePerPage="changePerPage"
         @search="search"
+        :hasFilter="true"
       >
+        <template #filter>
+          <v-row>
+            <v-col md="3" cols="12">
+              <!-- Status -->
+              <v-select
+                v-model="filterStatus"
+                :placeholder="$t('admin_merchant.fields.status')"
+                :items="listStatus"
+                :item-title="'text'"
+                :item-value="'value'"
+                outlined
+                menu-icon="mdi mdi-chevron-down"
+                class="text-capitalize rounded-xl"
+                :no-data-text="$t('global.actions.no_data')"
+                hide-details
+                @update:model-value="
+                  (val) => filterOrderBy(val, 'filter[status]')
+                "
+              ></v-select>
+            </v-col>
+            <v-col cols="2">
+              <button
+                class="pa-3 rounded border text-error"
+                @click="clearFilter"
+                :disabled="!filterStatus"
+              >
+                <v-icon size="24">mdi mdi-filter-variant-remove</v-icon>
+              </button>
+            </v-col>
+          </v-row>
+        </template>
         <template #status="{ item }">
           <span
             class="badge badge--status"
@@ -106,6 +138,17 @@ export default {
         perPage: 10,
         page: 1,
       },
+      listStatus: [
+        {
+          text: this.$t("global.status.active"),
+          value: "active",
+        },
+        {
+          text: this.$t("global.status.inactive"),
+          value: "inactive",
+        },
+      ],
+      filterStatus: null,
     };
   },
   async mounted() {
@@ -183,21 +226,32 @@ export default {
       }
     },
 
-    changePage(page) {
+    async changePage(page) {
       this.params.page = page;
-      this.getMerchantAdmin(this.params);
+      await this.getMerchantAdmin(this.params);
     },
-    changePerPage(perPage) {
+    async changePerPage(perPage) {
       this.params.perPage = perPage;
       this.params.page = 1;
-      this.getMerchantAdmin(this.params);
+      await this.getMerchantAdmin(this.params);
     },
-    search(text) {
+    async search(text) {
       this.params["filter[keyword]"] = text;
       const key = {
         "filter[keyword]": text,
       };
-      this.getMerchantAdmin(key);
+      await this.getMerchantAdmin(key);
+    },
+
+    async filterOrderBy(value, key) {
+      this.params[key] = value;
+      await this.getMerchantAdmin(this.params);
+    },
+
+    async clearFilter() {
+      this.filterStatus = null;
+      this.params["filter[status]"] = null;
+      await this.getMerchantAdmin(this.params);
     },
   },
 };

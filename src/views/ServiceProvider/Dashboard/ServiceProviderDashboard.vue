@@ -3,11 +3,13 @@
     <v-layout class="rounded rounded-md" v-if="record">
       <v-navigation-drawer v-model="drawer" permanent>
         <v-list>
-          <v-list-item
-            prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-            :title="record?.name"
-            nav
-          >
+          <v-list-item>
+            <v-img
+              src="/logo.png"
+              max-height="80"
+              max-width="80"
+              class="mx-auto mb-4"
+            ></v-img>
           </v-list-item>
           <v-divider></v-divider>
 

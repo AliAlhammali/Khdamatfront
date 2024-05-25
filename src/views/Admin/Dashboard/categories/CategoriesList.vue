@@ -12,7 +12,81 @@
       @changePage="changePage"
       @changePerPage="changePerPage"
       @search="search"
+      :has-filter="true"
     >
+      <template #filter>
+        <v-row>
+          <v-col md="3" cols="12">
+            <!-- Merchant -->
+            <v-autocomplete
+              v-model="params['filter[merchant_id]']"
+              :placeholder="$t('admin_categories.fields.merchant')"
+              :items="merchantsList"
+              :item-title="'title'"
+              :item-value="'id'"
+              outlined
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              @update:model-value="
+                (val) => filterOrderBy(val, 'filter[merchant_id]')
+              "
+            />
+          </v-col>
+
+          <v-col md="3" cols="12">
+            <!-- Main Category -->
+            <v-autocomplete
+              v-model="params['filter[main_category_id]']"
+              :placeholder="$t('admin_categories.fields.main_category')"
+              :items="mainCategoriesList"
+              :item-title="'title'"
+              :item-value="'id'"
+              outlined
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              @update:model-value="
+                (val) => filterOrderBy(val, 'filter[main_category_id]')
+              "
+            />
+          </v-col>
+
+          <v-col md="3" cols="12">
+            <!-- Status -->
+            <v-select
+              v-model="params['filter[status]']"
+              :placeholder="$t('admin_merchant.fields.status')"
+              :items="listStatus"
+              :item-title="'text'"
+              :item-value="'value'"
+              outlined
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              @update:model-value="
+                (val) => filterOrderBy(val, 'filter[status]')
+              "
+            ></v-select>
+          </v-col>
+          <v-col cols="2">
+            <button
+              class="pa-3 rounded border text-error"
+              @click="clearFilter"
+              :disabled="
+                !params['filter[merchant_id]'] &&
+                !params['filter[main_category_id]'] &&
+                !params['filter[status']
+              "
+            >
+              <v-icon size="24">mdi mdi-filter-variant-remove</v-icon>
+            </button>
+          </v-col>
+        </v-row>
+      </template>
       <template #status="{ item }">
         <span
           class="badge badge--status"
@@ -57,6 +131,7 @@ import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
 import ConfirmDialog from "@/components/common/ConfirmDialog.vue";
 import { showConfirmationDialog } from "@/helper/showAlert.helper";
+import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
 
 export default {
   components: { DataTable, ConfirmDialog },
@@ -64,16 +139,39 @@ export default {
     return {
       params: {
         "filter[keyword]": null,
+        "filter[merchant_id]": null,
+        "filter[main_category_id]": null,
+        "filter[status]": null,
         perPage: 10,
         page: 1,
       },
+      listStatus: [
+        {
+          text: this.$t("global.status.active"),
+          value: "active",
+        },
+        {
+          text: this.$t("global.status.inactive"),
+          value: "inactive",
+        },
+      ],
     };
   },
   async mounted() {
     await this.getCategoriesAdmin(this.params);
+    await this.getMerchantAdmin({ listing: 1 });
+    await this.getMainCategoriesAdmin({ "filter[isParent]": 1, listing: 1 });
   },
   computed: {
-    ...mapState(useCategoriesAdminStore, ["records", "uiFlags"]),
+    ...mapState(useCategoriesAdminStore, [
+      "records",
+      "uiFlags",
+      "mainCategories",
+    ]),
+    ...mapState(useMerchantAdminStore, {
+      merchants: "records",
+      merchantsUiFlags: "uiFlags",
+    }),
 
     headers() {
       return [
@@ -126,12 +224,30 @@ export default {
         };
       });
     },
+    merchantsList() {
+      return this.merchants?.data?.map((item) => {
+        return {
+          ...item,
+        };
+      });
+    },
+    mainCategoriesList() {
+      return this.mainCategories?.map((item) => {
+        return {
+          ...item,
+          title: item.title ? item.title[this.$i18n.locale] : "---",
+        };
+      });
+    },
   },
   methods: {
     ...mapActions(useCategoriesAdminStore, [
       "getCategoriesAdmin",
       "deleteCategoriesAdmin",
+      "getMainCategoriesAdmin",
     ]),
+
+    ...mapActions(useMerchantAdminStore, ["getMerchantAdmin"]),
 
     async deleteRecord(item) {
       const result = await showConfirmationDialog({
@@ -147,21 +263,31 @@ export default {
       }
     },
 
-    changePage(page) {
+    async changePage(page) {
       this.params.page = page;
-      this.getCategoriesAdmin(this.params);
+      await this.getCategoriesAdmin(this.params);
     },
-    changePerPage(perPage) {
+    async changePerPage(perPage) {
       this.params.perPage = perPage;
       this.params.page = 1;
-      this.getCategoriesAdmin(this.params);
+      await this.getCategoriesAdmin(this.params);
     },
-    search(text) {
+    async search(text) {
       this.params["filter[keyword]"] = text;
       const key = {
         "filter[keyword]": text,
       };
-      this.getCategoriesAdmin(key);
+      await this.getCategoriesAdmin(key);
+    },
+    async filterOrderBy(value, key) {
+      this.params[key] = value;
+      await this.getCategoriesAdmin(this.params);
+    },
+    async clearFilter() {
+      this.params["filter[status]"] = null;
+      this.params["filter[merchant_id]"] = null;
+      this.params["filter[main_category_id]"] = null;
+      await this.getCategoriesAdmin(this.params);
     },
   },
 };

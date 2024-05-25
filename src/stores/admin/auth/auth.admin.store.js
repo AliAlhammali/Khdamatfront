@@ -21,7 +21,7 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
 
         router.push({ name: "admin-dashboard" });
       } catch (error) {
-        return error;
+        return false;
       } finally {
         this.isLoading = false;
       }

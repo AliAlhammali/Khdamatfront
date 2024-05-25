@@ -21,7 +21,7 @@ export const useAuthMerchantStore = defineStore("AuthMerchant", {
 
         router.push({ name: "merchant-dashboard" });
       } catch (error) {
-        return error;
+        return false;
       } finally {
         this.isLoading = false;
       }

@@ -16,20 +16,36 @@
       <template #filter>
         <v-row>
           <v-col md="3" cols="12">
-            <!-- start at  -->
-            <date-picker
-              :editable="false"
-              :placeholder="$t('global.start_at')"
-              v-model="filtersParams['filter[started_at]']"
-              v-model:value="filtersParams['filter[started_at]']"
-              :default-value="filtersParams['filter[started_at]']"
-              type="date"
-              class="mb-2 w-100"
-              value-type="format"
-              format="YYYY-MM-DD"
-              @change="(val) => filterOrderBy(val, 'filter[started_at]')"
-            ></date-picker>
-            <!-- :disabled-date="beforeToday" -->
+            <div class="d-flex align-center ga-2">
+              <p>{{ $t("global.started_from") }}</p>
+              <date-picker
+                :editable="false"
+                :placeholder="$t('global.started_from')"
+                v-model="filtersParams['filter[started_from]']"
+                v-model:value="filtersParams['filter[started_from]']"
+                type="date"
+                class="mb-2 w-100"
+                value-type="format"
+                format="YYYY-MM-DD"
+                @change="(val) => filterOrderBy(val, 'filter[started_from]')"
+              />
+            </div>
+          </v-col>
+          <v-col md="3" cols="12">
+            <div class="d-flex align-center ga-2">
+              <p>{{ $t("global.started_to") }}</p>
+              <date-picker
+                :editable="false"
+                :placeholder="$t('global.started_to')"
+                v-model="filtersParams['filter[started_to]']"
+                v-model:value="filtersParams['filter[started_to]']"
+                type="date"
+                class="mb-2 w-100"
+                value-type="format"
+                format="YYYY-MM-DD"
+                @change="(val) => filterOrderBy(val, 'filter[started_to]')"
+              />
+            </div>
           </v-col>
           <v-col md="3" cols="12">
             <!-- Main Category -->
@@ -112,7 +128,8 @@
               class="pa-3 rounded border text-error"
               @click="clearFilter"
               :disabled="
-                !filtersParams['filter[started_at]'] &&
+                !filtersParams['filter[started_to]'] &&
+                !filtersParams['filter[started_from]'] &&
                 !filtersParams['filter[status]'] &&
                 !filtersParams['filter[category_id]'] &&
                 !filtersParams['filter[service_provider_user_id]']
@@ -208,7 +225,8 @@ export default {
         sortAsc: 1,
       },
       filtersParams: {
-        "filter[started_at]": null,
+        "filter[started_to]": null,
+        "filter[started_from]": null,
         "filter[status]": null,
         "filter[category_id]": null,
         "filter[service_provider_user_id]": null,
@@ -433,7 +451,8 @@ export default {
     },
     async clearFilter() {
       this.filtersParams = {
-        "filter[started_at]": null,
+        "filter[started_to]": null,
+        "filter[started_from]": null,
         "filter[status]": null,
         "filter[main_category_id]": null,
         "filter[category_id]": null,

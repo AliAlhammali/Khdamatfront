@@ -92,6 +92,8 @@
       "password_changed": "Password changed successfully"
     },
     "created_at": "Creation Date",
+    "started_to": "Date To",
+    "started_from": "Date From",
     "start_at": "Start Date",
     "main_category": "Main Category",
     "client_name": "Client Name",

@@ -34,9 +34,19 @@ axiosClient.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
-      // window.$cookies.remove("token-pharmacy");
-      // window.$cookies.remove("user-pharmacy");
-      // router.push({ name: "Login" });
+      // if (router.currentRoute.value.path.includes("admin")) {
+      //   window.$cookies.remove("admin_khadamat_token");
+      //   window.$cookies.remove("admin_khadamat_user");
+      //   router.push({ name: "admin-login" });
+      // } else if (router.currentRoute.value.path.includes("merchant")) {
+      //   window.$cookies.remove("merchant_khadamat_token");
+      //   window.$cookies.remove("merchant_khadamat_user");
+      //   router.push({ name: "merchant-login" });
+      // } else if (router.currentRoute.value.path.includes("service-provider")) {
+      //   window.$cookies.remove("service_provider_khadamat_token");
+      //   window.$cookies.remove("service_provider_khadamat_user");
+      //   router.push({ name: "service-provider-login" });
+      // }
     }
     return Promise.reject(error);
   }

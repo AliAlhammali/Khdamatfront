@@ -218,7 +218,7 @@
 import FiledInput from "@/components/common/FiledInput.vue";
 import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, sameAs } from "@vuelidate/validators";
+import { required, email, sameAs, requiredIf } from "@vuelidate/validators";
 import Loader from "@/components/common/Loader.vue";
 
 import { useUsersServiceProviderStore } from "@/stores/serviceProvider/users/users.serviceProvider.store";
@@ -237,7 +237,7 @@ export default {
         address: { required },
         phone: { required },
         role: { required },
-        password: { required },
+        password: { required: requiredIf(() => !this.isEditDataObj) },
         status: { required },
       },
       changePassword: {

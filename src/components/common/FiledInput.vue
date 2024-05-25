@@ -34,7 +34,10 @@
         </button>
       </label>
 
-      <p class="text-error mt-2 d-flex ga-2 align-center" v-if="error">
+      <p
+        class="text-error mt-2 d-flex ga-2 align-center"
+        v-if="error && errorText.length"
+      >
         <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
         <span>{{ errorText }}</span>
       </p>
@@ -46,55 +49,55 @@ export default {
   props: {
     value: {
       type: String,
-      default: ""
+      default: "",
     },
     type: {
       type: String,
-      default: "text"
+      default: "text",
     },
     label: {
       type: String,
-      default: ""
+      default: "",
     },
     placeholder: {
       type: String,
-      default: ""
+      default: "",
     },
     error: {
       type: Boolean,
-      default: false
+      default: false,
     },
     errorText: {
       type: String,
-      default: ""
+      default: "",
     },
     showPassword: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     required: {
       type: Boolean,
-      default: true
+      default: true,
     },
     maxlength: {
       type: String,
-      default: ""
+      default: "",
     },
     readonly: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   methods: {
     update(value) {
       this.$emit("update:modelValue", value);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" >

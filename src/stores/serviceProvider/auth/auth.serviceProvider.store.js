@@ -14,15 +14,13 @@ export const useAuthServiceProviderStore = defineStore("AuthServiceProvider", {
       try {
         const { data } = await authServiceProviderService.login(user);
         this.record = data.user;
-        console.log(data, "data");
-
         // Save token to cookies
         $cookies.set("service_provider_khadamat_token", data.token, "1m");
         $cookies.set("service_provider_khadamat_user", data.user, "1m");
 
         router.push({ name: "service-provider-dashboard" });
       } catch (error) {
-        return error;
+        return false;
       } finally {
         this.isLoading = false;
       }
@@ -30,14 +28,14 @@ export const useAuthServiceProviderStore = defineStore("AuthServiceProvider", {
 
     logoutServiceProvider: async function() {
       try {
-        await authServiceProviderService.logout();
-
         // Remove token from cookies
         $cookies.remove("service_provider_khadamat_token");
         $cookies.remove("service_provider_khadamat_user");
 
         this.record = null;
         router.push({ name: "service-provider-login" });
+        await authServiceProviderService.logout();
+
         window.location.reload();
       } catch (error) {
         return error;

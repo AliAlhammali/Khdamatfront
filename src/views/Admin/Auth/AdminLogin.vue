@@ -5,7 +5,12 @@
         <v-col md="6" cols="12">
           <div class="content pa-8">
             <div class="border-b pb-4 mb-4 text-center">
-              <h1>الشعار</h1>
+              <v-img
+                src="/logo.png"
+                max-height="150"
+                max-width="150"
+                class="mx-auto"
+              ></v-img>
             </div>
             <div class="mb-4 border-b pb-4 mb-4">
               <h1>{{ $t("admin_auth.title") }}</h1>
@@ -16,7 +21,7 @@
                 :label="$t('admin_auth.email')"
                 v-model="admin.email"
                 :value="admin.email"
-                :error="v$.admin.email.$error"
+                :error="v$.admin.email.$error || errors.email"
                 :error-text="
                   (v$.admin.email.required?.$invalid &&
                     $t('errors.required')) ||
@@ -31,7 +36,7 @@
                 :label="$t('admin_auth.password')"
                 v-model="admin.password"
                 :value="admin.password"
-                :error="v$.admin.password.$error"
+                :error="v$.admin.password.$error || errors.email"
                 :error-text="
                   v$.admin.password.required?.$invalid && $t('errors.required')
                 "
@@ -40,6 +45,21 @@
                 @show-password="showPassword = !showPassword"
                 :show-password="showPassword"
               />
+            </div>
+
+            <div class="mb-4">
+              <v-row>
+                <v-col cols="12">
+                  <v-alert
+                    type="error"
+                    v-if="errors.email"
+                    border="left"
+                    elevation="2"
+                  >
+                    {{ errors.email }}
+                  </v-alert>
+                </v-col>
+              </v-row>
             </div>
 
             <v-btn
@@ -84,6 +104,7 @@ export default {
         password: "",
       },
       showPassword: false,
+      errors: {},
     };
   },
   computed: {
@@ -91,10 +112,13 @@ export default {
   },
   methods: {
     ...mapActions(useAuthAdminStore, ["loginAdmin"]),
-    login() {
+    async login() {
       this.v$.admin.$touch();
       if (this.v$.admin.$error) return;
-      this.loginAdmin(this.admin);
+      const isLogin = await this.loginAdmin(this.admin);
+      if (!isLogin) {
+        this.errors = { email: this.$t("errors.invalid_email_or_password") };
+      }
     },
   },
 };

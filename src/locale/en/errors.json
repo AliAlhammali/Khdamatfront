@@ -6,6 +6,7 @@
     "min": "Value is less than the minimum allowed",
     "max": "Value is greater than the maximum allowed",
     "email": "Invalid email format",
-    "password_mismatch": "Passwords do not match"
+    "password_mismatch": "Passwords do not match",
+    "invalid_email_or_password": "Invalid email or password"
   }
 }

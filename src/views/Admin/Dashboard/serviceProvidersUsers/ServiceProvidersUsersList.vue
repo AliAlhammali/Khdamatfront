@@ -16,21 +16,54 @@
       @search="search"
     >
       <template #filter>
-        <v-select
-          :placeholder="$t('admin_navbar_links.services_providers')"
-          :label="$t('admin_navbar_links.services_providers')"
-          v-model="params['filter[service_provider_id]']"
-          :items="merchants?.data"
-          item-text="name"
-          item-value="id"
-          menu-icon="mdi mdi-chevron-down"
-          class="w-100"
-          outlined
-          :loader="merchantsUiFlags?.isLoading"
-          @update:modelValue="getServiceProvidersUsersAdmin(params)"
-          :no-data-text="$t('global.actions.no_data')"
-          hide-details
-        />
+        <v-row>
+          <v-col md="4" cols="12">
+            <v-select
+              :placeholder="$t('admin_navbar_links.services_providers')"
+              :label="$t('admin_navbar_links.services_providers')"
+              v-model="params['filter[service_provider_id]']"
+              :items="merchants?.data"
+              item-text="name"
+              item-value="id"
+              menu-icon="mdi mdi-chevron-down"
+              class="w-100"
+              outlined
+              :loader="merchantsUiFlags?.isLoading"
+              @update:modelValue="
+                (val) => filterOrderBy(val, 'filter[service_provider_id]')
+              "
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+            />
+          </v-col>
+          <v-col md="4" cols="12">
+            <v-select
+              v-model="params['filter[status]']"
+              :placeholder="$t('admin_merchant.fields.status')"
+              :items="listStatus"
+              :item-title="'text'"
+              :item-value="'value'"
+              outlined
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              @update:modelValue="(val) => filterOrderBy(val, 'filter[status]')"
+            />
+          </v-col>
+          <v-col cols="2">
+            <button
+              class="pa-3 rounded border text-error"
+              @click="clearFilter"
+              :disabled="
+                !params['filter[service_provider_id]'] &&
+                !params['filter[status]']
+              "
+            >
+              <v-icon size="24">mdi mdi-filter-variant-remove</v-icon>
+            </button>
+          </v-col>
+        </v-row>
       </template>
       <template #status="{ item }">
         <span
@@ -89,9 +122,20 @@ export default {
       params: {
         "filter[keyword]": null,
         "filter[service_provider_id]": null,
+        "filter[status]": null,
         perPage: 10,
         page: 1,
       },
+      listStatus: [
+        {
+          text: this.$t("global.status.active"),
+          value: "active",
+        },
+        {
+          text: this.$t("global.status.inactive"),
+          value: "inactive",
+        },
+      ],
     };
   },
   async mounted() {
@@ -198,25 +242,35 @@ export default {
       }
     },
 
-    changePage(page) {
+    async changePage(page) {
       this.params.page = page;
-      this.getServiceProvidersUsersAdmin(this.params);
+      await this.getServiceProvidersUsersAdmin(this.params);
     },
-    changePerPage(perPage) {
+    async changePerPage(perPage) {
       this.params.perPage = perPage;
       this.params.page = 1;
-      this.getServiceProvidersUsersAdmin(this.params);
+      await this.getServiceProvidersUsersAdmin(this.params);
     },
-    search(text) {
+    async search(text) {
       this.params["filter[keyword]"] = text;
       const key = {
         "filter[keyword]": text,
       };
-      this.getServiceProvidersUsersAdmin(key);
+      await this.getServiceProvidersUsersAdmin(key);
+    },
+
+    async filterOrderBy(value, key) {
+      this.params[key] = value;
+      await this.getServiceProvidersUsersAdmin(this.params);
+    },
+    async clearFilter() {
+      this.params["filter[service_provider_id]"] = null;
+      this.params["filter[status]"] = null;
+      await this.getServiceProvidersUsersAdmin(this.params);
     },
   },
   watch: {
-    $route(to, from) {
+    async $route(to, from) {
       if (to.query.service_provider_id) {
         this.params["filter[service_provider_id]"] = this.merchants.data.find(
           (item) => item.id == to.query.service_provider_id
@@ -224,7 +278,7 @@ export default {
       } else {
         this.params["filter[service_provider_id]"] = null;
       }
-      this.getServiceProvidersUsersAdmin(this.params);
+      await this.getServiceProvidersUsersAdmin(this.params);
     },
   },
 };

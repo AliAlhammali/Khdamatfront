@@ -23,6 +23,13 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
       isUpdated: false,
       isDeleted: false,
     },
+    mainCategories: [],
+    uiFlagsMain: {
+      isLoading: false,
+      isCreated: false,
+      isUpdated: false,
+      isDeleted: false,
+    },
   }),
   getters: {},
   actions: {
@@ -46,6 +53,17 @@ export const useCategoriesAdminStore = defineStore("CategoriesAdmin", {
         return error;
       } finally {
         this.uiFlagsSub.isLoading = false;
+      }
+    },
+    getMainCategoriesAdmin: async function(params) {
+      this.uiFlagsMain.isLoading = true;
+      try {
+        const { data } = await CategoriesAdminService.get(params);
+        this.mainCategories = data.data;
+      } catch (error) {
+        return error;
+      } finally {
+        this.uiFlagsMain.isLoading = false;
       }
     },
     showCategoriesAdmin: async function(id) {

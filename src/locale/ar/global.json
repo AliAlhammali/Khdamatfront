@@ -93,7 +93,9 @@
       "confirm_password": "تأكيد كلمة المرور",
       "password_changed": "تم تغيير كلمة المرور بنجاح"
     },
-    "created_at": "تاريخ الانشاء",
+    "created_at": "تاريخ الجدوله",
+    "started_from": "من",
+    "started_to": "الى",
     "start_at": "تاريخ البداية",
     "main_category": "التصنيف الرئيسي",
     "client_name": "اسم العميل",

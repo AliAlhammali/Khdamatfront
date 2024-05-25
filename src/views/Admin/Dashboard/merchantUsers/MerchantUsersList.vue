@@ -15,21 +15,70 @@
       @search="search"
     >
       <template #filter>
-        <v-select
-          :placeholder="$t('admin_merchant.title')"
-          :label="$t('admin_merchant.title')"
-          v-model="params['filter[merchant_id]']"
-          :items="merchants?.data"
-          item-text="name"
-          item-value="id"
-          menu-icon="mdi mdi-chevron-down"
-          class="w-100"
-          outlined
-          :loader="merchantsUiFlags?.isLoading"
-          @update:modelValue="getMerchantUsersAdmin(params)"
-          :no-data-text="$t('global.actions.no_data')"
-          hide-details
-        />
+        <v-row>
+          <v-col md="3" cols="12">
+            <v-select
+              v-model="filtersParams['filter[merchant_id]']"
+              :placeholder="$t('admin_merchant.fields.merchant')"
+              :items="merchants.data"
+              :item-title="'title'"
+              :item-value="'id'"
+              outlined
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              @update:modelValue="
+                (val) => filterOrderBy(val, 'filter[merchant_id]')
+              "
+            />
+          </v-col>
+
+          <v-col md="3" cols="12">
+            <v-select
+              v-model="filtersParams['filter[role]']"
+              :placeholder="$t('admin_merchant.fields.role')"
+              :items="rolesList"
+              :item-title="'text'"
+              :item-value="'value'"
+              outlined
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              @update:modelValue="(val) => filterOrderBy(val, 'filter[role]')"
+            />
+          </v-col>
+
+          <v-col md="3" cols="12">
+            <v-select
+              v-model="filtersParams['filter[status]']"
+              :placeholder="$t('admin_merchant.fields.status')"
+              :items="listStatus"
+              :item-title="'text'"
+              :item-value="'value'"
+              outlined
+              menu-icon="mdi mdi-chevron-down"
+              class="text-capitalize rounded-xl"
+              :no-data-text="$t('global.actions.no_data')"
+              hide-details
+              @update:modelValue="(val) => filterOrderBy(val, 'filter[status]')"
+            />
+          </v-col>
+          <v-col cols="2">
+            <button
+              class="pa-3 rounded border text-error"
+              @click="clearFilter"
+              :disabled="
+                !filtersParams['filter[merchant_id]'] &&
+                !filtersParams['filter[role]'] &&
+                !filtersParams['filter[status]']
+              "
+            >
+              <v-icon size="24">mdi mdi-filter-variant-remove</v-icon>
+            </button>
+          </v-col>
+        </v-row>
       </template>
       <template #role="{ item }">
         <span class="badge badge--status">
@@ -86,10 +135,34 @@ export default {
     return {
       params: {
         "filter[keyword]": null,
-        "filter[merchant_id]": null,
         perPage: 10,
         page: 1,
       },
+      filtersParams: {
+        "filter[merchant_id]": null,
+        "filter[status]": null,
+        "filter[role]": null,
+      },
+      listStatus: [
+        {
+          text: this.$t("global.status.active"),
+          value: "active",
+        },
+        {
+          text: this.$t("global.status.inactive"),
+          value: "inactive",
+        },
+      ],
+      rolesList: [
+        {
+          text: this.$t("global.role.admin"),
+          value: "admin",
+        },
+        {
+          text: this.$t("global.role.staff"),
+          value: "staff",
+        },
+      ],
     };
   },
   async mounted() {
@@ -196,21 +269,36 @@ export default {
       }
     },
 
-    changePage(page) {
+    async changePage(page) {
       this.params.page = page;
-      this.getMerchantUsersAdmin(this.params);
+      await this.getMerchantUsersAdmin(this.params);
     },
-    changePerPage(perPage) {
+    async changePerPage(perPage) {
       this.params.perPage = perPage;
       this.params.page = 1;
-      this.getMerchantUsersAdmin(this.params);
+      await this.getMerchantUsersAdmin(this.params);
     },
-    search(text) {
+    async search(text) {
       this.params["filter[keyword]"] = text;
       const key = {
         "filter[keyword]": text,
       };
       this.getMerchantUsersAdmin(key);
+    },
+    async filterOrderBy(value, key) {
+      this.filtersParams[key] = value;
+      await this.getMerchantUsersAdmin({
+        ...this.params,
+        ...this.filtersParams,
+      });
+    },
+    async clearFilter() {
+      this.filtersParams["filter[status]"] = null;
+      this.filtersParams["filter[merchant_id]"] = null;
+      this.filtersParams["filter[role]"] = null;
+      await this.getMerchantUsersAdmin({
+        ...this.params,
+      });
     },
   },
   watch: {

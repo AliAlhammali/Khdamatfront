@@ -17,29 +17,43 @@
       <template #filter>
         <v-row>
           <v-col md="3" cols="12">
-            <!-- start at  -->
-            <date-picker
-              :editable="false"
-              :placeholder="$t('global.start_at')"
-              v-model="filtersParams['filter[started_at]']"
-              v-model:value="filtersParams['filter[started_at]']"
-              :default-value="filtersParams['filter[started_at]']"
-              type="date"
-              class="mb-2 w-100"
-              value-type="format"
-              format="YYYY-MM-DD"
-              @change="(val) => filterOrderBy(val, 'filter[started_at]')"
-            ></date-picker>
-            <!-- :disabled-date="beforeToday" -->
+            <div class="d-flex align-center ga-2">
+              <p>{{ $t("global.started_from") }}</p>
+              <date-picker
+                :editable="false"
+                :placeholder="$t('global.started_from')"
+                v-model="filtersParams['filter[started_from]']"
+                v-model:value="filtersParams['filter[started_from]']"
+                type="date"
+                class="mb-2 w-100"
+                value-type="format"
+                format="YYYY-MM-DD"
+                @change="(val) => filterOrderBy(val, 'filter[started_from]')"
+              />
+            </div>
           </v-col>
-
+          <v-col md="3" cols="12">
+            <div class="d-flex align-center ga-2">
+              <p>{{ $t("global.started_to") }}</p>
+              <date-picker
+                :editable="false"
+                :placeholder="$t('global.started_to')"
+                v-model="filtersParams['filter[started_to]']"
+                v-model:value="filtersParams['filter[started_to]']"
+                type="date"
+                class="mb-2 w-100"
+                value-type="format"
+                format="YYYY-MM-DD"
+                @change="(val) => filterOrderBy(val, 'filter[started_to]')"
+              />
+            </div>
+          </v-col>
           <v-col md="3" cols="12">
             <!-- Service Provider -->
             <v-autocomplete
               :placeholder="$t('admin_merchant.fields.service_provider')"
               :label="$t('admin_merchant.fields.service_provider')"
               v-model="filtersParams['filter[service_provider_id]']"
-              v-model:value="filtersParams['filter[service_provider_id]']"
               menu-icon="mdi mdi-chevron-down"
               class="text-capitalize rounded-xl mb-2 w-100"
               :no-data-text="$t('global.actions.no_data')"
@@ -159,7 +173,20 @@
             ></v-select>
           </v-col>
           <v-col cols="2">
-            <button class="pa-3 rounded border text-error" @click="clearFilter">
+            <button
+              class="pa-3 rounded border text-error"
+              @click="clearFilter"
+              :disabled="
+                !filtersParams['filter[started_from]'] &&
+                !filtersParams['filter[started_to]'] &&
+                !filtersParams['filter[service_provider_id]'] &&
+                !filtersParams['filter[status]'] &&
+                !filtersParams['filter[merchant_client_id]'] &&
+                !filtersParams['filter[category_id]'] &&
+                !filtersParams['filter[merchant_branch_id]'] &&
+                !filtersParams['filter[merchant_client_id]']
+              "
+            >
               <v-icon size="24">mdi mdi-filter-variant-remove</v-icon>
             </button>
           </v-col>
@@ -209,7 +236,8 @@ export default {
         sortAsc: 1,
       },
       filtersParams: {
-        "filter[started_at]": null,
+        "filter[started_to]": null,
+        "filter[started_from]": null,
         "filter[service_provider_id]": null,
         "filter[status]": null,
         "filter[merchant_client_id]": null,
@@ -289,12 +317,12 @@ export default {
           sortable: true,
           key: "client_phone",
         },
-        {
-          title: this.$t("admin_merchant.fields.service_provider"),
-          align: "start",
-          sortable: true,
-          key: "service_provider",
-        },
+        // {
+        //   title: this.$t("admin_merchant.fields.service_provider"),
+        //   align: "start",
+        //   sortable: true,
+        //   key: "service_provider",
+        // },
         {
           title: this.$t("global.completed_at"),
           align: "start",
@@ -441,7 +469,8 @@ export default {
 
     async clearFilter() {
       this.filtersParams = {
-        "filter[started_at]": null,
+        "filter[started_to]": null,
+        "filter[started_from]": null,
         "filter[service_provider_id]": null,
         "filter[status]": null,
         "filter[merchant_client_id]": null,
