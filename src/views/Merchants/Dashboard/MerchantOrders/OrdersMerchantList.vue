@@ -97,7 +97,7 @@
             <v-autocomplete
               :placeholder="$t('admin_navbar_links.categories')"
               :label="$t('admin_navbar_links.categories')"
-              v-model="filtersParams['filter[category_id]']"
+              v-model="filtersParams['filter[main_category_id]']"
               menu-icon="mdi mdi-chevron-down"
               class="text-capitalize rounded-xl mb-2 w-100"
               :no-data-text="$t('global.actions.no_data')"
@@ -107,7 +107,7 @@
               item-title="title"
               item-value="value"
               @update:model-value="
-                (val) => filterOrderBy(val, 'filter[category_id]')
+                (val) => filterOrderBy(val, 'filter[main_category_id]')
               "
               :disabled="!main_category_id"
             ></v-autocomplete>
@@ -182,7 +182,7 @@
                 !filtersParams['filter[service_provider_id]'] &&
                 !filtersParams['filter[status]'] &&
                 !filtersParams['filter[merchant_client_id]'] &&
-                !filtersParams['filter[category_id]'] &&
+                !filtersParams['filter[main_category_id]'] &&
                 !filtersParams['filter[merchant_branch_id]'] &&
                 !filtersParams['filter[merchant_client_id]']
               "
@@ -241,7 +241,7 @@ export default {
         "filter[service_provider_id]": null,
         "filter[status]": null,
         "filter[merchant_client_id]": null,
-        "filter[category_id]": null,
+        "filter[main_category_id]": null,
         "filter[merchant_branch_id]": null,
       },
       main_category_id: null,
@@ -463,8 +463,11 @@ export default {
     ...mapActions(useBranchesMerchantStore, ["getBranchesMerchant"]),
 
     async filterOrderBy(value, key) {
-      this.params[key] = value;
-      await this.getOrdersMerchant(this.params);
+      this.filtersParams[key] = value;
+      await this.getOrdersMerchant({
+        ...this.filtersParams,
+        ...this.params,
+      });
     },
 
     async clearFilter() {
@@ -474,7 +477,7 @@ export default {
         "filter[service_provider_id]": null,
         "filter[status]": null,
         "filter[merchant_client_id]": null,
-        "filter[category_id]": null,
+        "filter[main_category_id]": null,
         "filter[merchant_branch_id]": null,
         "filter[merchant_client_id]": null,
       };
@@ -505,6 +508,14 @@ export default {
     },
     afterToday(date) {
       return date && date < new Date();
+    },
+  },
+  watch: {
+    main_category_id: {
+      handler() {
+        //  empty
+        this.filtersParams["filter[main_category_id]"] = null;
+      },
     },
   },
 };

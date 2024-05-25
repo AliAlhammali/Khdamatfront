@@ -19,6 +19,7 @@
             <v-autocomplete
               v-model="filterMainCategory"
               :placeholder="$t('admin_categories.fields.main_category')"
+              :label="$t('admin_categories.fields.main_category')"
               :items="mainCategoriesList"
               :item-title="'text'"
               :item-value="'value'"
@@ -27,7 +28,11 @@
               class="text-capitalize rounded-xl"
               :no-data-text="$t('global.actions.no_data')"
               hide-details
-              @update:modelValue="(val) => filterByMainCategory(val)"
+              @update:modelValue="
+                getCategoriesMerchant({
+                  'filter[main_category_id]': filterMainCategory,
+                })
+              "
             />
           </v-col>
           <v-col md="4" cols="12">
@@ -44,6 +49,7 @@
               @update:modelValue="(val) => filterByCategory(val)"
               :no-data-text="$t('global.actions.no_data')"
               hide-details
+              :disabled="!filterMainCategory"
             />
           </v-col>
 
@@ -127,12 +133,12 @@ export default {
     };
   },
   async mounted() {
-    if (this.$route.query.category_id) {
-      this.params["filter[category_id]"] = this.listCategories.find(
-        (item) => item.id == this.$route.query.category_id
-      ).id;
-    }
-    await this.getCategoriesMerchant(this.paramsCategories);
+    // if (this.$route.query.category_id) {
+    //   this.params["filter[category_id]"] = this.listCategories.find(
+    //     (item) => item.id == this.$route.query.category_id
+    //   ).id;
+    // }
+    // await this.getCategoriesMerchant(this.paramsCategories);
     await this.getMainCategoriesMerchant({ "filter[isParent]": 1, listing: 1 });
 
     await this.getServicesMerchant(this.params);
@@ -268,6 +274,9 @@ export default {
         this.params["filter[category_id]"] = null;
       }
       this.getServicesMerchant(this.params);
+    },
+    filterMainCategory() {
+      this.filterCategory = null;
     },
   },
 };

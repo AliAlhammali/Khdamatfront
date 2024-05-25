@@ -527,6 +527,8 @@ export default {
     },
 
     async getSubCategories(val) {
+      this.filtersParams["filter[category_id]"] = null;
+
       await this.getCategoriesAdmin({
         listing: 1,
         "filter[parent_id]": val,

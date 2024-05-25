@@ -39,6 +39,7 @@
           <v-col md="4" cols="12">
             <v-select
               v-model="params['filter[status]']"
+              :label="$t('admin_merchant.fields.status')"
               :placeholder="$t('admin_merchant.fields.status')"
               :items="listStatus"
               :item-title="'text'"

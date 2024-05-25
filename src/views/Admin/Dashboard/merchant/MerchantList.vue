@@ -22,6 +22,7 @@
               <v-select
                 v-model="filterStatus"
                 :placeholder="$t('admin_merchant.fields.status')"
+                :label="$t('admin_merchant.fields.status')"
                 :items="listStatus"
                 :item-title="'text'"
                 :item-value="'value'"

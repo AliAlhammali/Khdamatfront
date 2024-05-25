@@ -35,7 +35,7 @@
             <button
               class="pa-3 rounded border text-error"
               @click="clearFilter"
-              :disabled="!filterStatus"
+              :disabled="filterStatus !== null"
             >
               <v-icon size="24">mdi mdi-filter-variant-remove</v-icon>
             </button>
@@ -101,11 +101,11 @@ export default {
       listStatus: [
         {
           text: this.$t("global.status.active"),
-          value: "active",
+          value: 1,
         },
         {
           text: this.$t("global.status.inactive"),
-          value: "inactive",
+          value: 0,
         },
       ],
       filterStatus: null,
@@ -179,13 +179,13 @@ export default {
     },
 
     async filterByStatus(status) {
-      this.params["filter[status]"] = status;
+      this.params["filter[is_active]"] = status;
       await this.getBranchesMerchant(this.params);
     },
 
     async clearFilter() {
       this.filterStatus = null;
-      this.params["filter[status]"] = null;
+      this.params["filter[is_active]"] = null;
       await this.getBranchesMerchant(this.params);
     },
 

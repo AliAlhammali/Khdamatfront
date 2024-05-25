@@ -69,8 +69,7 @@
             <v-autocomplete
               :placeholder="$t('global.show_order.category')"
               :label="$t('global.show_order.category')"
-              v-model="filtersParams['filter[category_id]']"
-              v-model:value="filtersParams['filter[category_id]']"
+              v-model="filtersParams['filter[main_category_id]']"
               menu-icon="mdi mdi-chevron-down"
               class="text-capitalize rounded-xl mb-2 w-100"
               :no-data-text="$t('global.actions.no_data')"
@@ -80,7 +79,7 @@
               item-title="title"
               item-value="id"
               @update:model-value="
-                (val) => filterOrderBy(val, 'filter[category_id]')
+                (val) => filterOrderBy(val, 'filter[main_category_id]')
               "
               :disabled="!main_category_id"
             />
@@ -131,7 +130,7 @@
                 !filtersParams['filter[started_to]'] &&
                 !filtersParams['filter[started_from]'] &&
                 !filtersParams['filter[status]'] &&
-                !filtersParams['filter[category_id]'] &&
+                !filtersParams['filter[main_category_id]'] &&
                 !filtersParams['filter[service_provider_user_id]']
               "
             >
@@ -228,7 +227,7 @@ export default {
         "filter[started_to]": null,
         "filter[started_from]": null,
         "filter[status]": null,
-        "filter[category_id]": null,
+        "filter[main_category_id]": null,
         "filter[service_provider_user_id]": null,
       },
       showUsers: false,
@@ -455,7 +454,6 @@ export default {
         "filter[started_from]": null,
         "filter[status]": null,
         "filter[main_category_id]": null,
-        "filter[category_id]": null,
         "filter[service_provider_user_id]": null,
       };
       this.main_category_id = null;
@@ -468,7 +466,7 @@ export default {
 
     async getSubCategoriesSP(val) {
       // empty filter category_id
-      this.filtersParams["filter[category_id]"] = null;
+      this.filtersParams["filter[main_category_id]"] = null;
 
       await this.getSubCategoriesServiceProvider({
         listing: 1,

@@ -49,7 +49,7 @@
             <button
               class="pa-3 rounded border text-error"
               @click="clearFilter"
-              :disabled="!filterStatus || !filterMainCategory"
+              :disabled="!filterStatus && !filterMainCategory"
             >
               <v-icon size="24">mdi mdi-filter-variant-remove</v-icon>
             </button>

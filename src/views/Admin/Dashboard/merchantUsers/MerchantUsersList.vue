@@ -20,6 +20,7 @@
             <v-select
               v-model="filtersParams['filter[merchant_id]']"
               :placeholder="$t('admin_merchant.fields.merchant')"
+              :label="$t('admin_merchant.fields.merchant')"
               :items="merchants.data"
               :item-title="'title'"
               :item-value="'id'"
@@ -38,6 +39,7 @@
             <v-select
               v-model="filtersParams['filter[role]']"
               :placeholder="$t('admin_merchant.fields.role')"
+              :label="$t('admin_merchant.fields.role')"
               :items="rolesList"
               :item-title="'text'"
               :item-value="'value'"
@@ -54,6 +56,7 @@
             <v-select
               v-model="filtersParams['filter[status]']"
               :placeholder="$t('admin_merchant.fields.status')"
+              :label="$t('admin_merchant.fields.status')"
               :items="listStatus"
               :item-title="'text'"
               :item-value="'value'"

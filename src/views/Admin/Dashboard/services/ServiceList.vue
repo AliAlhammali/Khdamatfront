@@ -20,6 +20,7 @@
             <!-- Merchant -->
             <v-autocomplete
               v-model="params['filter[merchant_id]']"
+              :label="$t('admin_categories.fields.merchant')"
               :placeholder="$t('admin_categories.fields.merchant')"
               :items="merchantsList"
               :item-title="'title'"
@@ -40,6 +41,7 @@
             <v-autocomplete
               v-model="params['filter[category_id]']"
               :placeholder="$t('admin_navbar_links.categories')"
+              :label="$t('admin_navbar_links.categories')"
               :items="categoriesList"
               :item-title="'title'"
               :item-value="'id'"
@@ -59,6 +61,7 @@
             <v-select
               v-model="params['filter[status]']"
               :placeholder="$t('admin_merchant.fields.status')"
+              :label="$t('admin_merchant.fields.status')"
               :items="listStatus"
               :item-title="'text'"
               :item-value="'value'"
