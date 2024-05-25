@@ -12,7 +12,7 @@
         <v-col md="6" cols="12">
           <date-picker
             :editable="false"
-            :placeholder="$t('global.started_from')"
+            :placeholder="$t('global.show_order.order_creation_date')"
             v-model="objData.started_at"
             v-model:value="objData.started_at"
             type="datetime"
