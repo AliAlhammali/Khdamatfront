@@ -44,6 +44,7 @@
               :to="link"
               class="px-0"
               exact
+              @click="closeDrawer"
             >
               <div class="d-flex align-center ga-2">
                 <span class="mdi mdi-circle-outline mdi-18px"></span>
@@ -112,6 +113,7 @@ export default {
   },
   mounted() {
     this.checkCookie();
+    this.closeDrawer();
   },
   computed: {
     ...mapState(useAuthAdminStore, ["isLoading", "record"]),
@@ -176,6 +178,11 @@ export default {
   methods: {
     ...mapActions(useAuthAdminStore, ["checkCookie", "logoutAdmin"]),
     getInitials,
+    closeDrawer() {
+      if (window.innerWidth < 992) {
+        this.drawer = false;
+      }
+    },
   },
 };
 </script>

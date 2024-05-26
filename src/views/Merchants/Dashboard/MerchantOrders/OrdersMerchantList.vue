@@ -205,6 +205,14 @@
         </router-link>
       </template>
     </data-table>
+    <!-- <div class="d-md-none">
+      <card-item
+        :items="items"
+        :meta="meta"
+        :isLoading="uiFlags?.isLoading"
+        @fetchItems="fetchItemScroller"
+      />
+    </div> -->
   </div>
 </template>
 <script>
@@ -216,9 +224,10 @@ import { useServicesMerchantStore } from "@/stores/merchant/services/services.me
 import { useCategoriesMerchantStore } from "@/stores/merchant/categories/categories.merchant.store";
 import { useClientsMerchantStore } from "@/stores/merchant/clients/clients.merchant.store";
 import { useBranchesMerchantStore } from "@/stores/merchant/branches/branches.merchant.store";
+import CardItem from "@/components/ui/CardItem.vue";
 
 export default {
-  components: { DataTable },
+  components: { DataTable, CardItem },
   data() {
     return {
       params: {
@@ -254,7 +263,7 @@ export default {
     await this.getBranchesMerchant();
   },
   computed: {
-    ...mapState(useOrdersMerchantStore, ["records", "uiFlags"]),
+    ...mapState(useOrdersMerchantStore, ["records", "uiFlags", ""]),
     ...mapState(useServicesMerchantStore, {
       servicesMerchant: "records",
       uiFlagsServices: "uiFlags",
@@ -507,6 +516,14 @@ export default {
     },
     afterToday(date) {
       return date && date < new Date();
+    },
+
+    async fetchItemScroller() {
+      if (this.records?.meta?.total === this.params.page) {
+        return;
+      }
+      // this.params.page++;
+      // await this.getOrdersMerchant(this.params);
     },
   },
   watch: {

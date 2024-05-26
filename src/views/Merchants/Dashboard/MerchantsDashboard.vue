@@ -44,6 +44,7 @@
               :to="link"
               class="px-0"
               exact
+              @click="closeDrawer"
             >
               <div class="d-flex align-center ga-2">
                 <span class="mdi mdi-circle-outline mdi-18px"></span>
@@ -112,6 +113,8 @@ export default {
   },
   mounted() {
     this.checkCookie();
+    // check is mobile close drawer
+    this.closeDrawer();
   },
   computed: {
     ...mapState(useAuthMerchantStore, ["isLoading", "record"]),
@@ -177,6 +180,12 @@ export default {
   methods: {
     ...mapActions(useAuthMerchantStore, ["checkCookie", "logoutMerchant"]),
     getInitials,
+    // if mobile close
+    closeDrawer() {
+      if (window.innerWidth < 992) {
+        this.drawer = false;
+      }
+    },
   },
 };
 </script>

@@ -225,7 +225,7 @@ import FiledInput from "@/components/common/FiledInput.vue";
 import { useUsersAdminStore } from "@/stores/admin/users/users.admin.store";
 import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, sameAs } from "@vuelidate/validators";
+import { required, email, sameAs, requiredIf } from "@vuelidate/validators";
 import Loader from "@/components/common/Loader.vue";
 import { updateToPatchData } from "@/helper/update.inputs.helper";
 import { useGlobalActionsStore } from "@/stores/actions/upload.store";
@@ -239,7 +239,7 @@ export default {
       merchant: {
         name: { required },
         email: { required, email },
-        password: { required },
+        password: { required: requiredIf(() => !this.isEditMerchant) },
         role: { required },
         status: { required },
         phone: { required },
