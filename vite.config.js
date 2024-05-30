@@ -27,7 +27,7 @@ export default defineConfig({
   },
   define: { "process.env": {} },
 
-  base: "/",
+  base: "./",
   build: {
     target: "esnext", //browsers can handle the latest ES features
     cssMinify: true,
