@@ -9,7 +9,7 @@ import serviceProviderRoute from "@/views/ServiceProvider/serviceProvider.route"
 import landingRoute from "@/views/Landing/landing.route";
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: [
     ...adminRoute.routes,
     ...merchantsRoute.routes,
