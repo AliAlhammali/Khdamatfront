@@ -12,10 +12,10 @@
                 class="mx-auto"
               ></v-img>
             </div>
-            <div class="mb-4 border-b pb-4 mb-4">
+            <!-- <div class="mb-4 border-b pb-4 mb-4">
               <h1>{{ $t("admin_auth.title") }}</h1>
               <p class="text-gray mt-2">{{ $t("admin_auth.text") }}</p>
-            </div>
+            </div> -->
             <div class="mb-4">
               <filed-input
                 :label="$t('admin_auth.email')"

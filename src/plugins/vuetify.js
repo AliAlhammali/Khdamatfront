@@ -20,6 +20,16 @@ import { i18n } from "./I18n.js";
 import { aliases, fa } from "vuetify/iconsets/fa";
 import defaults from "./defaults.js";
 
+// set font family and async font loading
+const font = new FontFace("Cairo", "url(/font/cairo.ttf)");
+font.load().then(async font => {
+  await document.fonts.add(font);
+});
+document.fonts.ready.then(() => {
+  document.documentElement.classList.add("fonts-loaded");
+  console.log("Fonts loaded");
+});
+
 const lightTheme = {
   dark: false,
   fontFamily: "Cairo, sans-serif",
@@ -30,8 +40,8 @@ const lightTheme = {
     error: "#FF5252",
     info: "#2196F3",
     success: "#4CAF50",
-    warning: "#FFC107"
-  }
+    warning: "#FFC107",
+  },
 };
 
 const darkTheme = {
@@ -44,7 +54,7 @@ const darkTheme = {
     error: "#f44336",
     info: "#4CAF50",
     success: "#8BC34A",
-    warning: "#FFEB3B"
+    warning: "#FFEB3B",
   },
   variables: {
     "code-color": "#007bff",
@@ -75,8 +85,8 @@ const darkTheme = {
     "shadow-sm-opacity": 0.18,
     "shadow-md-opacity": 0.2,
     "shadow-lg-opacity": 0.22,
-    "shadow-xl-opacity": 0.24
-  }
+    "shadow-xl-opacity": 0.24,
+  },
 };
 
 export default createVuetify({
@@ -86,19 +96,19 @@ export default createVuetify({
     defaultSet: "fa",
     aliases,
     sets: {
-      fa
-    }
+      fa,
+    },
   },
   defaults,
   locale: {
-    adapter: createVueI18nAdapter({ i18n, useI18n })
+    adapter: createVueI18nAdapter({ i18n, useI18n }),
   },
   rtl: { ar: true },
   theme: {
     defaultTheme: "lightTheme",
     themes: {
       lightTheme,
-      darkTheme
-    }
-  }
+      darkTheme,
+    },
+  },
 });
