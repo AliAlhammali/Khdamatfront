@@ -14,14 +14,22 @@ export const useOrdersAdminStore = defineStore("OrdersAdmin", {
       isLoading: false,
       isUpdating: false,
     },
+    recordsScroll: [],
   }),
   getters: {},
   actions: {
-    getOrdersAdmin: async function(params) {
+    getOrdersAdmin: async function(params, isFilterApplied = false) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await OrdersAdmin.get(params);
+        // If filters or search are applied, reset the recordsScroll
+        if (isFilterApplied) {
+          this.recordsScroll = [];
+        }
+
+        // Update records and recordsScroll
         this.records = data;
+        this.recordsScroll.push(...data.data);
       } catch (error) {
         return error;
       } finally {

@@ -43,7 +43,8 @@
       "from": "from",
       "entries": "entries",
       "next": "Next",
-      "previous": "Previous"
+      "previous": "Previous",
+      "no_data_more": "No more data available"
     },
     "order_status": {
       "new": "New",

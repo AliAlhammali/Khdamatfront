@@ -5,7 +5,7 @@
     </template>
     <template v-else>
       <v-stepper alt-labels elevation="0">
-        <v-stepper-header>
+        <v-stepper-header mobile>
           <template v-for="(status, index) in orderStatus" :key="index">
             <v-divider v-if="index !== 0"></v-divider>
             <v-stepper-item
@@ -233,7 +233,7 @@
 
     <v-dialog v-model="showMap" width="auto">
       <!-- {{ record }} -->
-      <v-card min-width="400" class="pa-4">
+      <v-card min-width="400" class="pa-md-4">
         <p class="mb-3">
           {{ record?.address[0]?.address }}
         </p>

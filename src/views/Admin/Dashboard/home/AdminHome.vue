@@ -1,7 +1,7 @@
 <template >
   <div>
     <div class="pa-4 bg-white shadow-lg rounded-lg border">
-      <div class="figures d-flex align-center ga-4">
+      <div class="figures d-flex align-center ga-4 flex-column flex-md-row">
         <div class="figure w-100 pa-2 rounded-lg border merchants">
           <div class="d-flex align-center ga-4">
             <div class="figure-icon">
