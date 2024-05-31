@@ -1,16 +1,27 @@
 <template>
   <div class="table border">
-    <div class="mb-4 pa-4 border-b">
+    <div class="mb-4 pa-md-4 border-b pa-2">
       <v-row class="align-center justify-space-between">
-        <v-col md="4">
+        <v-col md="4" cols="6">
           <h2>
             {{ title }}
           </h2>
         </v-col>
+        <v-col md="4" cols="6" class="d-md-none" v-if="createPage.length">
+          <router-link
+            :to="createPage"
+            class="button button--outline pa-3 w-100 d-flex"
+          >
+            <span class="fa fa-plus"></span>
+            <span>
+              {{ $t("global.actions.add") }}
+            </span>
+          </router-link>
+        </v-col>
 
-        <v-col md="8">
+        <v-col md="8" cols="12">
           <v-row class="align-center justify-end">
-            <v-col md="8" cols="6">
+            <v-col md="8" cols="12">
               <div class="d-flex align-center ga-2">
                 <!-- filter -->
                 <button @click="showFilter = !showFilter" v-if="hasFilter">
@@ -32,7 +43,12 @@
                 </label>
               </div>
             </v-col>
-            <v-col md="4" cols="6" v-if="createPage.length">
+            <v-col
+              md="4"
+              cols="8"
+              v-if="createPage.length"
+              class="d-md-block d-none"
+            >
               <router-link
                 :to="createPage"
                 class="button button--outline pa-3 w-100 d-flex"
@@ -84,8 +100,10 @@
         <v-progress-circular color="primary" indeterminate />
       </template>
       <template v-slot:bottom>
-        <div class="d-flex mt-4 justify-space-between">
-          <div class="d-flex ga-4 align-center">
+        <div
+          class="d-flex mt-4 justify-md-space-between flex-wrap justify-center flex-md-nowrap"
+        >
+          <div class="d-flex ga-4 align-center mb-md-0 mb-4">
             <span>{{ $t("global.table.show") }}</span>
             <v-select
               variant="outline"
