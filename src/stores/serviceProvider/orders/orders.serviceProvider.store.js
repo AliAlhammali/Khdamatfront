@@ -16,14 +16,25 @@ export const useOrdersServiceProviderStore = defineStore(
         isLoading: false,
         isUpdating: false,
       },
+      recordsScroll: [],
     }),
     getters: {},
     actions: {
-      getOrdersServiceProvider: async function(params) {
+      getOrdersServiceProvider: async function(
+        params,
+        isFilterApplied = false,
+      ) {
         this.uiFlags.isLoading = true;
         try {
           const { data } = await OrdersServiceProvider.get(params);
+          // If filters or search are applied, reset the recordsScroll
+          if (isFilterApplied) {
+            this.recordsScroll = [];
+          }
+
+          // Update records and recordsScroll
           this.records = data;
+          this.recordsScroll.push(...data.data);
         } catch (error) {
           return error;
         } finally {

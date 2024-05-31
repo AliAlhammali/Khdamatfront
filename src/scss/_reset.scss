@@ -76,6 +76,11 @@ select {
       background-color: orange !important;
     }
   }
+
+  @media (max-width: 768px) {
+    flex-basis: 80px !important;
+    padding: 8px !important;
+  }
 }
 
 .vs__dropdown-toggle {

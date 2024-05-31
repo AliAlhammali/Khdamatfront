@@ -67,6 +67,7 @@
         <slot name="filter"></slot>
       </div>
     </div>
+
     <v-data-table
       :items-per-page="meta.perPage"
       v-model="selected"
@@ -84,6 +85,7 @@
       :must-sort="true"
       :loading="isLoading"
       @click:row="rowClick"
+      v-if="!isMobile"
     >
       <template v-for="col in slotsItems" #[`item.${col}`]="value">
         <slot :name="col" :item="value"></slot>
@@ -164,6 +166,8 @@
         </div>
       </template>
     </v-data-table>
+
+    <slot v-if="isMobile" name="cards"></slot>
   </div>
 </template>
 <script>
@@ -203,6 +207,10 @@ export default {
       default: "",
     },
     hasFilter: {
+      type: Boolean,
+      default: false,
+    },
+    isMobile: {
       type: Boolean,
       default: false,
     },

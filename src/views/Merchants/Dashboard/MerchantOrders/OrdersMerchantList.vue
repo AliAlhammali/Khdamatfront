@@ -13,6 +13,7 @@
       @changePerPage="changePerPage"
       @search="search"
       :hasFilter="true"
+      :isMobile="isMobile"
     >
       <template #filter>
         <v-row>
@@ -204,15 +205,48 @@
           </v-tooltip>
         </router-link>
       </template>
+
+      <template #cards>
+        <CardItem :items="recordsScroll" @load="load">
+          <template #items>
+            <v-row>
+              <v-col
+                cols="12"
+                v-for="(item, index) in itemsMobile"
+                :key="index"
+              >
+                <div class="border pa-2 rounded-lg">
+                  <div class="mb-2"># {{ item.id }}</div>
+                  <div class="mb-2">
+                    <v-icon size="20">mdi mdi-calendar</v-icon>
+                    {{ item.started_at }}
+                  </div>
+                  <div class="mb-2">
+                    <v-icon size="20">mdi mdi-account</v-icon>
+                    {{ item.client_name }}
+                  </div>
+                  <div>
+                    <router-link
+                      :to="`/merchant/orders/${item.id}`"
+                      class="button button--edit px-2 rounded w-100 d-flex justify-center"
+                    >
+                      <v-tooltip :text="$t('global.actions.show')">
+                        <template v-slot:activator="{ props }">
+                          <span
+                            v-bind="props"
+                            class="mdi mdi-24px mdi-eye-outline"
+                          ></span>
+                        </template>
+                      </v-tooltip>
+                    </router-link>
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
+          </template>
+        </CardItem>
+      </template>
     </data-table>
-    <!-- <div class="d-md-none">
-      <card-item
-        :items="items"
-        :meta="meta"
-        :isLoading="uiFlags?.isLoading"
-        @fetchItems="fetchItemScroller"
-      />
-    </div> -->
   </div>
 </template>
 <script>
@@ -263,7 +297,11 @@ export default {
     await this.getBranchesMerchant();
   },
   computed: {
-    ...mapState(useOrdersMerchantStore, ["records", "uiFlags", ""]),
+    ...mapState(useOrdersMerchantStore, [
+      "records",
+      "uiFlags",
+      "recordsScroll",
+    ]),
     ...mapState(useServicesMerchantStore, {
       servicesMerchant: "records",
       uiFlagsServices: "uiFlags",
@@ -384,6 +422,15 @@ export default {
         };
       });
     },
+    itemsMobile() {
+      return this.recordsScroll?.map((item) => {
+        return {
+          id: item.id,
+          started_at: item.started_at,
+          client_name: item.merchant_client ? item.merchant_client.name : "---",
+        };
+      });
+    },
     orderStatus() {
       return [
         { value: "new", text: this.$t("global.order_status.new") },
@@ -459,6 +506,9 @@ export default {
         }) || []
       );
     },
+    isMobile() {
+      return window.innerWidth < 768;
+    },
   },
   methods: {
     ...mapActions(useOrdersMerchantStore, ["getOrdersMerchant"]),
@@ -472,10 +522,13 @@ export default {
 
     async filterOrderBy(value, key) {
       this.filtersParams[key] = value;
-      await this.getOrdersMerchant({
-        ...this.filtersParams,
-        ...this.params,
-      });
+      await this.getOrdersMerchant(
+        {
+          ...this.filtersParams,
+          ...this.params,
+        },
+        true
+      );
     },
 
     async clearFilter() {
@@ -491,7 +544,7 @@ export default {
       };
       this.main_category_id = null;
 
-      await this.getOrdersMerchant({ ...this.params });
+      await this.getOrdersMerchant({ ...this.params }, true);
     },
 
     async changePage(page) {
@@ -508,7 +561,7 @@ export default {
       const key = {
         "filter[keyword]": text,
       };
-      await this.getOrdersMerchant(key);
+      await this.getOrdersMerchant(key, true);
     },
 
     beforeToday(date) {
@@ -518,12 +571,14 @@ export default {
       return date && date < new Date();
     },
 
-    async fetchItemScroller() {
-      if (this.records?.meta?.total === this.params.page) {
-        return;
+    async load({ done }) {
+      if (this.records?.meta?.currentPage < this.records?.meta?.lastPage) {
+        this.params.page = this.records?.meta?.currentPage + 1;
+        await this.getOrdersMerchant(this.params);
+        await done("ok");
+      } else {
+        await done("empty");
       }
-      // this.params.page++;
-      // await this.getOrdersMerchant(this.params);
     },
   },
   watch: {
