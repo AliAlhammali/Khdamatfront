@@ -13,7 +13,7 @@
         </router-link>
       </div>
       <div class="d-flex align-center justify-center flex-column">
-        <img src="./soon.jpg" alt="soon" height="300" />
+        <img src="/soon.jpg" alt="soon" height="300" />
         <h1>Coming Soon!</h1>
         <p class="text-grey-darken-1">
           We're busy preparing something amazing for you. Stay tuned for
