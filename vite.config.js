@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
         ...env,
       },
     },
-    base: "./",
+    base: "/",
     build: {
       target: "esnext",
       cssMinify: true,
