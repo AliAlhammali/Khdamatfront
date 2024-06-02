@@ -44,7 +44,8 @@
       "from": "من",
       "entries": "عنصر",
       "next": "التالي",
-      "previous": "السابق"
+      "previous": "السابق",
+      "no_data_more": "لا توجد بيانات أخرى"
     },
     "order_status": {
       "new": "جديد",

@@ -16,14 +16,23 @@ export const useOrdersMerchantStore = defineStore("OrdersMerchant", {
       isUpdated: false,
       isDeleted: false,
     },
+    recordsScroll: [],
   }),
   getters: {},
   actions: {
-    getOrdersMerchant: async function(params) {
+    getOrdersMerchant: async function(params, isFilterApplied = false) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await OrdersMerchant.get(params);
+
+        // If filters or search are applied, reset the recordsScroll
+        if (isFilterApplied) {
+          this.recordsScroll = [];
+        }
+
+        // Update records and recordsScroll
         this.records = data;
+        this.recordsScroll.push(...data.data);
       } catch (error) {
         return error;
       } finally {

@@ -12,6 +12,7 @@
       @changePerPage="changePerPage"
       @search="search"
       :hasFilter="true"
+      :isMobile="isMobile"
     >
       <template #filter>
         <v-row>
@@ -170,6 +171,47 @@
           </router-link>
         </div>
       </template>
+
+      <template #cards>
+        <CardItem :items="recordsScroll" @load="load">
+          <template #items>
+            <v-row>
+              <v-col
+                cols="12"
+                v-for="(item, index) in itemsMobile"
+                :key="index"
+              >
+                <div class="border pa-2 rounded-lg">
+                  <div class="mb-2"># {{ item.id }}</div>
+                  <div class="mb-2">
+                    <v-icon size="20">mdi mdi-calendar</v-icon>
+                    {{ item.started_at }}
+                  </div>
+                  <div class="mb-2">
+                    <v-icon size="20">mdi mdi-account</v-icon>
+                    {{ item.client_name }}
+                  </div>
+                  <div>
+                    <router-link
+                      :to="`/service-provider/orders/${item.id}`"
+                      class="button button--edit px-2 rounded w-100 d-flex justify-center"
+                    >
+                      <v-tooltip :text="$t('global.actions.show')">
+                        <template v-slot:activator="{ props }">
+                          <span
+                            v-bind="props"
+                            class="mdi mdi-24px mdi-eye-outline"
+                          ></span>
+                        </template>
+                      </v-tooltip>
+                    </router-link>
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
+          </template>
+        </CardItem>
+      </template>
     </data-table>
 
     <v-dialog v-model="showUsers" width="auto">
@@ -205,9 +247,10 @@ import DataTable from "@/components/common/DataTable.vue";
 import { useOrdersServiceProviderStore } from "@/stores/serviceProvider/orders/orders.serviceProvider.store";
 import { useUsersServiceProviderStore } from "@/stores/serviceProvider/users/users.serviceProvider.store";
 import { useCategoriesServiceProviderStore } from "@/stores/serviceProvider/categories/categories.serviceProvider.store";
+import CardItem from "@/components/ui/CardItem.vue";
 
 export default {
-  components: { DataTable },
+  components: { DataTable, CardItem },
   data() {
     return {
       params: {
@@ -249,7 +292,11 @@ export default {
     });
   },
   computed: {
-    ...mapState(useOrdersServiceProviderStore, ["records", "uiFlags"]),
+    ...mapState(useOrdersServiceProviderStore, [
+      "records",
+      "uiFlags",
+      "recordsScroll",
+    ]),
     ...mapState(useUsersServiceProviderStore, {
       users: "records",
     }),
@@ -352,6 +399,15 @@ export default {
         };
       });
     },
+    itemsMobile() {
+      return this.recordsScroll?.map((item) => {
+        return {
+          id: item.id,
+          started_at: item.started_at,
+          client_name: item.merchant_client ? item.merchant_client.name : "---",
+        };
+      });
+    },
     isAdmin() {
       return (
         this.$cookies
@@ -400,6 +456,9 @@ export default {
         };
       });
     },
+    isMobile() {
+      return window.innerWidth < 768;
+    },
   },
   methods: {
     ...mapActions(useOrdersServiceProviderStore, [
@@ -425,7 +484,7 @@ export default {
       const key = {
         "filter[keyword]": text,
       };
-      await this.getOrdersServiceProvider(key);
+      await this.getOrdersServiceProvider(key, true);
     },
     async updateStaff() {
       const data = {
@@ -446,7 +505,7 @@ export default {
         ...this.params,
         ...this.filtersParams,
       };
-      await this.getOrdersServiceProvider(this.params);
+      await this.getOrdersServiceProvider(this.params, true);
     },
     async clearFilter() {
       this.filtersParams = {
@@ -461,7 +520,7 @@ export default {
         ...this.params,
         ...this.filtersParams,
       };
-      await this.getOrdersServiceProvider(this.params);
+      await this.getOrdersServiceProvider(this.params, true);
     },
 
     async getSubCategoriesSP(val) {
@@ -472,6 +531,16 @@ export default {
         listing: 1,
         "filter[parent_id]": val,
       });
+    },
+
+    async load({ done }) {
+      if (this.records?.meta?.currentPage < this.records?.meta?.lastPage) {
+        this.params.page = this.records?.meta?.currentPage + 1;
+        await this.getOrdersServiceProvider(this.params);
+        await done("ok");
+      } else {
+        await done("empty");
+      }
     },
   },
 };

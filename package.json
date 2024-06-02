@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:development": "vite build --mode development",
+    "build:production": "vite build --mode production"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.11",

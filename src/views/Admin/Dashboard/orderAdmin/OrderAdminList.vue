@@ -12,6 +12,7 @@
       @changePerPage="changePerPage"
       @search="search"
       :hasFilter="true"
+      :isMobile="isMobile"
     >
       <template #filter>
         <v-row>
@@ -52,7 +53,7 @@
               v-model="filtersParams['filter[service_provider_id]']"
               :placeholder="$t('admin_merchant.fields.service_provider')"
               :label="$t('admin_merchant.fields.service_provider')"
-              :items="SPList.data"
+              :items="SPList?.data"
               :item-title="'title'"
               :item-value="'id'"
               outlined
@@ -209,6 +210,47 @@
           </v-btn>
         </div>
       </template>
+
+      <template #cards>
+        <CardItem :items="recordsScroll" @load="load">
+          <template #items>
+            <v-row>
+              <v-col
+                cols="12"
+                v-for="(item, index) in itemsMobile"
+                :key="index"
+              >
+                <div class="border pa-2 rounded-lg">
+                  <div class="mb-2"># {{ item.id }}</div>
+                  <div class="mb-2">
+                    <v-icon size="20">mdi mdi-calendar</v-icon>
+                    {{ item.started_at }}
+                  </div>
+                  <div class="mb-2">
+                    <v-icon size="20">mdi mdi-account</v-icon>
+                    {{ item.client_name }}
+                  </div>
+                  <div>
+                    <router-link
+                      :to="`/service-provider/orders/${item.id}`"
+                      class="button button--edit px-2 rounded w-100 d-flex justify-center"
+                    >
+                      <v-tooltip :text="$t('global.actions.show')">
+                        <template v-slot:activator="{ props }">
+                          <span
+                            v-bind="props"
+                            class="mdi mdi-24px mdi-eye-outline"
+                          ></span>
+                        </template>
+                      </v-tooltip>
+                    </router-link>
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
+          </template>
+        </CardItem>
+      </template>
     </data-table>
 
     <v-dialog v-model="showUsers" width="auto">
@@ -245,9 +287,10 @@ import { useOrdersAdminStore } from "@/stores/admin/orders/orders.admin.store.js
 import { useServiceProvidersAdminStore } from "@/stores/admin/serviceProviders/serviceProviders.admin.store";
 import { useCategoriesAdminStore } from "@/stores/admin/categories/categories.admin.store";
 import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
+import CardItem from "@/components/ui/CardItem.vue";
 
 export default {
-  components: { DataTable },
+  components: { DataTable, CardItem },
   data() {
     return {
       params: {
@@ -303,7 +346,7 @@ export default {
     });
   },
   computed: {
-    ...mapState(useOrdersAdminStore, ["records", "uiFlags"]),
+    ...mapState(useOrdersAdminStore, ["records", "uiFlags", "recordsScroll"]),
     ...mapState(useServiceProvidersAdminStore, {
       SPList: "records",
     }),
@@ -449,6 +492,15 @@ export default {
         };
       });
     },
+    itemsMobile() {
+      return this.recordsScroll?.map((item) => {
+        return {
+          id: item.id,
+          started_at: item.started_at,
+          client_name: item.merchant_client ? item.merchant_client.name : "---",
+        };
+      });
+    },
     categoriesList() {
       return this.categories?.data?.map((item) => {
         return {
@@ -464,6 +516,9 @@ export default {
           title: item?.title ? item.title[this.$i18n.locale] : "---",
         };
       });
+    },
+    isMobile() {
+      return window.innerWidth < 768;
     },
   },
   methods: {
@@ -489,7 +544,7 @@ export default {
       const key = {
         "filter[keyword]": text,
       };
-      await this.getOrdersAdmin(key);
+      await this.getOrdersAdmin(key, true);
     },
 
     async updateStaff() {
@@ -508,10 +563,13 @@ export default {
     async filterOrderBy(value, key) {
       this.filtersParams[key] = value;
 
-      await this.getOrdersAdmin({
-        ...this.filtersParams,
-        ...this.params,
-      });
+      await this.getOrdersAdmin(
+        {
+          ...this.filtersParams,
+          ...this.params,
+        },
+        true
+      );
     },
 
     async clearFilter() {
@@ -523,7 +581,7 @@ export default {
       this.filtersParams["filter[category_id]"] = null;
       this.filtersParams["filter[started_from]"] = null;
       this.filtersParams["filter[started_to]"] = null;
-      await this.getOrdersAdmin(this.params);
+      await this.getOrdersAdmin(this.params, true);
     },
 
     async getSubCategories(val) {
@@ -535,16 +593,14 @@ export default {
       });
     },
 
-    async clearFilter() {
-      this.filtersParams["filter[status]"] = null;
-      this.filtersParams["filter[merchant_id]"] = null;
-      this.filtersParams["filter[service_provider_id]"] = null;
-      this.filtersParams["filter[merchant_client_id]"] = null;
-      this.filtersParams["filter[main_category_id]"] = null;
-      this.filtersParams["filter[category_id]"] = null;
-      this.filtersParams["filter[started_from]"] = null;
-      this.filtersParams["filter[started_to]"] = null;
-      await this.getOrdersAdmin(this.params);
+    async load({ done }) {
+      if (this.records?.meta?.currentPage < this.records?.meta?.lastPage) {
+        this.params.page = this.records?.meta?.currentPage + 1;
+        await this.getOrdersAdmin(this.params);
+        await done("ok");
+      } else {
+        await done("empty");
+      }
     },
   },
 };

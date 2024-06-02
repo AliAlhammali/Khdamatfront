@@ -3,6 +3,10 @@
   background-color: $white;
   box-shadow: 0 0 10px rgba($black, 0.1);
   border-radius: 16px;
+
+  @media (max-width: 768px) {
+    padding: 8px;
+  }
 }
 
 // .router-link {
