@@ -1,0 +1,2 @@
+class i{constructor(t,e={},r="v1"){this.options=e,this.resource=t,this.version=r}get url(){return`https://api.khadamat-teck.com/api/${this.version}/${this.resource}`}get(){return axios.get(this.url)}show(t){return axios.get(`${this.url}/${t}`)}create(t){return axios.post(`${this.url}/create`,t)}update(t,e){return axios.patch(`${this.url}/${t}`,e)}delete(t){return axios.delete(`${this.url}/${t}`)}}export{i as A};
+//# sourceMappingURL=api.helper-X78EMQNg.js.map
