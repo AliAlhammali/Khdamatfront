@@ -11,6 +11,9 @@
         <router-link to="/merchant" class="button button--outline">
           Merchant
         </router-link>
+        <router-link to="/client" class="button button--outline">
+          client
+        </router-link>
       </div>
       <div class="d-flex align-center justify-center flex-column">
         <img src="/soon.jpg" alt="soon" height="300" />
