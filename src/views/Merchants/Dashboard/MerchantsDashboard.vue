@@ -104,8 +104,7 @@
     </v-layout>
 
     <v-dialog v-model="openQr" max-width="500">
-      <!-- {{ record }} -->
-      <qr-code />
+      <qr-code :url-code="registerUrl" />
     </v-dialog>
   </div>
 </template>
@@ -186,6 +185,15 @@ export default {
         return page.roles.includes(this.record?.role.toLowerCase());
       });
       return pages;
+    },
+
+    merchantCode() {
+      return this.$cookies.get("merchant_khadamat_merchant").code || "";
+    },
+
+    registerUrl() {
+      // get base url
+      return `${window.location.origin}/#/client/register?merchant_code=${this.merchantCode}`;
     },
   },
   methods: {

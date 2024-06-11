@@ -18,6 +18,11 @@ export default {
           component: () => import("./Auth/ClientRegister.vue"),
         },
         {
+          path: "OTP",
+          name: "client-OTP",
+          component: () => import("./Auth/ClientOTP.vue"),
+        },
+        {
           path: "",
           component: () => import("./Dashboard/ClientDashboard.vue"),
           redirect: { name: "client-dashboard" },

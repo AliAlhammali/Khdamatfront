@@ -6,11 +6,30 @@
           <div class="content pa-8">
             <div class="border-b pb-4 mb-4 text-center">
               <v-img
-                src="/logo.png"
-                max-height="150"
-                max-width="150"
+                :src="record.logo"
+                max-height="120"
+                max-width="120"
                 class="mx-auto"
-              ></v-img>
+              >
+                <template v-slot:placeholder>
+                  <div class="d-flex align-center justify-center fill-height">
+                    <v-progress-circular
+                      color="grey-lighten-4"
+                      indeterminate
+                    ></v-progress-circular>
+                  </div>
+                </template>
+                <template v-slot:error>
+                  <div>
+                    <v-img
+                      src="/logo.png"
+                      max-height="120"
+                      max-width="120"
+                      class="mx-auto"
+                    ></v-img>
+                  </div>
+                </template>
+              </v-img>
             </div>
             <!-- <div class="mb-4 border-b pb-4 mb-4">
               <h1>{{ $t("admin_auth.title") }}</h1>
@@ -60,6 +79,22 @@
 
               <v-col md="6" cols="12">
                 <filed-input
+                  :label="$t('admin_auth.password')"
+                  v-model="user.password"
+                  :value="user.password"
+                  :error="v$.user.password.$error || errors.password"
+                  :error-text="
+                    v$.user.password.required?.$invalid && $t('errors.required')
+                  "
+                  type="password"
+                  :showPassword="showPassword"
+                  @showPassword="showPassword = !showPassword"
+                  @blur="v$.user.password.$touch()"
+                />
+              </v-col>
+
+              <v-col md="12" cols="12">
+                <filed-input
                   :label="$t('admin_merchant.fields.address')"
                   v-model="user.address"
                   :value="user.address"
@@ -86,7 +121,7 @@
                   size="large"
                   @click="login"
                   :disabled="v$.user.$error"
-                  :loading="isLoading"
+                  :loading="uiFlags.isLoading"
                 >
                   {{ $t("admin_auth.register_new_client") }}
                 </v-btn>
@@ -103,8 +138,9 @@ import FiledInput from "@/components/common/FiledInput.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { mapActions, mapState } from "pinia";
-import { useAuthMerchantStore } from "@/stores/merchant/auth/auth.merchant.store";
 import Maps from "@/components/common/Maps.vue";
+import { useGetMerchantByCodeStore } from "@/stores/global/merchant/getByCode.store";
+
 export default {
   components: { FiledInput, Maps },
   setup() {
@@ -117,6 +153,7 @@ export default {
         name: { required },
         phone: { required },
         address: { required },
+        password: { required },
       },
     };
   },
@@ -139,11 +176,18 @@ export default {
       errors: {},
     };
   },
+  async mounted() {
+    // check router has query
+    if (this.$route.query.merchant_code) {
+      await this.getMerchantByCode(this.$route.query.merchant_code);
+      this.user.merchant_id = this.record.id;
+    }
+  },
   computed: {
-    ...mapState(useAuthMerchantStore, ["isLoading"]),
+    ...mapState(useGetMerchantByCodeStore, ["uiFlags", "record"]),
   },
   methods: {
-    ...mapActions(useAuthMerchantStore, ["loginMerchant"]),
+    ...mapActions(useGetMerchantByCodeStore, ["getMerchantByCode"]),
     async login() {
       this.v$.user.$touch();
       if (this.v$.user.$error) return;

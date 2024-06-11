@@ -1,7 +1,7 @@
 <template>
   <v-card class="bg-white rounded-lg pa-4">
     <div id="printQrCode" ref="printQrCode">
-      <qrcode-image :value="qrCode" class="w-100" />
+      <qrcode-image :value="urlCode" class="w-100" />
     </div>
     <v-row>
       <v-col cols="6">
@@ -33,17 +33,19 @@ import print from "vue3-print-nb";
 import html2pdf from "html2pdf.js";
 
 export default {
+  props: {
+    urlCode: {
+      type: String,
+      default: "",
+    },
+  },
   components: {
     QrcodeImage,
   },
   directives: {
     print,
   },
-  data() {
-    return {
-      qrCode: "https://www.google.com",
-    };
-  },
+
   methods: {
     downloadPdf() {
       html2pdf()

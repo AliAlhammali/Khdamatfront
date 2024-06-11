@@ -108,14 +108,39 @@ export default {
   },
   computed: {
     ...mapState(useAuthMerchantStore, ["isLoading", "record"]),
+
     pagesList() {
       let pages = [
         {
           title: this.$t("admin_navbar_links.orders"),
           icon: "mdi-list-box-outline",
-          key: "merchant_orders",
+          key: "client_orders",
           pages: [[this.$t("admin_navbar_links.orders"), "/client/orders"]],
           roles: ["admin", "staff"],
+        },
+        {
+          title: this.$t("admin_navbar_links.categories"),
+          icon: "mdi-store-outline",
+          key: "client_categories",
+          pages: [
+            [this.$t("admin_navbar_links.categories"), "/client/categories"],
+          ],
+          roles: ["admin"],
+        },
+        {
+          title: this.$t("admin_navbar_links.services"),
+          icon: "mdi-cog-outline",
+          key: "client_services",
+          pages: [[this.$t("admin_navbar_links.services"), "/client/services"]],
+          roles: ["admin"],
+        },
+
+        {
+          title: this.$t("admin_navbar_links.branches"),
+          icon: "mdi-storefront-plus-outline",
+          key: "client_branches",
+          pages: [[this.$t("admin_navbar_links.branches"), "/client/branches"]],
+          roles: ["admin"],
         },
       ];
       pages = pages.filter((page) => {
@@ -136,5 +161,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
