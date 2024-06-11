@@ -1,13 +1,15 @@
 <template>
-  <v-locale-provider :rtl="true">
-    <router-view />
-  </v-locale-provider>
+  <div id="app">
+    <PhoneVerification />
+  </div>
 </template>
+
 <script>
+import PhoneVerification from './services/shared/PhoneAuth.vue';
+
 export default {
-  methods: {},
+  components: {
+    PhoneVerification
+  }
 };
 </script>
-<style lang="scss">
-// test
-</style>
