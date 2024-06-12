@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="border mt-4 pa-4">
     <h3 class="mb-3">
       {{ $t("orders.select_branch") }}
@@ -6,14 +6,6 @@
     <v-row>
       <v-col md="6" cols="12">
         <div class="w-100 d-flex ga-2">
-          <v-btn
-            flat
-            class="d-flex align-center justify-center px-4"
-            size="md"
-            @click="showBranch = true"
-          >
-            <span class="mdi mdi-plus"></span>
-          </v-btn>
           <v-select
             v-model="selectBranch"
             :placeholder="$t('admin_navbar_links.branches')"
@@ -48,79 +40,16 @@
         </div>
       </v-col>
     </v-row>
-    <v-dialog v-model="showBranch" width="80%">
-      <template v-slot:default="{ isActive }">
-        <div class="bg-white rounded pa-4 overflow-auto">
-          <div
-            class="d-flex align-center justify-space-between pb-4 mb-4 border-b"
-          >
-            <h4>{{ $t("merchant.clients.add_new") }}</h4>
-            <button @click="isActive.value = false">
-              <span class="mdi mdi-24px mdi-close"></span>
-            </button>
-          </div>
-          <v-row>
-            <v-col
-              cols="12"
-              md="6"
-              v-for="(item, index) in branchesObjData"
-              :key="index"
-            >
-              <filed-input
-                :label="item.label"
-                v-model="branchesObj[item.name]"
-                :value="branchesObj[item.name]"
-                :type="item.type"
-                :error="v$.branchesObj[item.name].$error"
-                :error-text="item.errorText"
-                @blur="v$.branchesObj[item.name].$touch()"
-              />
-            </v-col>
-
-            <v-col cols="12">
-              <Maps
-                :editMode="false"
-                :lat="branchesObj?.location?.lat"
-                :long="branchesObj?.location?.long"
-                @getLocation="getLocation"
-              />
-            </v-col>
-            <v-col cols="12">
-              <v-checkbox
-                v-model="branchesObj.is_active"
-                :label="$t('global.status.active')"
-                :error="v$.branchesObj.is_active.$error"
-                @blur="v$.branchesObj.is_active.$touch()"
-                hide-details
-              />
-            </v-col>
-
-            <v-col cols="12">
-              <v-btn
-                class="w-100"
-                color="primary"
-                size="large"
-                @click="createBranch"
-                :loading="uiFlagsBranches.isCreating"
-                :disabled="uiFlagsBranches.isCreating || v$.branchesObj.$error"
-              >
-                {{ $t("global.actions.add") }}
-              </v-btn>
-            </v-col>
-          </v-row>
-        </div>
-      </template>
-    </v-dialog>
   </div>
 </template>
 <script>
 import FiledInput from "@/components/common/FiledInput.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import { useBranchesMerchantStore } from "@/stores/merchant/branches/branches.merchant.store";
 import { mapActions, mapState } from "pinia";
 import Maps from "@/components/common/Maps.vue";
 import MapsView from "@/components/common/MapsView.vue";
+import { useBranchesClientStore } from "@/stores/client/branches/branches.client.store";
 
 export default {
   components: { FiledInput, Maps, MapsView },
@@ -166,10 +95,10 @@ export default {
     };
   },
   async mounted() {
-    await this.getBranchesMerchant();
+    await this.getBranchesClient();
   },
   computed: {
-    ...mapState(useBranchesMerchantStore, {
+    ...mapState(useBranchesClientStore, {
       recordsBranches: "records",
       uiFlagsBranches: "uiFlags",
     }),
@@ -201,26 +130,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(useBranchesMerchantStore, [
-      "getBranchesMerchant",
-      "createBranchesMerchant",
-    ]),
+    ...mapActions(useBranchesClientStore, ["getBranchesClient"]),
     getLocation(address) {
       this.branchesObj.address = address.title;
       this.branchesObj.location = {
         lat: address.lat,
         long: address.long,
       };
-    },
-    async createBranch() {
-      this.v$.branchesObj.$touch();
-      if (this.v$.branchesObj.$error) return;
-      const { data } = await this.createBranchesMerchant(
-        { ...this.branchesObj },
-        false
-      );
-      this.selectBranch = data;
-      this.showBranch = false;
     },
   },
 
@@ -239,5 +155,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

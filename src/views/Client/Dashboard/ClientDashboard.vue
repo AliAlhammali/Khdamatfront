@@ -118,30 +118,30 @@ export default {
           pages: [[this.$t("admin_navbar_links.orders"), "/client/orders"]],
           roles: ["admin", "staff"],
         },
-        {
-          title: this.$t("admin_navbar_links.categories"),
-          icon: "mdi-store-outline",
-          key: "client_categories",
-          pages: [
-            [this.$t("admin_navbar_links.categories"), "/client/categories"],
-          ],
-          roles: ["admin"],
-        },
-        {
-          title: this.$t("admin_navbar_links.services"),
-          icon: "mdi-cog-outline",
-          key: "client_services",
-          pages: [[this.$t("admin_navbar_links.services"), "/client/services"]],
-          roles: ["admin"],
-        },
+        // {
+        //   title: this.$t("admin_navbar_links.categories"),
+        //   icon: "mdi-store-outline",
+        //   key: "client_categories",
+        //   pages: [
+        //     [this.$t("admin_navbar_links.categories"), "/client/categories"],
+        //   ],
+        //   roles: ["admin"],
+        // },
+        // {
+        //   title: this.$t("admin_navbar_links.services"),
+        //   icon: "mdi-cog-outline",
+        //   key: "client_services",
+        //   pages: [[this.$t("admin_navbar_links.services"), "/client/services"]],
+        //   roles: ["admin"],
+        // },
 
-        {
-          title: this.$t("admin_navbar_links.branches"),
-          icon: "mdi-storefront-plus-outline",
-          key: "client_branches",
-          pages: [[this.$t("admin_navbar_links.branches"), "/client/branches"]],
-          roles: ["admin"],
-        },
+        // {
+        //   title: this.$t("admin_navbar_links.branches"),
+        //   icon: "mdi-storefront-plus-outline",
+        //   key: "client_branches",
+        //   pages: [[this.$t("admin_navbar_links.branches"), "/client/branches"]],
+        //   roles: ["admin"],
+        // },
       ];
       pages = pages.filter((page) => {
         return page.roles.includes(this.record?.role.toLowerCase());

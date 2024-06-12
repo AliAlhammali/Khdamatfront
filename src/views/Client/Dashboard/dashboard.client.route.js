@@ -11,8 +11,8 @@ export default {
       redirect: { name: "orders-client" },
     },
     ...ordersClientRoute.routes,
-    ...branchesClientRoute.routes,
-    ...servicesClientRoute.routes,
-    ...categoriesClientRoute.routes,
+    // ...branchesClientRoute.routes,
+    // ...servicesClientRoute.routes,
+    // ...categoriesClientRoute.routes,
   ],
 };

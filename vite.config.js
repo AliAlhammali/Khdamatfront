@@ -37,8 +37,8 @@ export default defineConfig(({ mode }) => {
       sourcemap: false,
       terserOptions: {
         compress: {
-          drop_console: mode === "production" || mode === "staging",
-          drop_debugger: mode === "production" || mode === "staging",
+          drop_console: mode === "production" || mode === "development",
+          drop_debugger: mode === "production" || mode === "development",
         },
       },
     },
