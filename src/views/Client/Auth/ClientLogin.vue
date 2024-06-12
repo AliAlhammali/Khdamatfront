@@ -66,7 +66,7 @@
               color="primary"
               size="large"
               @click="login"
-              :disabled="v$.user.$error"
+              :disabled="v$.user.$error || isLoading"
               :loading="isLoading"
             >
               {{ $t("admin_auth.login") }}
@@ -82,7 +82,7 @@ import FiledInput from "@/components/common/FiledInput.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { mapActions, mapState } from "pinia";
-import { useAuthMerchantStore } from "@/stores/merchant/auth/auth.merchant.store";
+import { useAuthClientStore } from "@/stores/client/auth/auth.client.store";
 export default {
   components: { FiledInput },
   setup() {
@@ -107,14 +107,14 @@ export default {
     };
   },
   computed: {
-    ...mapState(useAuthMerchantStore, ["isLoading"]),
+    ...mapState(useAuthClientStore, ["isLoading"]),
   },
   methods: {
-    ...mapActions(useAuthMerchantStore, ["loginMerchant"]),
+    ...mapActions(useAuthClientStore, ["loginClient"]),
     async login() {
       this.v$.user.$touch();
       if (this.v$.user.$error) return;
-      const isLogin = await this.loginMerchant(this.user);
+      const isLogin = await this.loginClient(this.user);
       if (!isLogin) {
         this.errors = { email: this.$t("errors.invalid_email_or_password") };
       }

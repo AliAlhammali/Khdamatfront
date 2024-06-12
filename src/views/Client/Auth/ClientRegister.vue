@@ -1,6 +1,15 @@
 <template>
   <div class="auth">
-    <v-container>
+    <div
+      v-if="uiFlags.isLoading"
+      class="d-flex align-center justify-center fill-height"
+    >
+      <v-progress-circular
+        color="grey-lighten-4"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+    <v-container v-else>
       <v-row class="justify-center">
         <v-col md="12" cols="12">
           <div class="content pa-8">
@@ -119,9 +128,9 @@
                   class="w-100"
                   color="primary"
                   size="large"
-                  @click="login"
-                  :disabled="v$.user.$error"
-                  :loading="uiFlags.isLoading"
+                  @click="register"
+                  :disabled="v$.user.$error || isLoading"
+                  :loading="isLoading"
                 >
                   {{ $t("admin_auth.register_new_client") }}
                 </v-btn>
@@ -140,7 +149,7 @@ import { required, email } from "@vuelidate/validators";
 import { mapActions, mapState } from "pinia";
 import Maps from "@/components/common/Maps.vue";
 import { useGetMerchantByCodeStore } from "@/stores/global/merchant/getByCode.store";
-
+import { useAuthClientStore } from "@/stores/client/auth/auth.client.store";
 export default {
   components: { FiledInput, Maps },
   setup() {
@@ -181,20 +190,21 @@ export default {
     if (this.$route.query.merchant_code) {
       await this.getMerchantByCode(this.$route.query.merchant_code);
       this.user.merchant_id = this.record.id;
+    } else {
+      this.$router.push({ name: "404" });
     }
   },
   computed: {
     ...mapState(useGetMerchantByCodeStore, ["uiFlags", "record"]),
+    ...mapState(useAuthClientStore, ["isLoading"]),
   },
   methods: {
     ...mapActions(useGetMerchantByCodeStore, ["getMerchantByCode"]),
-    async login() {
+    ...mapActions(useAuthClientStore, ["registerClient"]),
+    async register() {
       this.v$.user.$touch();
       if (this.v$.user.$error) return;
-      // const isLogin = await this.loginMerchant(this.user);
-      // if (!isLogin) {
-      //   this.errors = { email: this.$t("errors.invalid_email_or_password") };
-      // }
+      await this.registerClient(this.user);
     },
     getLocation(address) {
       this.user.address = address.title;

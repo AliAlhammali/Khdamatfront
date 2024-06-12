@@ -18,6 +18,7 @@
     "select_service": "اختر الخدمة",
     "select_client": "اختر العميل",
     "select_branch": "اختر الفرع",
-    "add_new": "إضافة طلب جديد"
+    "add_new": "إضافة طلب جديد",
+    "client_info": "بيانات العميل"
   }
 }

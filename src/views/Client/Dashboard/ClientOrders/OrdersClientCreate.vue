@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <div class="bg-white pa-4 rounded border rounded-lg">
       <h2 class="mb-4 border-b pb-4">
@@ -7,6 +7,7 @@
       <order-client
         :order-data="objData"
         :error-client="v$.objData.merchant_client_id.$error"
+        :select-client="$cookies.get('client_khadamat_user')"
       />
       <v-row>
         <v-col md="6" cols="12">
@@ -65,7 +66,6 @@
   </div>
 </template>
 <script>
-import { useOrdersMerchantStore } from "@/stores/merchant/orders/orders.merchant.store";
 import { mapActions, mapState } from "pinia";
 import OrderClient from "./components/OrderClient.vue";
 import OrderBranch from "./components/OrderBranch.vue";
@@ -77,6 +77,7 @@ import {
   minLength,
   requiredIf,
 } from "@vuelidate/validators";
+import { useOrdersClientStore } from "@/stores/client/orders/orders.client.store";
 
 export default {
   components: { OrderClient, OrderBranch, OrderItems },
@@ -158,12 +159,11 @@ export default {
       ],
     };
   },
-  async mounted() {},
   computed: {
-    ...mapState(useOrdersMerchantStore, ["uiFlags"]),
+    ...mapState(useOrdersClientStore, ["uiFlags"]),
   },
   methods: {
-    ...mapActions(useOrdersMerchantStore, ["createOrdersMerchant"]),
+    ...mapActions(useOrdersClientStore, ["createOrdersClient"]),
     getDate(date) {
       this.objData.started_at = date;
     },
@@ -174,10 +174,9 @@ export default {
 
     createOrder() {
       this.v$.objData.$touch();
-      this.createOrdersMerchant(this.objData);
+      this.createOrdersClient(this.objData);
     },
   },
 };
 </script>
-<style lang="">
-</style>
+<style lang=""></style>

@@ -28,6 +28,20 @@ export const useAuthClientStore = defineStore("AuthClient", {
       }
     },
 
+    registerClient: async function(user) {
+      this.isLoading = true;
+      try {
+        await authClientService.register(user);
+
+        router.push({ name: "client-login" });
+        return true;
+      } catch (error) {
+        return false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
     logoutClient: async function() {
       try {
         await authClientService.logout();

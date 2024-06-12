@@ -1,4 +1,4 @@
-import { merchantRolesGuard } from "@/helper/merchant.router.helper";
+import { clientRolesGuard } from "@/helper/client.router.helper";
 
 export default {
   routes: [
@@ -9,7 +9,7 @@ export default {
       meta: {
         roles: ["admin"],
       },
-      // beforeEnter: merchantRolesGuard,
+      // beforeEnter: clientRolesGuard,
     },
     {
       path: "branches/create",
@@ -19,7 +19,7 @@ export default {
         edit: false,
         roles: ["admin"],
       },
-      // beforeEnter: merchantRolesGuard,
+      // beforeEnter: clientRolesGuard,
     },
     {
       path: "branches/:id/edit",
@@ -29,7 +29,7 @@ export default {
         edit: true,
         roles: ["admin"],
       },
-      // beforeEnter: merchantRolesGuard,
+      // beforeEnter: clientRolesGuard,
     },
   ],
 };

@@ -1,3 +1,7 @@
+import {
+  clientAuthGuard,
+  clientGuestGuard,
+} from "@/helper/client.router.helper";
 import dashboardClientRoute from "./Dashboard/dashboard.client.route";
 
 export default {
@@ -11,6 +15,7 @@ export default {
           path: "login",
           name: "client-login",
           component: () => import("./Auth/ClientLogin.vue"),
+          beforeEnter: clientAuthGuard,
         },
         {
           path: "register",
@@ -26,6 +31,7 @@ export default {
           path: "",
           component: () => import("./Dashboard/ClientDashboard.vue"),
           redirect: { name: "client-dashboard" },
+          beforeEnter: clientGuestGuard,
           children: [...dashboardClientRoute.routes],
         },
       ],

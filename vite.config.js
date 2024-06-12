@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
     build: {
       target: "esnext",
       cssMinify: true,
-      sourcemap: mode === "development",
+      sourcemap: false,
       terserOptions: {
         compress: {
           drop_console: mode === "production" || mode === "staging",

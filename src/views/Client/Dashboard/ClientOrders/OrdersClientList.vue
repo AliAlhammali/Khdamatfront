@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <data-table
       :title="$t('admin_navbar_links.orders')"
@@ -13,6 +13,7 @@
       @search="search"
       :hasFilter="true"
       :isMobile="isMobile"
+      :createPage="`/client/orders/create`"
     >
       <template #filter>
         <v-row>
@@ -83,7 +84,7 @@
               item-value="value"
               @update:model-value="
                 (val) =>
-                  getCategoriesMerchant({
+                  getCategoriesClient({
                     'filter[parent_id]': val,
                     listing: 1,
                   })
@@ -249,16 +250,15 @@
   </div>
 </template>
 <script>
-import { useOrdersMerchantStore } from "@/stores/merchant/orders/orders.merchant.store";
 import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
 
-import { useServicesMerchantStore } from "@/stores/merchant/services/services.merchant.store";
-import { useCategoriesMerchantStore } from "@/stores/merchant/categories/categories.merchant.store";
-import { useClientsMerchantStore } from "@/stores/merchant/clients/clients.merchant.store";
-import { useBranchesMerchantStore } from "@/stores/merchant/branches/branches.merchant.store";
 import CardItem from "@/components/ui/CardItem.vue";
 
+import { useCategoriesClientStore } from "@/stores/client/categories/categories.client.store";
+import { useServicesClientStore } from "@/stores/client/services/services.client.store";
+import { useBranchesClientStore } from "@/stores/client/branches/branches.client.store";
+import { useOrdersClientStore } from "@/stores/client/orders/orders.client.store";
 export default {
   components: { DataTable, CardItem },
   data() {
@@ -289,31 +289,23 @@ export default {
     };
   },
   async mounted() {
-    await this.getOrdersMerchant(this.params);
-    await this.getServicesMerchant();
-    await this.getMainCategoriesMerchant({ "filter[isParent]": 1, listing: 1 });
-    await this.getClientsMerchant();
-    await this.getBranchesMerchant();
+    await this.getOrdersClient(this.params);
+    await this.getServicesClient();
+    await this.getMainCategoriesClient({ "filter[isParent]": 1, listing: 1 });
+    await this.getBranchesClient();
   },
   computed: {
-    ...mapState(useOrdersMerchantStore, [
-      "records",
-      "uiFlags",
-      "recordsScroll",
-    ]),
-    ...mapState(useServicesMerchantStore, {
+    ...mapState(useOrdersClientStore, ["records", "uiFlags", "recordsScroll"]),
+    ...mapState(useServicesClientStore, {
       servicesMerchant: "records",
       uiFlagsServices: "uiFlags",
     }),
-    ...mapState(useCategoriesMerchantStore, {
+    ...mapState(useCategoriesClientStore, {
       categoriesMerchant: "records",
       mainCategoriesMerchant: "mainCategories",
     }),
-    ...mapState(useClientsMerchantStore, {
-      clientsMerchant: "records",
-      uiFlagsClients: "uiFlags",
-    }),
-    ...mapState(useBranchesMerchantStore, {
+
+    ...mapState(useBranchesClientStore, {
       branchesMerchant: "records",
       uiFlagsBranches: "uiFlags",
     }),
@@ -485,16 +477,7 @@ export default {
         }) || []
       );
     },
-    clientsList() {
-      return (
-        this.clientsMerchant?.data?.map((item) => {
-          return {
-            value: item.id,
-            title: item.name,
-          };
-        }) || []
-      );
-    },
+
     branchesList() {
       return (
         this.branchesMerchant?.data?.map((item) => {
@@ -510,23 +493,22 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useOrdersMerchantStore, ["getOrdersMerchant"]),
-    ...mapActions(useServicesMerchantStore, ["getServicesMerchant"]),
-    ...mapActions(useCategoriesMerchantStore, [
-      "getCategoriesMerchant",
-      "getMainCategoriesMerchant",
+    ...mapActions(useOrdersClientStore, ["getOrdersClient"]),
+    ...mapActions(useServicesClientStore, ["getServicesClient"]),
+    ...mapActions(useCategoriesClientStore, [
+      "getCategoriesClient",
+      "getMainCategoriesClient",
     ]),
-    ...mapActions(useClientsMerchantStore, ["getClientsMerchant"]),
-    ...mapActions(useBranchesMerchantStore, ["getBranchesMerchant"]),
+    ...mapActions(useBranchesClientStore, ["getBranchesClient"]),
 
     async filterOrderBy(value, key) {
       this.filtersParams[key] = value;
-      await this.getOrdersMerchant(
+      await this.getOrdersClient(
         {
           ...this.filtersParams,
           ...this.params,
         },
-        true
+        true,
       );
     },
 
@@ -543,24 +525,24 @@ export default {
       };
       this.main_category_id = null;
 
-      await this.getOrdersMerchant({ ...this.params }, true);
+      await this.getOrdersClient({ ...this.params }, true);
     },
 
     async changePage(page) {
       this.params.page = page;
-      await this.getOrdersMerchant(this.params);
+      await this.getOrdersClient(this.params);
     },
     async changePerPage(perPage) {
       this.params.perPage = perPage;
       this.params.page = 1;
-      await this.getOrdersMerchant(this.params);
+      await this.getOrdersClient(this.params);
     },
     async search(text) {
       this.params["filter[keyword]"] = text;
       const key = {
         "filter[keyword]": text,
       };
-      await this.getOrdersMerchant(key, true);
+      await this.getOrdersClient(key, true);
     },
 
     beforeToday(date) {
@@ -573,7 +555,7 @@ export default {
     async load({ done }) {
       if (this.records?.meta?.currentPage < this.records?.meta?.lastPage) {
         this.params.page = this.records?.meta?.currentPage + 1;
-        await this.getOrdersMerchant(this.params);
+        await this.getOrdersClient(this.params);
         await done("ok");
       } else {
         await done("empty");
@@ -590,5 +572,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
