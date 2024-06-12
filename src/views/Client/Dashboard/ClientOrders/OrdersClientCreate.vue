@@ -6,7 +6,6 @@
       </h2>
       <order-client
         :order-data="objData"
-        :error-client="v$.objData.merchant_client_id.$error"
         :select-client="$cookies.get('client_khadamat_user')"
       />
       <v-row>
@@ -97,7 +96,6 @@ export default {
             category_id: { required },
           }),
         },
-        merchant_client_id: { required },
         address: {
           name: { required },
           // phone: { required },
@@ -113,11 +111,6 @@ export default {
         },
         started_at: { required },
         pick_up_type: { required },
-        merchant_branch_id: {
-          required: requiredIf(function () {
-            return this.objData.pick_up_type === "from_branch";
-          }),
-        },
       },
     };
   },
@@ -126,7 +119,6 @@ export default {
       objData: {
         main_category_id: null,
         items: [],
-        merchant_client_id: null,
         address: {
           name: null,
           phone: null,
@@ -143,9 +135,6 @@ export default {
         started_at: new Date().toISOString().substr(0, 10),
         pick_up_type: "delivered", // from_branch
         merchant_branch_id: null,
-        merchant_reference: null,
-        merchant_reference_file: null,
-        openTime: false,
       },
       pickList: [
         {

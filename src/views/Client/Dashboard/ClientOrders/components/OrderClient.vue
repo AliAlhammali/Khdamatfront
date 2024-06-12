@@ -1,26 +1,5 @@
 <template>
   <div class="border my-4 pa-4">
-    <v-row class="mb-4">
-      <v-col md="6" cols="12">
-        <filed-input
-          :label="$t('admin_merchant.fields.merchant_reference')"
-          v-model="orderData.merchant_reference"
-          :value="orderData.merchant_reference"
-          :required="false"
-        />
-      </v-col>
-      <v-col md="6" cols="12">
-        <p class="d-flex align-center ga-2 mb-3 filed__label">
-          {{ $t("admin_merchant.fields.merchant_reference_file") }}
-        </p>
-        <label class="filed__input d-flex align-center ga-2 pa-2 rounded-lg">
-          <input
-            type="file"
-            @input="upload($event, 'merchant_reference_file')"
-          />
-        </label>
-      </v-col>
-    </v-row>
     <h3 class="mb-3">
       {{ $t("orders.client_info") }}
     </h3>
@@ -59,7 +38,6 @@
   </div>
 </template>
 <script>
-import { useClientsMerchantStore } from "@/stores/merchant/clients/clients.merchant.store";
 import { mapActions, mapState } from "pinia";
 import { useVuelidate } from "@vuelidate/core";
 import FiledInput from "@/components/common/FiledInput.vue";
@@ -104,20 +82,12 @@ export default {
       timer: null,
     };
   },
-  async mounted() {
-    await this.getClientsMerchant();
-  },
   computed: {
-    ...mapState(useClientsMerchantStore, ["records", "uiFlags"]),
     recordsClients() {
       return this.records?.data || [];
     },
   },
   methods: {
-    ...mapActions(useClientsMerchantStore, [
-      "getClientsMerchant",
-      "createClientsMerchant",
-    ]),
     ...mapActions(useGlobalActionsStore, ["uploadFile"]),
 
     async createClient() {
@@ -152,7 +122,27 @@ export default {
     },
   },
 
-  watch: {},
+  watch: {
+    selectClient: {
+      handler(val) {
+        if (!val) return;
+
+        this.orderData.address.name = val?.name;
+        this.orderData.address.phone = val?.phone;
+        this.orderData.address.address = val?.address;
+        this.orderData.address.location.lat = val?.location?.coordinates[0];
+        this.orderData.address.location.long = val?.location?.coordinates[1];
+
+        if (this.orderData.pick_up_type == "delivered") {
+          this.orderData.address.pick_up_location.lat =
+            val.location.coordinates[0];
+          this.orderData.address.pick_up_location.long =
+            val.location.coordinates[1];
+        }
+      },
+      immediate: true,
+    },
+  },
 };
 </script>
 <style lang="scss" scoped></style>

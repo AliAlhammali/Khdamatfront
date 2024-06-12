@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="border mt-4 pa-4">
     <h3 class="mb-3">
       {{ $t("orders.select_service") }}
@@ -150,8 +150,9 @@
   </div>
 </template>
 <script>
-import { useCategoriesMerchantStore } from "@/stores/merchant/categories/categories.merchant.store";
-import { useServicesMerchantStore } from "@/stores/merchant/services/services.merchant.store";
+import { useCategoriesClientStore } from "@/stores/client/categories/categories.client.store";
+import { useServicesClientStore } from "@/stores/client/services/services.client.store";
+
 import { mapActions, mapState } from "pinia";
 export default {
   props: {
@@ -179,16 +180,16 @@ export default {
     };
   },
   async mounted() {
-    await this.getCategoriesMerchant({ "filter[isParent]": 1, listing: 1 });
+    await this.getCategoriesClient({ "filter[isParent]": 1, listing: 1 });
   },
   computed: {
-    ...mapState(useCategoriesMerchantStore, {
+    ...mapState(useCategoriesClientStore, {
       categories: "records",
       categoriesUiFlags: "uiFlags",
       subCategories: "subCategories",
       uiFlagsSub: "uiFlagsSub",
     }),
-    ...mapState(useServicesMerchantStore, {
+    ...mapState(useServicesClientStore, {
       services: "records",
       uiFlagsServices: "uiFlags",
     }),
@@ -223,13 +224,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useCategoriesMerchantStore, [
-      "getCategoriesMerchant",
-      "getSubCategoriesMerchant",
+    ...mapActions(useCategoriesClientStore, [
+      "getCategoriesClient",
+      "getSubCategoriesClient",
     ]),
-    ...mapActions(useServicesMerchantStore, ["getServicesMerchant"]),
+    ...mapActions(useServicesClientStore, ["getServicesClient"]),
     getService() {
-      this.getServicesMerchant({
+      this.getServicesClient({
         "filter[category_id]": this.category_id,
         forCreatingOrder: 1,
       });
@@ -240,7 +241,7 @@ export default {
       });
     },
     getSubCategory() {
-      this.getSubCategoriesMerchant({
+      this.getSubCategoriesClient({
         "filter[parent_id]": this.main_category_id,
         listing: 1,
       });
@@ -294,5 +295,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
