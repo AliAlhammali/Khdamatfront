@@ -143,9 +143,9 @@ export default {
         //   roles: ["admin"],
         // },
       ];
-      pages = pages.filter((page) => {
-        return page.roles.includes(this.record?.role?.toLowerCase());
-      });
+      // pages = pages.filter((page) => {
+      //   return page.roles.includes(this.record?.role?.toLowerCase());
+      // });
       return pages;
     },
   },
