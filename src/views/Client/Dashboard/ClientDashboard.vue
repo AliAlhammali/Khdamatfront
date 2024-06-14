@@ -69,7 +69,7 @@
               <v-divider class="my-3"></v-divider>
               <v-btn
                 class="w-100 d-flex align-center ga-2"
-                @click="logoutMerchant"
+                @click="logoutClient"
                 :loading="isLoading"
                 :disabled="isLoading"
               >
@@ -93,8 +93,8 @@
 </template>
 <script>
 import { mapActions, mapState } from "pinia";
-import { useAuthMerchantStore } from "@/stores/merchant/auth/auth.merchant.store";
 import { getInitials } from "@/helper/initials.name.helper";
+import { useAuthClientStore } from "@/stores/client/auth/auth.client.store";
 export default {
   data() {
     return {
@@ -107,7 +107,7 @@ export default {
     this.closeDrawer();
   },
   computed: {
-    ...mapState(useAuthMerchantStore, ["isLoading", "record"]),
+    ...mapState(useAuthClientStore, ["isLoading", "record"]),
 
     pagesList() {
       let pages = [
@@ -144,13 +144,14 @@ export default {
         // },
       ];
       pages = pages.filter((page) => {
-        return page.roles.includes(this.record?.role.toLowerCase());
+        return page.roles.includes(this.record?.role?.toLowerCase());
       });
       return pages;
     },
   },
+
   methods: {
-    ...mapActions(useAuthMerchantStore, ["checkCookie", "logoutMerchant"]),
+    ...mapActions(useAuthClientStore, ["checkCookie", "logoutClient"]),
     getInitials,
     // if mobile close
     closeDrawer() {
