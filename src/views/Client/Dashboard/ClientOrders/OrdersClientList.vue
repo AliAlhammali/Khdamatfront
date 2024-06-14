@@ -17,7 +17,7 @@
     >
       <template #filter>
         <v-row>
-          <v-col md="3" cols="12">
+          <v-col md="4" cols="12">
             <div class="d-flex align-center ga-2">
               <p>{{ $t("global.started_from") }}</p>
               <date-picker
@@ -33,7 +33,7 @@
               />
             </div>
           </v-col>
-          <v-col md="3" cols="12">
+          <v-col md="4" cols="12">
             <div class="d-flex align-center ga-2">
               <p>{{ $t("global.started_to") }}</p>
               <date-picker
@@ -68,7 +68,7 @@
             ></v-autocomplete>
           </v-col> -->
 
-          <v-col md="3" cols="12">
+          <v-col md="4" cols="12">
             <!-- Main Category -->
             <v-autocomplete
               :placeholder="$t('global.main_category')"
@@ -93,7 +93,6 @@
           </v-col>
 
           <v-col md="3" cols="12">
-            <!-- Category -->
             <v-autocomplete
               :placeholder="$t('admin_navbar_links.categories')"
               :label="$t('admin_navbar_links.categories')"
@@ -113,8 +112,7 @@
             ></v-autocomplete>
           </v-col>
 
-          <v-col md="3" cols="12">
-            <!-- Client -->
+          <!-- <v-col md="3" cols="12">
             <v-autocomplete
               :placeholder="$t('global.client_name')"
               :label="$t('global.client_name')"
@@ -131,10 +129,9 @@
                 (val) => filterOrderBy(val, 'filter[merchant_client_id]')
               "
             ></v-autocomplete>
-          </v-col>
+          </v-col> -->
 
-          <v-col md="3" cols="12">
-            <!-- Branch -->
+          <!-- <v-col md="3" cols="12">
             <v-autocomplete
               :placeholder="$t('admin_navbar_links.branches')"
               :label="$t('admin_navbar_links.branches')"
@@ -151,7 +148,7 @@
                 (val) => filterOrderBy(val, 'filter[merchant_branch_id]')
               "
             ></v-autocomplete>
-          </v-col>
+          </v-col> -->
 
           <v-col md="3" cols="12">
             <!-- Status -->

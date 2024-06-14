@@ -25,7 +25,7 @@
           >
           </date-picker>
         </v-col>
-        <v-col md="6" cols="12">
+        <!-- <v-col md="6" cols="12">
           <v-select
             v-model="objData.pick_up_type"
             :placeholder="$t('global.order_type.label')"
@@ -38,7 +38,7 @@
             outlined
             :no-data-text="$t('global.actions.no_data')"
           />
-        </v-col>
+        </v-col> -->
       </v-row>
 
       <div class="" v-if="objData.pick_up_type !== 'delivered'">
@@ -70,12 +70,7 @@ import OrderClient from "./components/OrderClient.vue";
 import OrderBranch from "./components/OrderBranch.vue";
 import OrderItems from "./components/OrderItems.vue";
 import useVuelidate from "@vuelidate/core";
-import {
-  required,
-  helpers,
-  minLength,
-  requiredIf,
-} from "@vuelidate/validators";
+import { required, helpers, minLength } from "@vuelidate/validators";
 import { useOrdersClientStore } from "@/stores/client/orders/orders.client.store";
 
 export default {

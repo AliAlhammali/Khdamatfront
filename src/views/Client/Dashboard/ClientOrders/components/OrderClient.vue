@@ -27,10 +27,18 @@
           class="border rounded-lg pa-2"
           v-if="selectClient?.location?.coordinates"
         >
-          <MapsView
+          <!-- <MapsView
             v-if="selectClient?.location?.coordinates"
             :key="selectClient?.location?.coordinates"
             :center="selectClient?.location?.coordinates"
+          /> -->
+
+          <Maps
+            :key="clientObj?.location?.lat"
+            :editMode="false"
+            :lat="clientObj?.location?.lat"
+            :long="clientObj?.location?.long"
+            @getLocation="getLocation"
           />
         </div>
       </v-col>

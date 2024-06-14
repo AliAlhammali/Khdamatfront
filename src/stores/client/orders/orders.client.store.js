@@ -56,7 +56,7 @@ export const useOrdersClientStore = defineStore("OrdersClient", {
         await OrdersClient.create(payload);
         this.uiFlags.isCreated = true;
         toast.success(i18n.global.t("global.actions.add_success"));
-        router.push({ name: "orders-Client-dashboard" });
+        router.push({ name: "orders-client" });
       } catch (error) {
         toast.error(i18n.global.t("global.actions.add_error"));
         return error;
