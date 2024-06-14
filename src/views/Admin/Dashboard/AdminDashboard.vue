@@ -76,6 +76,18 @@
               <p class="text-caption mt-1">
                 {{ record?.email }}
               </p>
+
+              <!-- <v-divider class="my-3"></v-divider>
+              <v-list>
+                <v-list-item to="/admin/settings">
+                  <v-list-item-icon>
+                    <span class="mdi mdi-cog"></span>
+                  </v-list-item-icon>
+                  <v-list-item-title>
+                    {{ $t("global.actions.settings") }}
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list> -->
               <v-divider class="my-3"></v-divider>
               <v-btn
                 class="w-100 d-flex align-center ga-2"
@@ -172,6 +184,12 @@ export default {
           key: "admin_orders",
           pages: [[this.$t("admin_navbar_links.orders"), "/admin/orders"]],
         },
+        {
+          title: this.$t("admin_navbar_links.setting"),
+          icon: "mdi-cog",
+          key: "settings",
+          pages: [[this.$t("admin_navbar_links.setting"), "/admin/settings"]],
+        },
       ];
     },
   },
@@ -186,5 +204,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

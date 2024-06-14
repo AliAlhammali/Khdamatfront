@@ -10,6 +10,12 @@
     "services": "Services",
     "branches": "Branches",
     "order": "Orders",
-    "clients": "Clients"
+    "clients": "Clients",
+    "settings": "Settings",
+    "general": "General",
+    "taxes": "Taxes"
+  },
+  "admin_settings_general": {
+    "site_name": "Site Name"
   }
 }

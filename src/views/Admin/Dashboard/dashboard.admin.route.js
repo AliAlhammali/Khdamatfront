@@ -6,6 +6,7 @@ import serviceAdminRoute from "./services/service.admin.route";
 import usersAdminRoute from "./users/users.admin.route";
 import serviceProvidersAdminRoute from "./serviceProviders/serviceProviders.admin.route";
 import orderAdminRoute from "./orderAdmin/orders.admin.route";
+import settingsAdminRoute from "./settings/settings.admin.route";
 export default {
   routes: [
     {
@@ -21,5 +22,6 @@ export default {
     ...serviceAdminRoute.routes,
     ...usersAdminRoute.routes,
     ...orderAdminRoute.routes,
+    ...settingsAdminRoute.routes,
   ],
 };

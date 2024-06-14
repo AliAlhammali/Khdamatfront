@@ -10,6 +10,12 @@
     "services": "الخدمات",
     "branches": "الفروع",
     "orders": "الطلبات",
-    "clients": "العملاء"
+    "clients": "العملاء",
+    "setting": "الاعدادات",
+    "general": "عام",
+    "taxes": "الضرائب"
+  },
+  "admin_settings_general": {
+    "site_name": "اسم الموقع"
   }
 }
