@@ -195,7 +195,7 @@
 
       <template v-slot:actions="{ item }">
         <router-link
-          :to="`/merchant/orders/${item.item.id}`"
+          :to="`/client/orders/${item.item.id}`"
           class="button button--edit px-2 rounded"
         >
           <v-tooltip :text="$t('global.actions.show')">
@@ -227,7 +227,7 @@
                   </div>
                   <div>
                     <router-link
-                      :to="`/merchant/orders/${item.id}`"
+                      :to="`/client/orders/${item.id}`"
                       class="button button--edit px-2 rounded w-100 d-flex justify-center"
                     >
                       <v-tooltip :text="$t('global.actions.show')">

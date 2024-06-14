@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="content">
     <template v-if="uiFlags.isLoading">
       <Loader />
@@ -250,7 +250,8 @@
 </template>
 <script>
 import Loader from "@/components/common/Loader.vue";
-import { useOrdersMerchantStore } from "@/stores/merchant/orders/orders.merchant.store";
+import { useOrdersClientStore } from "@/stores/client/orders/orders.client.store";
+
 import { mapActions, mapState } from "pinia";
 import MapsView from "@/components/common/MapsView.vue";
 
@@ -264,7 +265,7 @@ export default {
   },
   async mounted() {
     // includeOrderItemService
-    await this.showOrdersMerchant(this.$route.params.id, {
+    await this.showOrdersClient(this.$route.params.id, {
       includeOrderItemService: 1,
       includeOrderMerchantUser: 1,
       includeOrderMerchantClient: 1,
@@ -272,7 +273,7 @@ export default {
     });
   },
   computed: {
-    ...mapState(useOrdersMerchantStore, ["record", "uiFlags"]),
+    ...mapState(useOrdersClientStore, ["record", "uiFlags"]),
     orderStatus() {
       let status = [
         { value: "new", text: this.$t("global.order_status.new"), step: 1 },
@@ -336,12 +337,12 @@ export default {
     },
     currentStep() {
       return this.orderStatus.find(
-        (status) => status?.value === this.record?.status
+        (status) => status?.value === this.record?.status,
       );
     },
   },
   methods: {
-    ...mapActions(useOrdersMerchantStore, ["showOrdersMerchant"]),
+    ...mapActions(useOrdersClientStore, ["showOrdersClient"]),
   },
 };
 </script>
