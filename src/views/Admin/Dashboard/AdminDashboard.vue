@@ -117,7 +117,7 @@
 import { mapActions, mapState } from "pinia";
 import { useAuthAdminStore } from "@/stores/admin/auth/auth.admin.store";
 import { getInitials } from "@/helper/initials.name.helper";
-import { useSettingsAdminStore } from "@/stores/admin/settings/settings.admin.store";
+// import { useSettingsAdminStore } from "@/stores/admin/settings/settings.admin.store";
 export default {
   data() {
     return {
@@ -127,14 +127,14 @@ export default {
   async mounted() {
     this.checkCookie();
     this.closeDrawer();
-    await this.getGeneralSettings();
-    console.log(this.general.records.site_name);
+    // await this.getGeneralSettings();
+    // console.log(this.general.records.site_name);
 
-    document.title = this.general.records.site_name;
+    // document.title = this.general.records.site_name;
   },
   computed: {
     ...mapState(useAuthAdminStore, ["isLoading", "record"]),
-    ...mapState(useSettingsAdminStore, ["general"]),
+    // ...mapState(useSettingsAdminStore, ["general"]),
 
     pagesList() {
       return [
@@ -202,7 +202,7 @@ export default {
   },
   methods: {
     ...mapActions(useAuthAdminStore, ["checkCookie", "logoutAdmin"]),
-    ...mapActions(useSettingsAdminStore, ["getGeneralSettings"]),
+    // ...mapActions(useSettingsAdminStore, ["getGeneralSettings"]),
     getInitials,
     closeDrawer() {
       if (window.innerWidth < 992) {
