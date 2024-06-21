@@ -6,6 +6,7 @@ export const useAuthMerchantStore = defineStore("AuthMerchant", {
   state: () => ({
     record: null,
     isLoading: false,
+    code: null,
   }),
   getters: {},
   actions: {
@@ -18,8 +19,10 @@ export const useAuthMerchantStore = defineStore("AuthMerchant", {
         // Save token to cookies
         $cookies.set("merchant_khadamat_token", data.token, "1m");
         $cookies.set("merchant_khadamat_user", data.user, "1m");
+        $cookies.set("merchant_khadamat_merchant", data.merchant, "1m");
 
         router.push({ name: "merchant-dashboard" });
+        return true;
       } catch (error) {
         return false;
       } finally {

@@ -58,6 +58,9 @@
       <v-app-bar class="">
         <template v-slot:prepend>
           <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+          <button @click="() => (openQr = true)" class="mx-2">
+            <v-icon>mdi mdi-qrcode-scan</v-icon>
+          </button>
         </template>
 
         <v-spacer></v-spacer>
@@ -99,16 +102,23 @@
         </v-container>
       </v-main>
     </v-layout>
+
+    <v-dialog v-model="openQr" max-width="500">
+      <qr-code :url-code="registerUrl" />
+    </v-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapState } from "pinia";
 import { useAuthMerchantStore } from "@/stores/merchant/auth/auth.merchant.store";
 import { getInitials } from "@/helper/initials.name.helper";
+import QrCode from "@/components/common/QrCode.vue";
 export default {
+  components: { QrCode },
   data() {
     return {
       drawer: true,
+      openQr: false,
     };
   },
   mounted() {
@@ -175,6 +185,15 @@ export default {
         return page.roles.includes(this.record?.role.toLowerCase());
       });
       return pages;
+    },
+
+    merchantCode() {
+      return this.$cookies.get("merchant_khadamat_merchant").code || "";
+    },
+
+    registerUrl() {
+      // get base url
+      return `${window.location.origin}/#/client/register?merchant_code=${this.merchantCode}`;
     },
   },
   methods: {

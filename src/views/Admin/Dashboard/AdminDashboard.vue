@@ -76,6 +76,18 @@
               <p class="text-caption mt-1">
                 {{ record?.email }}
               </p>
+
+              <!-- <v-divider class="my-3"></v-divider>
+              <v-list>
+                <v-list-item to="/admin/settings">
+                  <v-list-item-icon>
+                    <span class="mdi mdi-cog"></span>
+                  </v-list-item-icon>
+                  <v-list-item-title>
+                    {{ $t("global.actions.settings") }}
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list> -->
               <v-divider class="my-3"></v-divider>
               <v-btn
                 class="w-100 d-flex align-center ga-2"
@@ -105,18 +117,25 @@
 import { mapActions, mapState } from "pinia";
 import { useAuthAdminStore } from "@/stores/admin/auth/auth.admin.store";
 import { getInitials } from "@/helper/initials.name.helper";
+// import { useSettingsAdminStore } from "@/stores/admin/settings/settings.admin.store";
 export default {
   data() {
     return {
       drawer: true,
     };
   },
-  mounted() {
+  async mounted() {
     this.checkCookie();
     this.closeDrawer();
+    // await this.getGeneralSettings();
+    // console.log(this.general.records.site_name);
+
+    // document.title = this.general.records.site_name;
   },
   computed: {
     ...mapState(useAuthAdminStore, ["isLoading", "record"]),
+    // ...mapState(useSettingsAdminStore, ["general"]),
+
     pagesList() {
       return [
         {
@@ -172,11 +191,18 @@ export default {
           key: "admin_orders",
           pages: [[this.$t("admin_navbar_links.orders"), "/admin/orders"]],
         },
+        {
+          title: this.$t("admin_navbar_links.setting"),
+          icon: "mdi-cog",
+          key: "settings",
+          pages: [[this.$t("admin_navbar_links.setting"), "/admin/settings"]],
+        },
       ];
     },
   },
   methods: {
     ...mapActions(useAuthAdminStore, ["checkCookie", "logoutAdmin"]),
+    // ...mapActions(useSettingsAdminStore, ["getGeneralSettings"]),
     getInitials,
     closeDrawer() {
       if (window.innerWidth < 992) {
@@ -186,5 +212,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

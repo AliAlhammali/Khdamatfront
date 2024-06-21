@@ -19,6 +19,8 @@ export const useAuthServiceProviderStore = defineStore("AuthServiceProvider", {
         $cookies.set("service_provider_khadamat_user", data.user, "1m");
 
         router.push({ name: "service-provider-dashboard" });
+
+        return true;
       } catch (error) {
         return false;
       } finally {

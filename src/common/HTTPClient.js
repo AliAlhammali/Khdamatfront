@@ -22,6 +22,9 @@ axiosClient.interceptors.request.use((config) => {
   } else if (router.currentRoute.value.path.includes("service-provider")) {
     const token = window.$cookies.get("service_provider_khadamat_token");
     config.headers.Authorization = `Bearer ${token}`;
+  } else if (router.currentRoute.value.path.includes("client")) {
+    const token = window.$cookies.get("client_khadamat_token");
+    config.headers.Authorization = `Bearer ${token}`;
   }
 
   return config;

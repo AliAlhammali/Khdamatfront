@@ -10,5 +10,15 @@
       "add_new": "Add New Branch",
       "edit": "Edit Branch"
     }
+  },
+  "orders": {
+    "price": "Price",
+    "quantity": "Quantity",
+    "total": "Total",
+    "select_service": "Select Service",
+    "select_client": "Select Client",
+    "select_branch": "Select Branch",
+    "add_new": "Add New Order",
+    "client_info": "Client Information"
   }
 }

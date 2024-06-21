@@ -30,15 +30,15 @@ export default defineConfig(({ mode }) => {
         ...env,
       },
     },
-    base: "./",
+    base: "/",
     build: {
       target: "esnext",
       cssMinify: true,
-      sourcemap: mode === "development",
+      sourcemap: false,
       terserOptions: {
         compress: {
-          drop_console: mode === "production" || mode === "staging",
-          drop_debugger: mode === "production" || mode === "staging",
+          drop_console: mode === "production" || mode === "development",
+          drop_debugger: mode === "production" || mode === "development",
         },
       },
     },

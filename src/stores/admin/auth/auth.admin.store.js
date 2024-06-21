@@ -20,6 +20,7 @@ export const useAuthAdminStore = defineStore("AuthAdmin", {
         $cookies.set("admin_khadamat_user", data.user, "1m");
 
         router.push({ name: "admin-dashboard" });
+        return true;
       } catch (error) {
         return false;
       } finally {
