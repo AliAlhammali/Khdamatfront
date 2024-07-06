@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="border mt-4 pa-4">
     <h3 class="mb-3">
       {{ $t("orders.select_service") }}
@@ -61,7 +61,7 @@
     </v-row>
     <div class="mt-4" v-for="(item, index) in items" :key="index">
       <v-row class="align-start">
-        <v-col md="3" cols="6">
+        <v-col md="3" cols="12">
           <v-select
             v-model="items[index]"
             :placeholder="$t('admin_navbar_links.services')"
@@ -90,7 +90,7 @@
             <span>{{ $t("errors.required") }}</span>
           </p>
         </v-col>
-        <v-col md="1" cols="6">
+        <v-col md="1" cols="12">
           <v-text-field
             :label="$t('orders.price')"
             v-model="item.price"
@@ -98,7 +98,7 @@
             readonly
           />
         </v-col>
-        <v-col md="3" cols="6">
+        <v-col md="3" cols="12">
           <v-text-field
             :label="$t('orders.quantity')"
             outlined
@@ -122,7 +122,7 @@
             </template>
           </v-text-field>
         </v-col>
-        <v-col md="2" cols="6">
+        <v-col md="2" cols="12">
           <v-text-field
             :label="$t('orders.total')"
             outlined
@@ -131,13 +131,14 @@
             v-model="items[index].total"
           />
         </v-col>
-        <v-col md="2" cols="6">
+        <v-col md="2" cols="12">
           <div class="d-flex align-center ga-2">
-            <v-btn color="primary" @click="addNewItem">
+            <v-btn color="primary" @click="addNewItem" class="w-50">
               <span class="mdi mdi-plus"></span>
             </v-btn>
             <v-btn
               color="error"
+              class="w-50"
               @click="items.splice(index, 1)"
               v-if="index !== 0"
             >
@@ -294,5 +295,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

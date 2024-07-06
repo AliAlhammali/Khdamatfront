@@ -1,4 +1,3 @@
-import { clientRolesGuard } from "@/helper/client.router.helper";
 
 export default {
   routes: [
@@ -13,7 +12,7 @@ export default {
     },
     {
       path: "orders/create",
-      name: "orders-merchant-create",
+      name: "orders-client-create",
       component: () => import("./OrdersClientCreate.vue"),
       meta: {
         edit: false,
@@ -23,7 +22,7 @@ export default {
     },
     {
       path: "orders/:id",
-      name: "orders-merchant-show",
+      name: "orders-client-show",
       component: () => import("./OrdersClientShow.vue"),
       meta: {
         edit: true,
