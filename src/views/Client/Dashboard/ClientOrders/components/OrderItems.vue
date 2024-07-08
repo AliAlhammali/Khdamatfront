@@ -61,7 +61,7 @@
     </v-row>
     <div class="mt-4" v-for="(item, index) in items" :key="index">
       <v-row class="align-start">
-        <v-col md="3" cols="6">
+        <v-col md="3" cols="12">
           <v-select
             v-model="items[index]"
             :placeholder="$t('admin_navbar_links.services')"
@@ -90,7 +90,7 @@
             <span>{{ $t("errors.required") }}</span>
           </p>
         </v-col>
-        <v-col md="1" cols="6">
+        <v-col md="1" cols="12">
           <v-text-field
             :label="$t('orders.price')"
             v-model="item.price"
@@ -98,7 +98,7 @@
             readonly
           />
         </v-col>
-        <v-col md="3" cols="6">
+        <v-col md="3" cols="12">
           <v-text-field
             :label="$t('orders.quantity')"
             outlined
@@ -122,7 +122,7 @@
             </template>
           </v-text-field>
         </v-col>
-        <v-col md="2" cols="6">
+        <v-col md="2" cols="12">
           <v-text-field
             :label="$t('orders.total')"
             outlined
@@ -131,7 +131,7 @@
             v-model="items[index].total"
           />
         </v-col>
-        <v-col md="2" cols="6">
+        <v-col md="2" cols="12">
           <div class="d-flex align-center ga-2">
             <v-btn color="primary" @click="addNewItem">
               <span class="mdi mdi-plus"></span>
