@@ -1,4 +1,5 @@
 <template>
+  <!-- AIzaSyALc3U6ZcOdCduy0axfgZQZTL8OugiaOCs -->
   <div class="position-relative" id="leafletmap">
     <l-map
       ref="map"
@@ -24,13 +25,13 @@
     <v-icon size="24"> mdi mdi-crosshairs-gps</v-icon>
   </v-btn>
 </template>
-<script >
-import "leaflet/dist/leaflet.css";
+<script>
 import "leaflet-geosearch/dist/geosearch.css";
+import "leaflet/dist/leaflet.css";
 
-import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
-import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
+import { LMap, LMarker, LTileLayer } from "@vue-leaflet/vue-leaflet";
 import L from "leaflet";
+import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
 export default {
   props: {
@@ -90,7 +91,7 @@ export default {
       const provider = new OpenStreetMapProvider();
       provider.search({ query: text }).then((results) => {
         const findAddress = results.find((result) =>
-          result.label.includes(text)
+          result.label.includes(text),
         );
         this.address = {
           title: findAddress?.raw?.display_name || findAddress?.label,
@@ -128,7 +129,7 @@ export default {
     findAddressByCoordinates() {
       const provider = new OpenStreetMapProvider();
       fetch(
-        `${provider.searchUrl}?q=${this.center[0]},${this.center[1]}&polygon_geojson=1&format=json`
+        `${provider.searchUrl}?q=${this.center[0]},${this.center[1]}&polygon_geojson=1&format=json`,
       )
         .then((response) => response.json())
         .then((data) => {
@@ -153,5 +154,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

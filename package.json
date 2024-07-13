@@ -32,6 +32,7 @@
     "vue": "^3.4.21",
     "vue-cookies": "^1.8.3",
     "vue-datepicker-next": "^1.0.3",
+    "vue-google-maps-community-fork": "^0.3.1",
     "vue-i18n": "^9.10.2",
     "vue-qrcode-image": "^1.2.0",
     "vue-router": "^4.3.0",
@@ -40,6 +41,7 @@
     "vue-sweetalert2": "^5.0.5",
     "vue-toastification": "^2.0.0-rc.5",
     "vue3-apexcharts": "^1.5.2",
+    "vue3-google-map": "^0.20.0",
     "vue3-print-nb": "^0.1.4",
     "vuetify": "^3.5.13"
   },
