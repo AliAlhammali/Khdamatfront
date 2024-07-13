@@ -45,7 +45,11 @@
             :long="dataObj?.location?.long"
             @getLocation="getLocation"
           /> -->
-          <GoogleMap />
+          <GoogleMap
+            :editMode="isEditDataObj"
+            :location="dataObj.location"
+            @updateLocation="getLocation"
+          />
         </v-col>
         <v-col cols="12">
           <v-checkbox

@@ -1,5 +1,11 @@
 <template>
-  <GMapAutocomplete @place_changed="setPlace">
+  <GMapAutocomplete
+    @place_changed="setPlace"
+    :options="{
+      types: ['geocode'],
+      componentRestrictions: { country: 'sa' },
+    }"
+  >
     <template #input="slotProps">
       <v-text-field
         v-bind="slotProps"
@@ -10,7 +16,7 @@
       />
     </template>
   </GMapAutocomplete>
-  {{ center }}
+  <!-- {{ center }} -->
   <GMapMap
     :center="center"
     :zoom="15"
@@ -41,7 +47,6 @@
 import { GridAlgorithm } from "@googlemaps/markerclusterer";
 
 export default {
-  name: "App",
   data() {
     return {
       algorithm: new GridAlgorithm({}),
@@ -105,3 +110,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.pac-item {
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+  span {
+    font-size: 16px;
+  }
+}
+</style>
