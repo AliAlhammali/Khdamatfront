@@ -8,8 +8,8 @@
         <h2 class="">
           {{
             isEditDataObj
-              ? $t("merchant.clients.edit")
-              : $t("merchant.clients.add_new")
+              ? $t("merchant.branches.edit")
+              : $t("merchant.branches.add_new")
           }}
         </h2>
         <button class="d-flex ga-2 align-center" @click="$router.go(-1)">

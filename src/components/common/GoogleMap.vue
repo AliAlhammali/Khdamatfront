@@ -5,6 +5,7 @@
       types: ['geocode'],
       componentRestrictions: { country: 'sa' },
     }"
+    :key="center.lat + center.lng"
   >
     <template #input="slotProps">
       <v-text-field
@@ -28,8 +29,8 @@
     @click="updatePosition($event.latLng.toJSON())"
   >
     <GMapMarker
-      v-for="(marker, index) in markers"
-      :key="index"
+      v-for="marker in markers"
+      :key="marker.lat + marker.lng"
       :position="marker.position"
       :clickable="true"
       :draggable="true"
@@ -44,9 +45,20 @@
   </v-btn>
 </template>
 <script>
+import { Loader } from "@googlemaps/js-api-loader";
 import { GridAlgorithm } from "@googlemaps/markerclusterer";
 
 export default {
+  props: {
+    editMode: {
+      type: Boolean,
+      default: false,
+    },
+    location: {
+      type: Object,
+      default: () => ({ lat: 51.093048, lng: 6.84212 }),
+    },
+  },
   data() {
     return {
       algorithm: new GridAlgorithm({}),
@@ -57,7 +69,16 @@ export default {
   },
   mounted() {
     this.getLocation();
+    const loader = new Loader({
+      apiKey: process.env.VITE_BASE_GOOGLE_KEY,
+      version: "weekly",
+    });
+    loader.load().then(async () => {
+      const { Map } = await google.maps.importLibrary("maps");
+      console.log(Map);
+    });
   },
+
   methods: {
     renderer: ({ count, position }) =>
       new this.google.maps.Marker({
