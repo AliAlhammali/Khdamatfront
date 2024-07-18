@@ -37,7 +37,7 @@ export function registerPlugins(app) {
     .use(VueSocialSharing)
     .use(VueGoogleMaps, {
       load: {
-        key: process.env.VITE_BASE_GOOGLE_KEY,
+        key: "AIzaSyALc3U6ZcOdCduy0axfgZQZTL8OugiaOCs",
         libraries: "places",
       },
     });

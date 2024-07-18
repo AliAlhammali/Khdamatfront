@@ -45,7 +45,6 @@
   </v-btn>
 </template>
 <script>
-import { Loader } from "@googlemaps/js-api-loader";
 import { GridAlgorithm } from "@googlemaps/markerclusterer";
 
 export default {
@@ -69,14 +68,14 @@ export default {
   },
   mounted() {
     this.getLocation();
-    const loader = new Loader({
-      apiKey: process.env.VITE_BASE_GOOGLE_KEY,
-      version: "weekly",
-    });
-    loader.load().then(async () => {
-      const { Map } = await google.maps.importLibrary("maps");
-      console.log(Map);
-    });
+    // const loader = new Loader({
+    //   apiKey: process.env.VITE_BASE_GOOGLE_KEY,
+    //   version: "weekly",
+    // });
+    // loader.load().then(async () => {
+    //   const { Map } = await google.maps.importLibrary("maps");
+    //   console.log(Map);
+    // });
   },
 
   methods: {
