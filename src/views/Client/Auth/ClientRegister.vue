@@ -116,11 +116,7 @@
               </v-col>
 
               <v-col cols="12">
-                <maps
-                  :lat="user?.location?.lat"
-                  :long="user?.location?.long"
-                  @getLocation="getLocation"
-                />
+                <GoogleMap @getLocation="getLocation" />
               </v-col>
 
               <v-col cols="12">
@@ -144,14 +140,15 @@
 </template>
 <script>
 import FiledInput from "@/components/common/FiledInput.vue";
-import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
-import { mapActions, mapState } from "pinia";
+import GoogleMap from "@/components/common/GoogleMap.vue";
 import Maps from "@/components/common/Maps.vue";
-import { useGetMerchantByCodeStore } from "@/stores/global/merchant/getByCode.store";
 import { useAuthClientStore } from "@/stores/client/auth/auth.client.store";
+import { useGetMerchantByCodeStore } from "@/stores/global/merchant/getByCode.store";
+import { useVuelidate } from "@vuelidate/core";
+import { email, required } from "@vuelidate/validators";
+import { mapActions, mapState } from "pinia";
 export default {
-  components: { FiledInput, Maps },
+  components: { FiledInput, Maps, GoogleMap },
   setup() {
     return { v$: useVuelidate() };
   },

@@ -27,7 +27,8 @@
       "change_password": "Change Password",
       "add_sp": "Add Service Provider",
       "add_sp_user": "Add Technician",
-      "sp_user": "Technician"
+      "sp_user": "Technician",
+      "search_location_placeholder": "Search for location"
     },
     "status": {
       "active": "Active",

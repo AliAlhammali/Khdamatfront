@@ -33,11 +33,9 @@
             :center="selectClient?.location?.coordinates"
           /> -->
 
-          <Maps
-            :key="clientObj?.location?.lat"
-            :editMode="false"
-            :lat="clientObj?.location?.lat"
-            :long="clientObj?.location?.long"
+          <GoogleMap
+            :editMode="isEditDataObj"
+            :mapLocation="clientObj.location"
             @getLocation="getLocation"
           />
         </div>
@@ -46,14 +44,15 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState } from "pinia";
-import { useVuelidate } from "@vuelidate/core";
 import FiledInput from "@/components/common/FiledInput.vue";
-import { useGlobalActionsStore } from "@/stores/actions/upload.store";
+import GoogleMap from "@/components/common/GoogleMap.vue";
 import Maps from "@/components/common/Maps.vue";
 import MapsView from "@/components/common/MapsView.vue";
+import { useGlobalActionsStore } from "@/stores/actions/upload.store";
+import { useVuelidate } from "@vuelidate/core";
+import { mapActions } from "pinia";
 export default {
-  components: { FiledInput, Maps, MapsView },
+  components: { FiledInput, Maps, MapsView, GoogleMap },
   props: {
     orderData: {
       type: Object,

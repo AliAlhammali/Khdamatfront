@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
 import router from "@/router";
 import authClientService from "@/services/client/auth/auth.client.service";
+import { defineStore } from "pinia";
 
 export const useAuthClientStore = defineStore("AuthClient", {
   state: () => ({
@@ -9,7 +9,7 @@ export const useAuthClientStore = defineStore("AuthClient", {
   }),
   getters: {},
   actions: {
-    loginClient: async function(user) {
+    loginClient: async function (user) {
       this.isLoading = true;
       try {
         const { data } = await authClientService.login(user);
@@ -28,12 +28,15 @@ export const useAuthClientStore = defineStore("AuthClient", {
       }
     },
 
-    registerClient: async function(user) {
+    registerClient: async function (user) {
       this.isLoading = true;
       try {
-        await authClientService.register(user);
+        const { data } = await authClientService.register(user);
+        // Save token to cookies
+        $cookies.set("client_khadamat_token", data.token, "1m");
+        $cookies.set("client_khadamat_user", data.client, "1m");
 
-        router.push({ name: "client-login" });
+        router.push({ name: "client-dashboard" });
         return true;
       } catch (error) {
         return false;
@@ -42,7 +45,7 @@ export const useAuthClientStore = defineStore("AuthClient", {
       }
     },
 
-    logoutClient: async function() {
+    logoutClient: async function () {
       try {
         await authClientService.logout();
 
@@ -58,7 +61,7 @@ export const useAuthClientStore = defineStore("AuthClient", {
       }
     },
 
-    checkCookie: function() {
+    checkCookie: function () {
       const token = $cookies.get("client_khadamat_token");
       const user = $cookies.get("client_khadamat_user");
 

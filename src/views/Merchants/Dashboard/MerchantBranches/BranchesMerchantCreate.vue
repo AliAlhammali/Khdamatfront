@@ -8,8 +8,8 @@
         <h2 class="">
           {{
             isEditDataObj
-              ? $t("merchant.clients.edit")
-              : $t("merchant.clients.add_new")
+              ? $t("merchant.branches.edit")
+              : $t("merchant.branches.add_new")
           }}
         </h2>
         <button class="d-flex ga-2 align-center" @click="$router.go(-1)">
@@ -39,10 +39,9 @@
         </v-col>
 
         <v-col cols="12">
-          <Maps
+          <GoogleMap
             :editMode="isEditDataObj"
-            :lat="dataObj?.location?.lat"
-            :long="dataObj?.location?.long"
+            :mapLocation="dataObj.location"
             @getLocation="getLocation"
           />
         </v-col>
@@ -80,17 +79,18 @@
 </template>
 <script>
 import FiledInput from "@/components/common/FiledInput.vue";
-import { mapActions, mapState } from "pinia";
+import Loader from "@/components/common/Loader.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
-import Loader from "@/components/common/Loader.vue";
+import { mapActions, mapState } from "pinia";
 
-import { useBranchesMerchantStore } from "@/stores/merchant/branches/branches.merchant.store";
-import { updateToPatchData } from "@/helper/update.inputs.helper";
+import GoogleMap from "@/components/common/GoogleMap.vue";
 import Maps from "@/components/common/Maps.vue";
+import { updateToPatchData } from "@/helper/update.inputs.helper";
+import { useBranchesMerchantStore } from "@/stores/merchant/branches/branches.merchant.store";
 
 export default {
-  components: { FiledInput, Loader, Maps },
+  components: { FiledInput, Loader, Maps, GoogleMap },
   setup() {
     return { v$: useVuelidate() };
   },
