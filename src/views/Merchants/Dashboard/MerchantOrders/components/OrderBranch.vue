@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="border mt-4 pa-4">
     <h3 class="mb-3">
       {{ $t("orders.select_branch") }}
@@ -39,10 +39,10 @@
             class="border bg-white pa-2 rounded d-flex w-100 ga-2 align-center"
             v-if="selectBranch"
           >
-            <MapsView
-              v-if="selectBranch?.location.coordinates"
-              :key="selectBranch?.location.coordinates"
-              :center="selectBranch?.location.coordinates"
+            <GoogleMap
+              :key="selectBranch.location"
+              :viewMode="true"
+              :mapLocation="selectBranch.location"
             />
           </div>
         </div>
@@ -78,10 +78,14 @@
             </v-col>
 
             <v-col cols="12">
-              <Maps
+              <!-- <Maps
                 :editMode="false"
                 :lat="branchesObj?.location?.lat"
                 :long="branchesObj?.location?.long"
+                @getLocation="getLocation"
+              /> -->
+              <GoogleMap
+                v-if="branchesObj.location"
                 @getLocation="getLocation"
               />
             </v-col>
@@ -115,15 +119,16 @@
 </template>
 <script>
 import FiledInput from "@/components/common/FiledInput.vue";
-import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
-import { useBranchesMerchantStore } from "@/stores/merchant/branches/branches.merchant.store";
-import { mapActions, mapState } from "pinia";
 import Maps from "@/components/common/Maps.vue";
 import MapsView from "@/components/common/MapsView.vue";
+import { useBranchesMerchantStore } from "@/stores/merchant/branches/branches.merchant.store";
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
+import { mapActions, mapState } from "pinia";
+import GoogleMap from "../../../../../components/common/GoogleMap.vue";
 
 export default {
-  components: { FiledInput, Maps, MapsView },
+  components: { FiledInput, Maps, MapsView, GoogleMap },
   props: {
     orderData: {
       type: Object,
@@ -217,7 +222,7 @@ export default {
       if (this.v$.branchesObj.$error) return;
       const { data } = await this.createBranchesMerchant(
         { ...this.branchesObj },
-        false
+        false,
       );
       this.selectBranch = data;
       this.showBranch = false;
@@ -239,5 +244,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

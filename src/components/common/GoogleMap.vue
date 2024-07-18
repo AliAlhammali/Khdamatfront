@@ -1,91 +1,101 @@
 <template>
-  <!-- <GMapAutocomplete
-    @place_changed="setPlace"
-    :options="{
-      types: ['geocode'],
-      componentRestrictions: { country: 'sa' },
-    }"
-    :key="center.lat + center.lng"
-  >
-    <template #input="slotProps">
-      <v-text-field
-        v-bind="slotProps"
-        ref="input"
-        prepend-inner-icon="mdi mdi-map-marker"
-        hide-details
-        class="mb-4"
-      />
-    </template>
-  </GMapAutocomplete> -->
-
-  <GMapAutocomplete
-    placeholder="This is a placeholder"
-    @place_changed="setPlace"
-    :options="{
-      types: ['geocode'],
-      componentRestrictions: { country: 'sa' },
-    }"
-  >
-  </GMapAutocomplete>
-  <!-- {{ center }} -->
-  <GMapMap
-    :center="center"
-    :zoom="15"
-    map-type-id="terrain"
-    style="width: 100%; height: 500px"
-    ref="google"
-    :animation="2"
-    :click="true"
-    @click="updatePosition($event.latLng.toJSON())"
-  >
-    <GMapMarker
-      v-for="marker in markers"
-      :key="marker.lat + marker.lng"
-      :position="marker.position"
-      :clickable="true"
-      :draggable="true"
-      icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+  <div :key="editMode" class="w-100">
+    <GMapAutocomplete
+      class="w-100 border mb-4 pa-2"
+      :placeholder="$t('global.actions.search_location_placeholder')"
+      @place_changed="setPlace"
+      :options="{
+        types: ['geocode'],
+        componentRestrictions: { country: 'sa' },
+      }"
+      v-if="!viewMode"
+    >
+    </GMapAutocomplete>
+    <GMapMap
+      class="w-100"
+      :center="center"
+      :zoom="17"
+      map-type-id="terrain"
+      style="width: 100%; height: 500px"
+      ref="google"
       :animation="2"
-      @dragend="updatePosition($event.latLng.toJSON())"
-    />
-  </GMapMap>
+      :click="!viewMode"
+      @click="
+        ($event) => {
+          if (viewMode) return;
+          updatePosition($event.latLng.toJSON());
+        }
+      "
+    >
+      <GMapMarker
+        :position="center"
+        :clickable="!viewMode"
+        :draggable="!viewMode"
+        icon="https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+        :animation="2"
+        @dragend="
+          ($event) => {
+            if (viewMode) return;
+            updatePosition($event.latLng.toJSON());
+          }
+        "
+      />
+    </GMapMap>
 
-  <v-btn @click="getLocation" fab color="primary" class="mt-4">
-    <v-icon size="24"> mdi mdi-crosshairs-gps</v-icon>
-  </v-btn>
+    <v-btn
+      v-if="!viewMode"
+      @click="getLocation"
+      fab
+      color="primary"
+      class="mt-4"
+    >
+      <v-icon size="24"> mdi mdi-crosshairs-gps</v-icon>
+    </v-btn>
+
+    <!-- move map to center view -->
+  </div>
 </template>
 <script>
-import { GridAlgorithm } from "@googlemaps/markerclusterer";
+import { OpenStreetMapProvider } from "leaflet-geosearch";
 
 export default {
   props: {
+    viewMode: {
+      type: Boolean,
+      default: false,
+    },
     editMode: {
       type: Boolean,
       default: false,
     },
-    location: {
+    mapLocation: {
       type: Object,
       default: () => ({ lat: 51.093048, lng: 6.84212 }),
     },
   },
   data() {
     return {
-      algorithm: new GridAlgorithm({}),
       google: null,
       center: { lat: 51.093048, lng: 6.84212 },
-      markers: [{ position: { lat: 51.093048, lng: 6.84212 }, count: 1 }],
+      // markers: [{ position: { lat: 51.093048, lng: 6.84212 }, count: 1 }],
     };
   },
-  mounted() {
-    this.getLocation();
-    // const loader = new Loader({
-    //   apiKey: process.env.VITE_BASE_GOOGLE_KEY,
-    //   version: "weekly",
-    // });
-    // loader.load().then(async () => {
-    //   const { Map } = await google.maps.importLibrary("maps");
-    //   console.log(Map);
-    // });
+  async mounted() {
+    if (this.editMode) {
+      if (this.mapLocation.coordinates && this.mapLocation.coordinates.length) {
+        this.center = {
+          lat: this.mapLocation.coordinates[0],
+          lng: this.mapLocation.coordinates[1],
+        };
+      } else {
+        this.center = {
+          lat: this.mapLocation.lat,
+          lng: this.mapLocation.long,
+        };
+      }
+    } else {
+      this.getLocation();
+    }
   },
 
   methods: {
@@ -107,35 +117,58 @@ export default {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          this.markers = [
-            {
-              position: {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              },
-              count: 1,
-            },
-          ];
+
+          // set lat and long in mapLocation
+          this.findAddressByCoordinates();
         });
       }
     },
     setPlace(place) {
       this.center = place.geometry.location;
-      this.markers = [
-        {
-          position: place.geometry.location,
-          count: 1,
-        },
-      ];
+
+      this.$emit("getLocation", {
+        title: place.formatted_address,
+        lat: place.geometry.location.lat(),
+        long: place.geometry.location.lng(),
+      });
     },
     updatePosition(position) {
       this.center = position;
-      this.markers = [
-        {
-          position,
-          count: 1,
-        },
-      ];
+      this.findAddressByCoordinates();
+    },
+    findAddressByCoordinates() {
+      const provider = new OpenStreetMapProvider();
+      fetch(
+        `${provider.searchUrl}?q=${this.center.lat},${this.center.lng}&polygon_geojson=1&format=json`,
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          const address = {
+            title: data[0]?.display_name,
+            lat: +data[0]?.lat,
+            long: +data[0]?.lon,
+          };
+          this.$emit("getLocation", address);
+        });
+    },
+  },
+  watch: {
+    mapLocation: {
+      handler(val) {
+        if (!val) return;
+        if (val.coordinates && val.coordinates.length) {
+          this.center = {
+            lat: val.coordinates[0],
+            lng: val.coordinates[1],
+          };
+        } else {
+          this.center = {
+            lat: val.lat,
+            lng: val.long,
+          };
+        }
+      },
+      deep: true,
     },
   },
 };
@@ -151,5 +184,9 @@ export default {
   span {
     font-size: 16px;
   }
+}
+
+.pac-container {
+  z-index: 9999999999999999999999 !important;
 }
 </style>

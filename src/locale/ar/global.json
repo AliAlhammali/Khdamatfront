@@ -27,7 +27,8 @@
       "change_password": "تغيير كلمة المرور",
       "add_sp": "إضافة مقدم خدمة",
       "add_sp_user": "اضافة فني",
-      "sp_user": "الفني"
+      "sp_user": "الفني",
+      "search_location_placeholder": "البحث عن موقع"
     },
     "status": {
       "active": "نشط",

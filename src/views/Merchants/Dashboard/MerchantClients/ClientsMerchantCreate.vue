@@ -39,10 +39,9 @@
         </v-col>
 
         <v-col cols="12">
-          <maps
+          <GoogleMap
             :editMode="isEditDataObj"
-            :lat="dataObj?.location?.lat"
-            :long="dataObj?.location?.long"
+            :mapLocation="dataObj.location"
             @getLocation="getLocation"
           />
         </v-col>
@@ -80,17 +79,18 @@
 </template>
 <script>
 import FiledInput from "@/components/common/FiledInput.vue";
-import { mapActions, mapState } from "pinia";
-import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
 import Loader from "@/components/common/Loader.vue";
+import { useVuelidate } from "@vuelidate/core";
+import { email, required } from "@vuelidate/validators";
+import { mapActions, mapState } from "pinia";
 
-import { useClientsMerchantStore } from "@/stores/merchant/clients/clients.merchant.store";
-import { updateToPatchData } from "@/helper/update.inputs.helper";
+import GoogleMap from "@/components/common/GoogleMap.vue";
 import Maps from "@/components/common/Maps.vue";
+import { updateToPatchData } from "@/helper/update.inputs.helper";
+import { useClientsMerchantStore } from "@/stores/merchant/clients/clients.merchant.store";
 
 export default {
-  components: { FiledInput, Loader, Maps },
+  components: { FiledInput, Loader, Maps, GoogleMap },
   setup() {
     return { v$: useVuelidate() };
   },

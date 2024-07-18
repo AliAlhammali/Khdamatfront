@@ -39,16 +39,10 @@
         </v-col>
 
         <v-col cols="12">
-          <!-- <Maps
-            :editMode="isEditDataObj"
-            :lat="dataObj?.location?.lat"
-            :long="dataObj?.location?.long"
-            @getLocation="getLocation"
-          /> -->
           <GoogleMap
             :editMode="isEditDataObj"
-            :location="dataObj.location"
-            @updateLocation="getLocation"
+            :mapLocation="dataObj.location"
+            @getLocation="getLocation"
           />
         </v-col>
         <v-col cols="12">
