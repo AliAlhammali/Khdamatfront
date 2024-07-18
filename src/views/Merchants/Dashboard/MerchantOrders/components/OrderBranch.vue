@@ -42,6 +42,7 @@
             <GoogleMap
               :key="selectBranch.location"
               :viewMode="true"
+              :editMode="true"
               :mapLocation="selectBranch.location"
             />
           </div>

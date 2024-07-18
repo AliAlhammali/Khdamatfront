@@ -82,6 +82,10 @@ export default {
   },
   async mounted() {
     if (this.editMode) {
+      console.log(
+        this.mapLocation.coordinates,
+        "this.mapLocation.coordinates ",
+      );
       if (this.mapLocation.coordinates && this.mapLocation.coordinates.length) {
         this.center = {
           lat: this.mapLocation.coordinates[0],

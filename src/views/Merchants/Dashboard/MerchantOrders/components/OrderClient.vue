@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="border my-4 pa-4">
     <v-row class="mb-4">
       <v-col md="6" cols="12">
@@ -80,12 +80,18 @@
           class="border rounded-lg pa-2"
           v-if="selectClient?.location?.coordinates"
         >
-          <MapsView
+          <!-- <MapsView
             v-if="selectClient?.location?.coordinates"
             :key="selectClient?.location?.coordinates"
             :center="selectClient?.location?.coordinates"
             :isEditMode="true"
             @getLocation="updateClientLocation"
+          /> -->
+          <GoogleMap
+            :viewMode="true"
+            :editMode="true"
+            :mapLocation="selectClient.location"
+            @getLocation="getLocation"
           />
         </div>
       </v-col>
@@ -122,11 +128,16 @@
             </v-col>
 
             <v-col cols="12">
-              <Maps
+              <!-- <Maps
                 :key="clientObj?.location?.lat"
                 :editMode="false"
                 :lat="clientObj?.location?.lat"
                 :long="clientObj?.location?.long"
+                @getLocation="getLocation"
+              /> -->
+              <GoogleMap
+                :editMode="isEditDataObj"
+                :mapLocation="clientObj.location"
                 @getLocation="getLocation"
               />
             </v-col>
@@ -159,16 +170,17 @@
   </div>
 </template>
 <script>
-import { useClientsMerchantStore } from "@/stores/merchant/clients/clients.merchant.store";
-import { mapActions, mapState } from "pinia";
-import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
 import FiledInput from "@/components/common/FiledInput.vue";
-import { useGlobalActionsStore } from "@/stores/actions/upload.store";
 import Maps from "@/components/common/Maps.vue";
 import MapsView from "@/components/common/MapsView.vue";
+import { useGlobalActionsStore } from "@/stores/actions/upload.store";
+import { useClientsMerchantStore } from "@/stores/merchant/clients/clients.merchant.store";
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
+import { mapActions, mapState } from "pinia";
+import GoogleMap from "../../../../../components/common/GoogleMap.vue";
 export default {
-  components: { FiledInput, Maps, MapsView },
+  components: { FiledInput, Maps, MapsView, GoogleMap },
   props: {
     orderData: {
       type: Object,
@@ -279,7 +291,7 @@ export default {
       if (this.v$.clientObj.$error) return;
       const { data } = await this.createClientsMerchant(
         { ...this.clientObj },
-        false
+        false,
       );
       this.selectClient = data;
       this.showClient = false;
@@ -345,5 +357,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
