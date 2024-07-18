@@ -1,5 +1,5 @@
 <template>
-  <GMapAutocomplete
+  <!-- <GMapAutocomplete
     @place_changed="setPlace"
     :options="{
       types: ['geocode'],
@@ -16,6 +16,16 @@
         class="mb-4"
       />
     </template>
+  </GMapAutocomplete> -->
+
+  <GMapAutocomplete
+    placeholder="This is a placeholder"
+    @place_changed="setPlace"
+    :options="{
+      types: ['geocode'],
+      componentRestrictions: { country: 'sa' },
+    }"
+  >
   </GMapAutocomplete>
   <!-- {{ center }} -->
   <GMapMap
