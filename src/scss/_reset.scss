@@ -145,3 +145,9 @@ select {
     height: 48px;
   }
 }
+
+.v-overlay__content {
+  @media (max-width: 992px) {
+    width: 100% !important;
+  }
+}

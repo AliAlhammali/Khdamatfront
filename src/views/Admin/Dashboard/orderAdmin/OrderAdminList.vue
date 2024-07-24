@@ -232,7 +232,7 @@
                   </div>
                   <div>
                     <router-link
-                      :to="`/service-provider/orders/${item.id}`"
+                      :to="`/admin/orders/${item.id}`"
                       class="button button--edit px-2 rounded w-100 d-flex justify-center"
                     >
                       <v-tooltip :text="$t('global.actions.show')">
@@ -281,13 +281,13 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState } from "pinia";
 import DataTable from "@/components/common/DataTable.vue";
-import { useOrdersAdminStore } from "@/stores/admin/orders/orders.admin.store.js";
-import { useServiceProvidersAdminStore } from "@/stores/admin/serviceProviders/serviceProviders.admin.store";
+import CardItem from "@/components/ui/CardItem.vue";
 import { useCategoriesAdminStore } from "@/stores/admin/categories/categories.admin.store";
 import { useMerchantAdminStore } from "@/stores/admin/merchant/merchant.admin.store";
-import CardItem from "@/components/ui/CardItem.vue";
+import { useOrdersAdminStore } from "@/stores/admin/orders/orders.admin.store.js";
+import { useServiceProvidersAdminStore } from "@/stores/admin/serviceProviders/serviceProviders.admin.store";
+import { mapActions, mapState } from "pinia";
 
 export default {
   components: { DataTable, CardItem },
@@ -568,7 +568,7 @@ export default {
           ...this.filtersParams,
           ...this.params,
         },
-        true
+        true,
       );
     },
 
@@ -605,5 +605,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

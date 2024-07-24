@@ -77,7 +77,9 @@
       "unit_price": "سعر الوحدة",
       "quantity": "الكمية",
       "order_total": "اجمالى الطلب",
-      "sp_total": "إجمالى مزود الخدمة"
+      "sp_total": "إجمالى مزود الخدمة",
+      "view_on_map": "عرض على الخريطة",
+      "copy_location": "نسخ الموقع"
     },
     "numbers": {
       "sp_total": "إجمالى مزود الخدمة"
@@ -121,7 +123,13 @@
     "merchant_phone": "تليفون منشئ الطلب",
     "merchant_address": "عنوان الفرع",
     "start_date": "تاريخ البداية",
-    "main_category": "التصنيف الرئيسي"
+    "main_category": "التصنيف الرئيسي",
+    "order_location": "موقع الطلب",
+    "order_location_link": "رابط الموقع",
+    "address": "العنوان",
+    "services_names": "أسماء الخدمات",
+    "location_copied": "تم نسخ الموقع بنجاح",
+    "order_info_copied": "تم نسخ معلومات الطلب بنجاح"
   },
   "dashboard": {
     "count_of_active_staff": " الموظفين النشطين",

@@ -76,7 +76,9 @@
       "unit_price": "Unit Price",
       "quantity": "Quantity",
       "order_total": "Order Total",
-      "sp_total": "Service Provider Total"
+      "sp_total": "Service Provider Total",
+      "view_on_map": "View on Map",
+      "copy_location": "Copy Location"
     },
     "numbers": {
       "sp_total": "Service Provider Total"
@@ -119,7 +121,13 @@
     "merchant_phone": "Merchant Phone",
     "merchant_address": "Branch Address",
     "start_date": "Start Date",
-    "main_category": "Main Category"
+    "main_category": "Main Category",
+    "order_location": "Order Location",
+    "order_location_link": "Location Link",
+    "address": "Address",
+    "services_names": "Services Names",
+    "location_copied": "Location copied successfully",
+    "order_info_copied": "Order info copied successfully"
   },
   "dashboard": {
     "count_of_active_staff": "Count of Active Staff",

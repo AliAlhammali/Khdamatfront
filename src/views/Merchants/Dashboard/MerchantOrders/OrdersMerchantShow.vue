@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="content">
     <template v-if="uiFlags.isLoading">
       <Loader />
@@ -139,7 +139,7 @@
                 } ${$t('share_order.client_address')} ${
                   record?.address[0]?.address
                 } ` -->
-              <ShareNetwork
+              <!-- <ShareNetwork
                 class="main-btn pa-2 rounded-lg w-100 text-center mt-4"
                 network="whatsapp"
                 url=""
@@ -150,7 +150,14 @@
                 @close="openShare = false"
               >
                 <v-icon size="24">mdi mdi-share-variant-outline</v-icon>
-              </ShareNetwork>
+              </ShareNetwork> -->
+
+              <button
+                class="main-btn pa-2 rounded-lg w-100 text-center mt-4"
+                @click="copyOrderInfo"
+              >
+                <v-icon size="24">mdi mdi-share-variant-outline</v-icon>
+              </button>
             </div>
           </v-col>
           <v-col md="8" cols="12">
@@ -231,31 +238,58 @@
       <!-- {{ record.items }} -->
     </template>
 
-    <v-dialog v-model="showMap" width="auto">
+    <v-dialog v-model="showMap" width="50%">
       <!-- {{ record }} -->
-      <v-card min-width="400" class="pa-md-4">
+      <v-card min-width="100%" class="pa-4">
         <p class="mb-3">
           {{ record?.address[0]?.address }}
         </p>
-        <MapsView
+
+        <div class="d-flex align-center mb-4 justify-space-between">
+          <a
+            :href="`https://maps.google.com/?q=${record?.address[0]?.location?.coordinates[1]},${record?.address[0]?.location?.coordinates[0]}&z=15`"
+            target="_blank"
+          >
+            {{ $t("global.show_order.view_on_map") }}
+          </a>
+
+          <button
+            @click="copyLink"
+            class="main-btn py-1 px-4 rounded-lg d-flex align-center ga-2"
+          >
+            <i class="mdi mdi-content-copy mdi-24px"></i>
+            {{ $t("global.show_order.copy_location") }}
+          </button>
+        </div>
+
+        <!-- <MapsView
           v-if="record?.address[0]?.location?.coordinates"
           :key="record?.address[0]?.location?.coordinates[0]"
           :center="record?.address[0]?.location?.coordinates"
           :style="{ height: '400px', width: '800px' }"
           :isEditMode="false"
+        /> -->
+
+        <GoogleMap
+          v-if="record?.address[0]?.location?.coordinates"
+          :key="record?.address[0]?.location?.coordinates[0]"
+          :viewMode="true"
+          :editMode="true"
+          :mapLocation="record?.address[0]?.location"
         />
       </v-card>
     </v-dialog>
   </div>
 </template>
 <script>
+import GoogleMap from "@/components/common/GoogleMap.vue";
 import Loader from "@/components/common/Loader.vue";
 import { useOrdersMerchantStore } from "@/stores/merchant/orders/orders.merchant.store";
 import { mapActions, mapState } from "pinia";
-import MapsView from "@/components/common/MapsView.vue";
-
+import { useToast } from "vue-toastification";
+const toast = useToast();
 export default {
-  components: { Loader, MapsView },
+  components: { Loader, GoogleMap },
   data() {
     return {
       openShare: false,
@@ -336,12 +370,96 @@ export default {
     },
     currentStep() {
       return this.orderStatus.find(
-        (status) => status?.value === this.record?.status
+        (status) => status?.value === this.record?.status,
       );
+    },
+
+    servicesNames() {
+      return this.record?.items
+        .map((item) => item.item?.title[this.$i18n.locale])
+        .join(", ")
+        .toString()
+        .replace(/,/g, ", ");
     },
   },
   methods: {
     ...mapActions(useOrdersMerchantStore, ["showOrdersMerchant"]),
+    copyLink() {
+      const link = `https://maps.google.com/?q=${this.record?.address[0]?.location?.coordinates[1]},${this.record?.address[0]?.location?.coordinates[0]}&z=15`;
+      navigator.clipboard.writeText(link);
+      // show tost
+      toast.success(this.$t("share_order.location_copied"));
+    },
+
+    copyOrderInfo() {
+      const orderInfo = ` 
+      ${this.$t("share_order.services_names")} : ${
+        this.servicesNames ? this.servicesNames : "---"
+      }
+      ${this.$t("share_order.client_name")} : ${
+        this.record?.merchant_client?.name
+          ? this.record?.merchant_client?.name
+          : "---"
+      }
+      ${this.$t("share_order.client_phone")} : ${
+        this.record?.merchant_client?.phone
+          ? this.record?.merchant_client?.phone
+          : "---"
+      }
+      ${this.$t("share_order.client_address")} : ${
+        this.record?.merchant_client?.address
+          ? this.record?.merchant_client?.address
+          : "---"
+      }
+      ${this.$t("share_order.merchant_address")} : ${
+        this.record?.merchant_user?.address
+          ? this.record?.merchant_user?.address
+          : "---"
+      }
+      ${this.$t("share_order.created_by")} : ${
+        this.record?.merchant_user?.name
+          ? this.record?.merchant_user?.name
+          : "---"
+      }
+      ${this.$t("share_order.merchant_phone")} : ${
+        this.record?.merchant_user?.phone
+          ? this.record?.merchant_user?.phone
+          : "---"
+      }
+      ${this.$t("share_order.start_date")} : ${
+        this.record?.started_at ? this.record?.started_at : "---"
+      }
+      ${this.$t("share_order.order_number")} : ${
+        this.record?.id ? this.record?.id : "---"
+      }
+      ${this.$t("share_order.order_location")} : ${
+        this.record?.address[0]?.address
+          ? this.record?.address[0]?.address
+          : "---"
+      }
+      ${this.$t(
+        "share_order.order_location_link",
+      )} : https://maps.google.com/?q=${
+        this.record?.address[0]?.location?.coordinates[1]
+      },${this.record?.address[0]?.location?.coordinates[0]}&z=15
+      ${this.$t("share_order.created_by")} : ${
+        this.record?.merchant_user?.name
+          ? this.record?.merchant_user?.name
+          : "---"
+      }
+      ${this.$t("share_order.address")} : ${
+        this.record?.address[0]?.address
+          ? this.record?.address[0]?.address
+          : "---"
+      }
+      
+      `;
+
+      navigator.clipboard.writeText(orderInfo);
+
+      // show tost
+      toast.success(this.$t("share_order.order_info_copied"));
+    },
   },
 };
 </script>

@@ -31,10 +31,18 @@
             class="border bg-white pa-2 rounded d-flex w-100 ga-2 align-center"
             v-if="selectBranch"
           >
-            <MapsView
+            <!-- <MapsView
               v-if="selectBranch?.location.coordinates"
               :key="selectBranch?.location.coordinates"
               :center="selectBranch?.location.coordinates"
+            /> -->
+
+            <GoogleMap
+              v-if="selectBranch?.location.coordinates"
+              :key="selectBranch?.location.coordinates"
+              :viewMode="true"
+              :editMode="true"
+              :mapLocation="selectBranch?.location.coordinates"
             />
           </div>
         </div>
@@ -44,15 +52,16 @@
 </template>
 <script>
 import FiledInput from "@/components/common/FiledInput.vue";
-import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
-import { mapActions, mapState } from "pinia";
+import GoogleMap from "@/components/common/GoogleMap.vue";
 import Maps from "@/components/common/Maps.vue";
 import MapsView from "@/components/common/MapsView.vue";
 import { useBranchesClientStore } from "@/stores/client/branches/branches.client.store";
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
+import { mapActions, mapState } from "pinia";
 
 export default {
-  components: { FiledInput, Maps, MapsView },
+  components: { FiledInput, Maps, MapsView, GoogleMap },
   props: {
     orderData: {
       type: Object,
