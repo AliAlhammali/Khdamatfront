@@ -389,7 +389,7 @@ export default {
   },
 
   copyLink() {
-    const link = `https://maps.google.com/?q=${this.record?.address[0]?.location?.coordinates[1]},${this.record?.address[0]?.location?.coordinates[0]}&z=15`;
+    const link = `https://maps.google.com/?q=${this.record?.address[0]?.location?.coordinates[0]},${this.record?.address[0]?.location?.coordinates[1]}&z=15`;
     navigator.clipboard.writeText(link);
     // show tost
     toast.success(this.$t("share_order.location_copied"));
@@ -444,8 +444,8 @@ export default {
       ${this.$t(
         "share_order.order_location_link",
       )} : https://maps.google.com/?q=${
-      this.record?.address[0]?.location?.coordinates[1]
-    },${this.record?.address[0]?.location?.coordinates[0]}&z=15
+      this.record?.address[0]?.location?.coordinates[0]
+    },${this.record?.address[0]?.location?.coordinates[1]}&z=15
       ${this.$t("share_order.created_by")} : ${
       this.record?.merchant_user?.name
         ? this.record?.merchant_user?.name
