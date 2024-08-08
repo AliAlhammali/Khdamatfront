@@ -4,7 +4,7 @@
       {{ $t("orders.select_service") }}
     </h3>
     <v-row>
-      <v-col md="6" cols="12">
+      <v-col md="12" cols="12">
         <v-select
           v-model="main_category_id"
           :placeholder="$t('admin_navbar_links.categories')"
@@ -28,42 +28,29 @@
           <span>{{ $t("errors.required") }}</span>
         </p>
       </v-col>
-      <v-col md="6" cols="12">
-        <v-select
-          v-model="category_id"
-          :placeholder="$t('admin_categories.sub_categories')"
-          :label="$t('admin_categories.sub_categories')"
-          :items="subCategoryList"
-          :item-title="'title'"
-          :item-value="'id'"
-          outlined
-          menu-icon="mdi mdi-chevron-down"
-          class="text-capitalize rounded-xl"
-          hide-details
-          :no-data-text="$t('global.actions.no_data')"
-          @update:model-value="getService"
-          :error="
-            !category_id &&
-            errors?.items?.$each.$response.$data[0]?.item_id.$error
-          "
-        />
-        <p
-          class="text-error mt-2 d-flex ga-2 align-center"
-          v-if="
-            !category_id &&
-            errors?.items?.$each?.$response?.$data[0]?.item_id.$error
-          "
-        >
-          <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
-          <span>{{ $t("errors.required") }}</span>
-        </p>
-      </v-col>
     </v-row>
-    <div class="mt-4" v-for="(item, index) in items" :key="index">
+    <!-- {{ orderData.items }} -->
+    <div class="mt-4" v-for="(item, index) in orderData.items" :key="index">
       <v-row class="align-start">
-        <v-col md="3" cols="12">
+        <v-col md="6" cols="12">
           <v-select
-            v-model="items[index]"
+            v-model="item.category_id"
+            :placeholder="$t('admin_categories.sub_categories')"
+            :label="$t('admin_categories.sub_categories')"
+            :items="subCategoryList"
+            :item-title="'title'"
+            :item-value="'id'"
+            outlined
+            menu-icon="mdi mdi-chevron-down"
+            class="text-capitalize rounded-xl"
+            hide-details
+            :no-data-text="$t('global.actions.no_data')"
+            @update:model-value="getService(item.category_id)"
+          />
+        </v-col>
+        <v-col md="6" cols="12">
+          <v-select
+            v-model="item.item_id"
             :placeholder="$t('admin_navbar_links.services')"
             :label="$t('admin_navbar_links.services')"
             :items="servicesList"
@@ -76,11 +63,8 @@
             :no-data-text="$t('global.actions.no_data')"
             return-object
             @update:model-value="(selected) => mapItem(selected, index)"
-            :error="
-              errors?.items?.$each?.$response?.$data[index]?.item_id?.$error
-            "
           />
-          <p
+          <!-- <p
             class="text-error mt-2 d-flex ga-2 align-center"
             v-if="
               errors?.items?.$each?.$response?.$data[index]?.item_id?.$error
@@ -88,9 +72,9 @@
           >
             <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
             <span>{{ $t("errors.required") }}</span>
-          </p>
+          </p> -->
         </v-col>
-        <v-col md="1" cols="12">
+        <v-col md="3" cols="12">
           <v-text-field
             :label="$t('orders.price')"
             v-model="item.price"
@@ -122,16 +106,16 @@
             </template>
           </v-text-field>
         </v-col>
-        <v-col md="2" cols="12">
+        <v-col md="3" cols="12">
           <v-text-field
             :label="$t('orders.total')"
             outlined
             readonly
             :value="item.quantity * item.price"
-            v-model="items[index].total"
+            v-model="item.total"
           />
         </v-col>
-        <v-col md="2" cols="12">
+        <v-col md="3" cols="12">
           <div class="d-flex align-center ga-2">
             <v-btn color="primary" @click="addNewItem" class="w-50">
               <span class="mdi mdi-plus"></span>
@@ -176,6 +160,7 @@ export default {
         title: "",
         total: 0,
         price: 0,
+        category_id: null,
       },
     };
   },
@@ -229,41 +214,51 @@ export default {
       "getSubCategoriesMerchant",
     ]),
     ...mapActions(useServicesMerchantStore, ["getServicesMerchant"]),
-    getService() {
+    getService(category_id) {
       this.getServicesMerchant({
-        "filter[category_id]": this.category_id,
+        "filter[category_id]": category_id,
         forCreatingOrder: 1,
       });
-      this.items = [];
-      this.items.push({
-        ...this.newItem,
-        category_id: this.category_id,
-      });
+      // this.items = [];
+      // this.items.push({
+      // ...this.newItem,
+      // category_id: this.category_id,
+      // });
     },
     getSubCategory() {
       this.getSubCategoriesMerchant({
         "filter[parent_id]": this.main_category_id,
         listing: 1,
       });
-      this.category_id = null;
+      // this.category_id = null;
       this.service = null;
-      this.items = [];
+      // this.items = [];
+      this.orderData.items = [];
+      this.orderData.items.push({
+        ...this.newItem,
+      });
       this.orderData.main_category_id = this.main_category_id;
     },
     mapItem(item, index) {
       const newItem = {
-        ...item,
+        // ...item,
         quantity: 1,
         total: item.quantity * item.price,
       };
+      if (this.orderData.items[index]) {
+        this.orderData.items[index] = {
+          ...this.orderData.items[index],
+          item_id: this.orderData.items[index].item_id.id,
+          price: this.orderData.items[index].item_id.price,
+        };
 
-      if (this.items[index]) {
-        this.items[index] = newItem;
-        this.orderData.items = this.items.map((i) => {
+        this.orderData.items = this.orderData.items.map((obj) => {
           return {
-            id: i.id,
-            quantity: i.quantity,
-            category_id: this.category_id,
+            category_id: obj.category_id,
+            item_id: obj.item_id,
+            quantity: obj.quantity,
+            price: obj.price,
+            total: obj.total,
           };
         });
 
@@ -271,28 +266,33 @@ export default {
       }
     },
     addNewItem() {
-      const newItem = {
+      // const newItem = {
+      //   ...this.newItem,
+      //   category_id: this.category_id,
+      // };
+      // this.items.push(newItem);
+      this.orderData.items.push({
         ...this.newItem,
-        category_id: this.category_id,
-      };
-      this.items.push(newItem);
+      });
     },
   },
 
-  watch: {
-    items: {
-      handler() {
-        this.orderData.items = this.items.map((i) => {
-          return {
-            item_id: i.id,
-            quantity: i.quantity,
-            category_id: this.category_id,
-          };
-        });
-      },
-      deep: true,
-    },
-  },
+  // watch: {
+  //   items: {
+  //     handler() {
+  //       this.orderData.items = this.items.map((i) => {
+  //         console.log(i, "i");
+
+  //         return {
+  //           item_id: i.id,
+  //           quantity: i.quantity,
+  //           category_id: this.category_id,
+  //         };
+  //       });
+  //     },
+  //     deep: true,
+  //   },
+  // },
 };
 </script>
 <style lang="scss" scoped></style>

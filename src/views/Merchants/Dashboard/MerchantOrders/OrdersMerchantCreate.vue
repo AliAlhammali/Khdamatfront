@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <div class="bg-white pa-4 rounded border rounded-lg">
       <h2 class="mb-4 border-b pb-4">
@@ -174,10 +174,18 @@ export default {
 
     createOrder() {
       this.v$.objData.$touch();
+
+      this.objData.items = this.objData.items.map((obj) => {
+        return {
+          category_id: obj.category_id,
+          item_id: obj.item_id,
+          quantity: obj.quantity,
+        };
+      });
+
       this.createOrdersMerchant(this.objData);
     },
   },
 };
 </script>
-<style lang="">
-</style>
+<style lang=""></style>
