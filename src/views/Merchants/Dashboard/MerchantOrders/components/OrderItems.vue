@@ -216,9 +216,13 @@ export default {
     ...mapActions(useServicesMerchantStore, ["getServicesMerchant"]),
     getService(category_id) {
       this.getServicesMerchant({
-        "filter[category_id]": category_id,
+        "filter[main_category_id]": this.main_category_id,
         forCreatingOrder: 1,
       });
+      // this.getServicesMerchant({
+      //   "filter[main_category_id]": this.main_category_id,
+      //   forCreatingOrder: 1,
+      // });
       // this.items = [];
       // this.items.push({
       // ...this.newItem,
@@ -230,6 +234,7 @@ export default {
         "filter[parent_id]": this.main_category_id,
         listing: 1,
       });
+
       // this.category_id = null;
       this.service = null;
       // this.items = [];
