@@ -16,10 +16,11 @@ export const useServicesMerchantStore = defineStore("ServicesMerchant", {
       isUpdated: false,
       isDeleted: false,
     },
+    allServices: [],
   }),
   getters: {},
   actions: {
-    getServicesMerchant: async function(params) {
+    getServicesMerchant: async function (params) {
       this.uiFlags.isLoading = true;
       try {
         const { data } = await ServicesMerchant.get(params);

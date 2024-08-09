@@ -46,14 +46,26 @@
             hide-details
             :no-data-text="$t('global.actions.no_data')"
             @update:model-value="getService(item.category_id)"
+            :error="
+              errors?.items?.$each?.$response?.$data[index]?.category_id?.$error
+            "
           />
+          <p
+            class="text-error mt-2 d-flex ga-2 align-center"
+            v-if="
+              errors?.items?.$each?.$response?.$data[index]?.category_id?.$error
+            "
+          >
+            <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
+            <span>{{ $t("errors.required") }}</span>
+          </p>
         </v-col>
         <v-col md="6" cols="12">
           <v-select
             v-model="item.item_id"
             :placeholder="$t('admin_navbar_links.services')"
             :label="$t('admin_navbar_links.services')"
-            :items="servicesList"
+            :items="getServicesListByCat(item.category_id)"
             :item-title="'title'"
             :item-value="'id'"
             outlined
@@ -63,8 +75,11 @@
             :no-data-text="$t('global.actions.no_data')"
             return-object
             @update:model-value="(selected) => mapItem(selected, index)"
+            :error="
+              errors?.items?.$each?.$response?.$data[index]?.item_id?.$error
+            "
           />
-          <!-- <p
+          <p
             class="text-error mt-2 d-flex ga-2 align-center"
             v-if="
               errors?.items?.$each?.$response?.$data[index]?.item_id?.$error
@@ -72,7 +87,7 @@
           >
             <span class="mdi mdi-24px mdi-alert-circle-outline"></span>
             <span>{{ $t("errors.required") }}</span>
-          </p> -->
+          </p>
         </v-col>
         <v-col md="3" cols="12">
           <v-text-field
@@ -123,7 +138,7 @@
             <v-btn
               color="error"
               class="w-50"
-              @click="items.splice(index, 1)"
+              @click="orderData.items.splice(index, 1)"
               v-if="index !== 0"
             >
               <span class="mdi mdi-delete"></span>
@@ -177,6 +192,7 @@ export default {
     ...mapState(useServicesMerchantStore, {
       services: "records",
       uiFlagsServices: "uiFlags",
+      allServices: "allServices",
     }),
 
     categoryList() {
@@ -214,11 +230,20 @@ export default {
       "getSubCategoriesMerchant",
     ]),
     ...mapActions(useServicesMerchantStore, ["getServicesMerchant"]),
-    getService(category_id) {
-      this.getServicesMerchant({
-        "filter[main_category_id]": this.main_category_id,
+    async getService(category_id) {
+      await this.getServicesMerchant({
+        "filter[category_id]": category_id,
         forCreatingOrder: 1,
       });
+
+      const service = {
+        [category_id]: this.servicesList,
+      };
+
+      if (this.allServices.find((ser) => ser[category_id]) == undefined) {
+        this.allServices.push({ ...service });
+      }
+
       // this.getServicesMerchant({
       //   "filter[main_category_id]": this.main_category_id,
       //   forCreatingOrder: 1,
@@ -228,6 +253,11 @@ export default {
       // ...this.newItem,
       // category_id: this.category_id,
       // });
+    },
+    getServicesListByCat(id) {
+      if (this.allServices.find((ser) => ser[id])) {
+        return this.allServices.find((ser) => ser[id])[id];
+      }
     },
     getSubCategory() {
       this.getSubCategoriesMerchant({
@@ -276,6 +306,9 @@ export default {
       //   category_id: this.category_id,
       // };
       // this.items.push(newItem);
+
+      this.errors.$reset();
+
       this.orderData.items.push({
         ...this.newItem,
       });
